@@ -1,0 +1,74 @@
+{
+  "type": "svg-states",
+  "name": "Monkey",
+  "description": "Hangs from a branch by its tail: swings, waves, juggles and eats bananas, sleeps upside down.",
+  "svgDir": "svg",
+  "states": {
+    "intro": "sit_to_hang.svg",
+    "idle": "hang_idle.svg",
+    "hover": "hang_wave.svg",
+    "doubleClick": [
+      "int_tickled.svg",
+      "mood_laugh.svg",
+      "hang_swing_big.svg"
+    ],
+    "clicks": [
+      "int_poked.svg",
+      "mood_angry.svg"
+    ],
+    "done": [
+      "mood_happy.svg",
+      "fun_spin.svg",
+      "move_hop.svg"
+    ],
+    "allDone": [
+      "fun_banana_juggle.svg",
+      "mood_love.svg"
+    ],
+    "added": [
+      "idle_scratch_head.svg",
+      "mood_confused.svg"
+    ],
+    "started": [
+      "move_swing_across.svg",
+      "move_walk.svg"
+    ],
+    "deleted": "mood_surprised.svg",
+    "overdue": [
+      "mood_sad.svg",
+      "mood_confused.svg"
+    ],
+    "hungry": [
+      "mood_hungry.svg",
+      "hang_eat_banana.svg"
+    ],
+    "alarm": "fun_notify.svg",
+    "alarmClosed": "hang_swing_big.svg",
+    "snooze": "idle_yawn.svg",
+    "dragged": "int_dragged.svg",
+    "dropped": "move_fall_land.svg@0.45",
+    "fallAsleep": "sleep_fall_asleep.svg",
+    "sleep": "sleep_loop.svg",
+    "wakeUp": "sleep_wake_up.svg",
+    "lookUp": "int_look_up.svg",
+    "lookUpRight": "int_look_up_right.svg",
+    "lookRight": "int_look_right.svg",
+    "lookDownRight": "int_look_down_right.svg",
+    "lookDown": "int_look_down.svg",
+    "lookDownLeft": "int_look_down_left.svg",
+    "lookLeft": "int_look_left.svg",
+    "lookUpLeft": "int_look_up_left.svg"
+  },
+  "idleVariants": [
+    "hang_swing_big.svg",
+    "hang_eat_banana.svg",
+    "hang_wave.svg",
+    "fun_peek.svg"
+  ],
+  "sleepAfterSeconds": 20,
+  "alarmEffect": "sparks",
+  "effectOrigin": [
+    256,
+    200
+  ]
+}

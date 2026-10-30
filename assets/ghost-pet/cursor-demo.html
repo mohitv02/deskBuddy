@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}</style>
+<title>Ghost Pet Cursor Demo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one full-height checkerboard "desktop" with a slim header; the pet roams the whole stage */
+:root {
+  --bg: #f4f1f8; --surface: #ffffff; --ink: #3b3150; --muted: #6f6684; --line: #e2dcec;
+  --accent: #7c62c9; --accent-soft: #ece5fb; --check-a: #ffffff; --check-b: #ebe7f1;
+  --font-display: "Fredoka", "Nunito", ui-rounded, system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #1b1822; --surface: #25212f; --ink: #eee8f8; --muted: #a79fba; --line: #383147;
+    --accent: #b9a4f2; --accent-soft: #352c4d; --check-a: #2b2635; --check-b: #231f2c; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #1b1822; --surface: #25212f; --ink: #eee8f8; --muted: #a79fba; --line: #383147;
+  --accent: #b9a4f2; --accent-soft: #352c4d; --check-a: #2b2635; --check-b: #231f2c; color-scheme: dark; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); display: flex; flex-direction: column; overflow: hidden; }
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-block: 10px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--line); }
+h1 { font: 600 20px/1.2 var(--font-display); margin: 0; }
+.hint { color: var(--muted); font-size: 13px; margin: 0; flex: 1 1 320px; min-width: 0; }
+.now { font: 600 12px var(--font-mono); color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 6px 10px; white-space: nowrap; }
+a.back { font: 600 13px var(--font-body); color: var(--ink); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; background: var(--surface); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--line); }
+.chips button { font: 600 12px var(--font-mono); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; cursor: pointer; }
+.chips button:hover { border-color: var(--accent); }
+.chips button:focus-visible, a.back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+#stage { position: relative; flex: 1; min-height: 0; overflow: hidden; touch-action: none; cursor: default;
+  background-color: var(--check-a); background-image: conic-gradient(var(--check-b) 25%, transparent 0 50%, var(--check-b) 0 75%, transparent 0); background-size: 28px 28px; }
+#pet { position: absolute; left: 0; top: 0; width: 220px; height: 220px; will-change: transform; cursor: grab; }
+#pet.dragging { cursor: grabbing; }
+#pet > div { position: absolute; inset: 0; }
+#pet > div[hidden] { display: none !important; }
+#flip { position: absolute; inset: 0; }
+</style>
+
+<header>
+  <h1>Cursor follow</h1>
+  <p class="hint">Move the cursor and the ghost watches it, glides after it when you go far, and falls asleep if you leave it alone. Rub it to pet it, click to poke, drag it by the tail.</p>
+  <span class="now" id="now">idle_breathe</span>
+  <a class="back" href="preview.html">← All clips</a>
+</header>
+<div class="chips" id="chips" aria-label="Play a reaction"></div>
+<div id="stage"><div id="pet"><div id="flip"></div></div></div>
+
+<script src="vendor/lottie.min.js"></script>
+<script src="clips.js"></script>
+<script>
+(function () {
+  var G = window.GHOST;
+  var meta = {}; G.index.clips.forEach(function (c) { meta[c.name] = c; });
+  var stage = document.getElementById('stage'), pet = document.getElementById('pet'), flip = document.getElementById('flip');
+  var nowEl = document.getElementById('now');
+  var S = 220, K = S / 512;
+  var EYE = { x: 256 * K, y: 245 * K }, GRAB = { x: 264 * K, y: 427 * K };
+  var anims = {}, cur = null, curName = '', onDone = null;
+
+  function get(name) {
+    if (anims[name]) return anims[name];
+    var box = document.createElement('div'); box.hidden = true; flip.appendChild(box);
+    var a = lottie.loadAnimation({ container: box, renderer: 'svg', loop: meta[name].loop, autoplay: false,
+      animationData: JSON.parse(JSON.stringify(G.lottie[name])) });
+    a.box = box;
+    a.addEventListener('complete', function () { if (a === cur && onDone) { var f = onDone; onDone = null; f(); } });
+    anims[name] = a; return a;
+  }
+  // play a clip; keepPhase continues at the same frame (for the bob-synced look loops)
+  function play(name, opts) {
+    opts = opts || {};
+    if (name === curName && !opts.restart) { onDone = opts.done || onDone; return; }
+    var a = get(name), frame = 0;
+    if (opts.keepPhase && cur) frame = cur.currentFrame % meta[name].frames;
+    a.loop = opts.once ? false : meta[name].loop;
+    a.box.hidden = false;
+    a.goToAndPlay(frame, true);
+    if (cur && cur !== a) { cur.pause(); cur.box.hidden = true; }
+    cur = a; curName = name; onDone = opts.done || null;
+    nowEl.textContent = name;
+  }
+
+  var W = 0, H = 0;
+  function size() { W = stage.clientWidth; H = stage.clientHeight; }
+  size(); addEventListener('resize', size);
+  var gx = W / 2 - S / 2, gy = H / 2 - S / 2, facing = 1;
+  var mouse = { x: W / 2, y: H / 2, t: performance.now(), inside: false };
+  var mode = 'follow', lastActive = performance.now(), busy = false, rub = 0, drag = null, downAt = null;
+  var LOOKS = ['right', 'down_right', 'down', 'down_left', 'left', 'up_left', 'up', 'up_right'];
+  var IDLES = ['idle_look_left_right', 'idle_yawn', 'idle_stretch', 'idle_lazy_drift', 'idle_fade_blink'];
+  var nextIdle = performance.now() + 7000;
+
+  function place() {
+    gx = Math.max(-S * 0.2, Math.min(W - S * 0.8, gx)); gy = Math.max(-S * 0.2, Math.min(H - S * 0.9, gy));
+    pet.style.transform = 'translate(' + gx.toFixed(1) + 'px,' + gy.toFixed(1) + 'px)';
+    flip.style.transform = facing < 0 ? 'scaleX(-1)' : '';
+  }
+  function reaction(name, then) {
+    busy = true; facing = 1;
+    play(name, { once: true, restart: true, done: function () { busy = false; if (then) then(); else play('idle_breathe'); } });
+  }
+  function wake() {
+    lastActive = performance.now();
+    if (mode === 'sleep' || mode === 'falling') { mode = 'waking'; busy = true;
+      play('sleep_wake_up', { restart: true, done: function () { mode = 'follow'; busy = false; } }); }
+  }
+  function local(e) { var r = stage.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  stage.addEventListener('pointermove', function (e) {
+    var p = local(e), moved = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+    mouse.x = p.x; mouse.y = p.y; mouse.inside = true;
+    if (moved > 0.5) { mouse.t = performance.now(); wake(); }
+    if (drag) {
+      if (!drag.on && Math.hypot(p.x - drag.x0, p.y - drag.y0) > 6) { drag.on = true; pet.classList.add('dragging'); busy = true; facing = 1; play('int_dragged', { restart: true }); }
+      if (drag.on) { gx = p.x - GRAB.x; gy = p.y - GRAB.y; place(); }
+      return;
+    }
+    var ox = p.x - gx, oy = p.y - gy;
+    if (!busy && mode === 'follow' && ox > 30 && ox < S - 30 && oy > 20 && oy < S * 0.85) {
+      rub += moved; if (rub > 420) { rub = 0; reaction('int_petted'); }
+    } else rub = Math.max(0, rub - moved * 0.5);
+  });
+  stage.addEventListener('pointerleave', function () { mouse.inside = false; });
+  pet.addEventListener('pointerdown', function (e) {
+    var p = local(e); wake(); pet.setPointerCapture(e.pointerId);
+    drag = { x0: p.x, y0: p.y, on: false };
+  });
+  pet.addEventListener('pointerup', function () {
+    if (!drag) return;
+    var was = drag.on; drag = null; pet.classList.remove('dragging');
+    if (was) { busy = false; play('idle_breathe', { restart: true }); }
+    else if (mode === 'follow') reaction('int_poked');
+  });
+
+  var last = performance.now();
+  function loop(now) {
+    var dt = Math.min(50, now - last) / 16.67; last = now;
+    if (!busy && !drag && mode === 'follow') {
+      var ex = gx + EYE.x, ey = gy + EYE.y, dx = mouse.x - ex, dy = mouse.y - ey, d = Math.hypot(dx, dy);
+      var still = now - mouse.t;
+      if (d > 190 && mouse.inside) {
+        var sp = Math.min(5.5, (d - 150) * 0.05) * dt;
+        gx += dx / d * sp; gy += dy / d * sp * 0.7; facing = dx < 0 ? -1 : 1;
+        play('move_walk'); place(); nextIdle = now + 7000;
+      } else if (still < 6000 && mouse.inside) {
+        facing = 1; place();
+        var dir = d < 40 ? 'down' : LOOKS[(Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) + 8) % 8];
+        play('int_look_' + dir, { keepPhase: curName.indexOf('int_look_') === 0 });
+      } else if (now - lastActive > 22000 && now - mouse.t > 22000) {
+        mode = 'falling'; busy = true; facing = 1; place();
+        play('sleep_fall_asleep', { restart: true, done: function () { busy = false; mode = 'sleep'; play('sleep_loop'); } });
+      } else if (now > nextIdle) {
+        nextIdle = now + 9000 + Math.random() * 5000;
+        reaction(IDLES[Math.floor(Math.random() * IDLES.length)]);
+      } else { facing = 1; place(); play('idle_breathe'); }
+    }
+    requestAnimationFrame(loop);
+  }
+
+  var chips = document.getElementById('chips');
+  ['mood_happy', 'mood_love', 'mood_surprised', 'mood_scared', 'mood_sad', 'mood_hungry', 'mood_smile_wink', 'int_tickled',
+   'move_hop', 'move_phase', 'move_fall_land', 'fun_boo', 'fun_spin', 'fun_notify', 'fun_lantern_glow'].forEach(function (n) {
+    var b = document.createElement('button'); b.type = 'button'; b.textContent = n;
+    b.onclick = function () { lastActive = performance.now(); mode = 'follow'; reaction(n); };
+    chips.appendChild(b);
+  });
+  place(); play('idle_breathe'); requestAnimationFrame(loop);
+})();
+</script>

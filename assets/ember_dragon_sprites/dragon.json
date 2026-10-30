@@ -1,0 +1,455 @@
+{
+  "name": "Ember (original dragon desktop pet)",
+  "frame_width": 320,
+  "frame_height": 200,
+  "scales": {
+    "1x": 1,
+    "2x": 2
+  },
+  "layout": "Each PNG is one horizontal strip: frame i is at x = i * frame_width.",
+  "facing": {
+    "right": "right/",
+    "left": "left/ (mirrored)",
+    "front": "front/ (faces the viewer)"
+  },
+  "ground_y": 188,
+  "anchor_right": [
+    124,
+    188
+  ],
+  "anchor_left": [
+    196,
+    188
+  ],
+  "anchor_note": "Point between the feet on the ground. Values are 1x pixels; double them for 2x. Mirror x for left-facing (frame_width - x).",
+  "animations": {
+    "idle": {
+      "file": "idle.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 12,
+      "fps": 8,
+      "loop": true,
+      "group": "core"
+    },
+    "idle_blink": {
+      "file": "idle_blink.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 12,
+      "fps": 8,
+      "loop": true,
+      "note": "Same as idle with a blink; mix it in randomly.",
+      "group": "core"
+    },
+    "walk": {
+      "file": "walk.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "move_px_per_frame": 5,
+      "note": "Move the window 5 px (1x) per frame in the facing direction so feet stay planted.",
+      "group": "core"
+    },
+    "fly": {
+      "file": "fly.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "move_px_per_frame": 4,
+      "group": "core"
+    },
+    "takeoff": {
+      "file": "takeoff.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "next": "fly",
+      "note": "Start moving the window upward from frame 4.",
+      "group": "core"
+    },
+    "land": {
+      "file": "land.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "next": "idle",
+      "note": "Feet touch the ground on frame 3.",
+      "group": "core"
+    },
+    "fire": {
+      "file": "fire.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 15,
+      "fps": 12,
+      "loop": false,
+      "next": "idle",
+      "sustain_loop": [
+        6,
+        11
+      ],
+      "note": "Frames 0-5 wind-up, 6-11 flame (loop these to hold the fire), rest cool-down with smoke.",
+      "group": "core"
+    },
+    "lie_down": {
+      "file": "lie_down.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 6,
+      "fps": 8,
+      "loop": false,
+      "next": "sleep",
+      "note": "Play in reverse to wake up.",
+      "group": "core"
+    },
+    "sleep": {
+      "file": "sleep.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 4,
+      "loop": true,
+      "group": "core"
+    },
+    "dragged": {
+      "file": "dragged.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 6,
+      "fps": 10,
+      "loop": true,
+      "grab_point": [
+        150,
+        74
+      ],
+      "note": "Held by the scruff; keep grab_point under the mouse cursor.",
+      "group": "core"
+    },
+    "fall": {
+      "file": "fall.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 4,
+      "fps": 10,
+      "loop": true,
+      "next": "land",
+      "note": "Loop while falling; on hitting the ground jump to land frame 3.",
+      "group": "core"
+    },
+    "sit": {
+      "file": "sit.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 6,
+      "fps": 10,
+      "loop": false,
+      "next": "sit_idle",
+      "note": "Play reversed to stand back up.",
+      "group": "tricks"
+    },
+    "sit_idle": {
+      "file": "sit_idle.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 10,
+      "fps": 8,
+      "loop": true,
+      "note": "Sitting like a pup, tail swishing.",
+      "group": "tricks"
+    },
+    "roll_over": {
+      "file": "roll_over.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "next": "belly_up",
+      "note": "Rolls onto its back. Play reversed (or use roll_back) to get up.",
+      "group": "tricks"
+    },
+    "belly_up": {
+      "file": "belly_up.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "note": "Lying on its back, paws paddling, tongue out. Good reaction to a click.",
+      "group": "tricks"
+    },
+    "roll_back": {
+      "file": "roll_back.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "next": "idle",
+      "group": "tricks"
+    },
+    "pounce": {
+      "file": "pounce.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 13,
+      "fps": 12,
+      "loop": false,
+      "next": "idle",
+      "leap_frames": [
+        7,
+        9
+      ],
+      "move_px_per_frame_during_leap": 14,
+      "note": "Crouch and butt-wiggle (0-6), leap (7-9), land (10). Move the window forward during the leap. Great for pouncing on the mouse cursor.",
+      "group": "tricks"
+    },
+    "play_bow": {
+      "file": "play_bow.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "note": "Front down, rump up, tail wagging: \"play with me!\"",
+      "group": "tricks"
+    },
+    "shake_off": {
+      "file": "shake_off.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 12,
+      "fps": 14,
+      "loop": false,
+      "next": "idle",
+      "note": "Shakes like a wet dog, water drops flying.",
+      "group": "tricks"
+    },
+    "happy_hop": {
+      "file": "happy_hop.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "note": "Excited bouncing with wing flutters.",
+      "group": "tricks"
+    },
+    "stretch_yawn": {
+      "file": "stretch_yawn.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 13,
+      "fps": 8,
+      "loop": false,
+      "next": "idle",
+      "note": "Cat-style stretch then a big yawn. Nice after waking up.",
+      "group": "tricks"
+    },
+    "sniff": {
+      "file": "sniff.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 12,
+      "fps": 10,
+      "loop": true,
+      "note": "Nose to the ground, snuffling.",
+      "group": "tricks"
+    },
+    "barrel_roll": {
+      "file": "barrel_roll.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 12,
+      "fps": 14,
+      "loop": false,
+      "next": "fly",
+      "move_px_per_frame": 5,
+      "note": "Mid-flight trick; play from fly and return to fly.",
+      "group": "tricks"
+    },
+    "fireball": {
+      "file": "fireball.png",
+      "folders": [
+        "right",
+        "left"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "next": "idle",
+      "note": "Spits a fireball that flies off the right edge (left edge when mirrored).",
+      "group": "tricks"
+    },
+    "approach_walk": {
+      "file": "approach_walk.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 24,
+      "fps": 10,
+      "loop": false,
+      "next": "front_idle",
+      "note": "Walks towards you from the distance, growing from small to full size, feet on the ground line.",
+      "group": "front",
+      "view": "front"
+    },
+    "approach_fly": {
+      "file": "approach_fly.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 24,
+      "fps": 12,
+      "loop": false,
+      "next": "front_idle",
+      "note": "Flies in from far away straight at you, then lands (touchdown on frame 21).",
+      "group": "front",
+      "view": "front"
+    },
+    "front_idle": {
+      "file": "front_idle.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 12,
+      "fps": 8,
+      "loop": true,
+      "group": "front",
+      "view": "front"
+    },
+    "front_idle_blink": {
+      "file": "front_idle_blink.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 12,
+      "fps": 8,
+      "loop": true,
+      "group": "front",
+      "view": "front"
+    },
+    "front_walk": {
+      "file": "front_walk.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "note": "Walking towards you in place. Scale the window up slowly for a continuous approach.",
+      "group": "front",
+      "view": "front"
+    },
+    "fly_front": {
+      "file": "fly_front.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "note": "Hovering in front of you, wings beating.",
+      "group": "front",
+      "view": "front"
+    },
+    "head_tilt": {
+      "file": "head_tilt.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 16,
+      "fps": 8,
+      "loop": false,
+      "next": "front_idle",
+      "note": "Curious tilt to each side with big round pupils.",
+      "group": "front",
+      "view": "front"
+    },
+    "front_fire": {
+      "file": "front_fire.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 16,
+      "fps": 12,
+      "loop": false,
+      "next": "front_idle",
+      "sustain_loop": [
+        6,
+        11
+      ],
+      "note": "Breathes fire straight at you.",
+      "group": "front",
+      "view": "front"
+    },
+    "boop": {
+      "file": "boop.png",
+      "folders": [
+        "front"
+      ],
+      "frames": 16,
+      "fps": 10,
+      "loop": false,
+      "next": "front_idle",
+      "note": "Leans right up to the screen, squishes its snout on the glass, little hearts.",
+      "group": "front",
+      "view": "front"
+    }
+  }
+}

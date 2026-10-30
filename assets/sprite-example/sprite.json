@@ -1,0 +1,19 @@
+{
+  "image": "sheet.png",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "pixelated": false,
+  "animations": {
+    "idle": {
+      "start": 0,
+      "frames": 8,
+      "fps": 8,
+      "pauseMs": 2500
+    },
+    "happy": {
+      "start": 8,
+      "frames": 6,
+      "fps": 10
+    }
+  }
+}

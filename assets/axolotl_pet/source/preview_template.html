@@ -1,0 +1,417 @@
+<title>Axolotl Pet Clips</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an aquarium-lab workbench. Sticky toolbar, inspector bench on top, specimen grid below. */
+:root {
+  --bg: #FBF5F7;
+  --surface: #FFFFFF;
+  --ink: #3A2430;
+  --muted: #86707B;
+  --line: #EBDDE3;
+  --accent: #C83C74;
+  --accent-soft: #FCE3EC;
+  --water: #23808E;
+  --water-soft: #DDF1F3;
+  --check-a: #FFFFFF;
+  --check-b: #ECE7EC;
+  --font-display: "Fredoka", "Nunito", ui-rounded, system-ui, sans-serif;
+  --font-body: "Nunito", ui-rounded, system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1B1317; --surface: #261B21; --ink: #F7E9EF; --muted: #B79DA9; --line: #3B2C33;
+  --accent: #FF7FAE; --accent-soft: #43222F; --water: #6DCBD6; --water-soft: #173238;
+  --check-a: #3A3036; --check-b: #2E262B; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #1B1317; --surface: #261B21; --ink: #F7E9EF; --muted: #B79DA9; --line: #3B2C33;
+  --accent: #FF7FAE; --accent-soft: #43222F; --water: #6DCBD6; --water-soft: #173238;
+  --check-a: #3A3036; --check-b: #2E262B; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font-family: var(--font-body); font-size: 15px; line-height: 1.5; margin: 0; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 48px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+h1 { font-size: clamp(26px, 4vw, 34px); }
+h2 { font-size: 21px; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+header.top { padding-block: 26px 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: end; justify-content: space-between; }
+header.top p { margin: 4px 0 0; color: var(--muted); max-width: 62ch; }
+.tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+.tabs a { text-decoration: none; color: var(--muted); font-weight: 700; padding: 6px 16px; border-radius: 999px; }
+.tabs a[aria-current="page"] { background: var(--accent); color: var(--surface); }
+.toolbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 10px; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: transparent; color: var(--ink); font: 700 13px var(--font-body); padding: 7px 12px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 4px 11px; font: 600 13px var(--font-body); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.checker { background-color: var(--check-a);
+  background-image: linear-gradient(45deg, var(--check-b) 25%, transparent 25%, transparent 75%, var(--check-b) 75%),
+                    linear-gradient(45deg, var(--check-b) 25%, transparent 25%, transparent 75%, var(--check-b) 75%);
+  background-size: 24px 24px; background-position: 0 0, 12px 12px; }
+
+/* inspector */
+.bench { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(220px, 280px); gap: 16px; }
+.stagebox { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.stage { width: 100%; aspect-ratio: 1; max-width: 100%; border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--line); }
+.stage > div, .stage > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.meta { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.meta h2 { word-break: break-word; }
+.meta p { margin: 0; color: var(--muted); }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: 14px; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.scrub { display: flex; gap: 10px; align-items: center; }
+.scrub input { flex: 1; min-width: 0; accent-color: var(--accent); }
+.btn { border: 1px solid var(--ink); background: var(--ink); color: var(--bg); border-radius: 10px; padding: 7px 14px; font: 700 13px var(--font-body); cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.badge { display: inline-block; font: 700 11px var(--font-body); letter-spacing: 0.06em; text-transform: uppercase; border-radius: 6px; padding: 2px 7px; }
+.badge.loop { background: var(--water-soft); color: var(--water); }
+.badge.once { background: var(--accent-soft); color: var(--accent); }
+
+/* grid */
+.grid { margin-top: 22px; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; text-align: left; color: var(--ink); font: inherit; }
+.card[aria-current="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.card .stage { border-radius: 9px; }
+.card img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.card .row { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 0 2px; }
+.card .nm { font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; overflow-wrap: anywhere; }
+.card .sub { font-size: 12px; color: var(--muted); padding: 0 2px 2px; }
+.replay { position: absolute; right: 6px; bottom: 6px; z-index: 2; border: 0; background: var(--ink); color: var(--bg); font: 700 11px var(--font-body); border-radius: 6px; padding: 3px 8px; cursor: pointer; }
+.section-h { margin-top: 30px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.section-h p { margin: 0; color: var(--muted); }
+
+/* follow demo */
+.follow { margin-top: 18px; display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 16px; }
+.pond { position: relative; height: min(70vh, 620px); min-height: 380px; border-radius: 18px; border: 1px solid var(--line); overflow: hidden; touch-action: none; user-select: none; }
+.pet { position: absolute; width: 240px; height: 240px; left: calc(50% - 120px); bottom: 10px; cursor: grab; transition: left .35s ease, bottom .35s ease; }
+.pet.dragging { cursor: grabbing; transition: none; }
+.pet > div { position: absolute; inset: 0; }
+.dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); pointer-events: none; transform: translate(-50%, -50%); opacity: .0; transition: opacity .2s; }
+.side { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.side ul { margin: 0; padding-left: 18px; color: var(--muted); }
+.now { font-family: var(--font-mono); font-size: 14px; color: var(--accent); word-break: break-all; }
+.compass { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; max-width: 168px; }
+.compass span { aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--line); display: grid; place-items: center; font-size: 13px; color: var(--muted); }
+.compass span.on { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+[hidden] { display: none !important; }
+@media (max-width: 920px) {
+  .bench { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .bench .meta { grid-column: 1 / -1; }
+  .follow { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .bench { grid-template-columns: minmax(0, 1fr); }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .pet { width: 190px; height: 190px; left: calc(50% - 95px); }
+}
+@media (prefers-reduced-motion: reduce) { .pet { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Axolotl Pet Clips</h1>
+      <p>38 animated reactions, each exported as a Lottie JSON and a SMIL SVG from the same rig. Every stage below has a transparent background over a checkerboard.</p>
+    </div>
+    <nav class="tabs" aria-label="Views">
+      <a href="#clips" id="tab-clips">All clips</a>
+      <a href="#follow" id="tab-follow">Cursor follow</a>
+    </nav>
+  </header>
+
+  <section id="view-clips">
+    <div class="toolbar">
+      <span class="label">Grid plays</span>
+      <div class="seg" role="group" aria-label="Format for the grid">
+        <button id="fmt-svg" aria-pressed="true">SVG</button>
+        <button id="fmt-lottie" aria-pressed="false">Lottie</button>
+      </div>
+      <span class="label">Category</span>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div class="bench" aria-label="Inspector">
+      <div class="stagebox"><span class="label">SMIL SVG</span><div class="stage checker" id="ins-svg"></div></div>
+      <div class="stagebox"><span class="label">Lottie (lottie-web)</span><div class="stage checker" id="ins-lottie"></div></div>
+      <div class="meta">
+        <div>
+          <span class="label" id="ins-cat"></span>
+          <h2 class="mono" id="ins-name"></h2>
+        </div>
+        <p id="ins-desc"></p>
+        <dl class="facts">
+          <dt>Base pose</dt><dd id="ins-pose"></dd>
+          <dt>Frames</dt><dd id="ins-frames"></dd>
+          <dt>Length</dt><dd id="ins-secs"></dd>
+          <dt>Playback</dt><dd id="ins-loop"></dd>
+        </dl>
+        <div class="scrub">
+          <button class="btn" id="ins-play">Pause</button>
+          <input type="range" id="ins-range" min="0" max="10" value="0" aria-label="Frame">
+          <span class="mono" id="ins-frame" style="min-width:4.5ch;text-align:right">0</span>
+        </div>
+        <p style="font-size:13px">Both stages are driven to the same frame number, so you can scrub and compare the two formats.</p>
+      </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="view-follow" hidden>
+    <div class="follow">
+      <div class="pond checker" id="pond">
+        <div class="pet" id="pet"></div>
+        <div class="dot" id="dot"></div>
+      </div>
+      <aside class="side">
+        <div><span class="label">Now playing</span><div class="now" id="now">idle_breathe</div></div>
+        <div class="compass" id="compass">
+          <span data-d="up_left">↖</span><span data-d="up">↑</span><span data-d="up_right">↗</span>
+          <span data-d="left">←</span><span data-d="idle">•</span><span data-d="right">→</span>
+          <span data-d="down_left">↙</span><span data-d="down">↓</span><span data-d="down_right">↘</span>
+        </div>
+        <ul>
+          <li>Move the pointer: the eyes follow using the eight <span class="mono">int_look_*</span> clips.</li>
+          <li>Hold still for 3 seconds and it goes back to <span class="mono">idle_breathe</span>. After 15 seconds it falls asleep.</li>
+          <li>Click it to pet it. Double-click to poke it.</li>
+          <li>Drag it to pick it up (<span class="mono">int_dragged</span>). Let go and it hops back down.</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<!--LOTTIE_SCRIPT-->
+<script type="application/json" id="clipdata">/*DATA*/</script>
+<script>
+(function () {
+  const DATA = JSON.parse(document.getElementById('clipdata').textContent);
+  const CLIPS = DATA.clips;
+  const byName = Object.fromEntries(CLIPS.map(c => [c.name, c]));
+  const CATS = ['all', 'idle', 'swim', 'sleep', 'movement', 'interaction', 'mood', 'fun'];
+  const svgUrl = c => URL.createObjectURL(new Blob([c.svgText], { type: 'image/svg+xml' }));
+  const hasLottie = typeof lottie !== 'undefined';
+
+  /* ---------- views ---------- */
+  const DEFAULT_VIEW = '/*VIEW*/' === 'follow' ? 'follow' : 'clips';
+  function route() {
+    const v = (location.hash || '#' + DEFAULT_VIEW).slice(1) === 'follow' ? 'follow' : 'clips';
+    document.getElementById('view-clips').hidden = v !== 'clips';
+    document.getElementById('view-follow').hidden = v !== 'follow';
+    document.getElementById('tab-clips').setAttribute('aria-current', v === 'clips' ? 'page' : 'false');
+    document.getElementById('tab-follow').setAttribute('aria-current', v === 'follow' ? 'page' : 'false');
+    if (v === 'follow') Follow.start(); else Follow.stop();
+  }
+  window.addEventListener('hashchange', route);
+
+  /* ---------- grid ---------- */
+  let fmt = 'svg', cat = 'all', selected = 'idle_breathe';
+  const grid = document.getElementById('grid');
+  const chips = document.getElementById('chips');
+  const gridAnims = [];
+  CATS.forEach(k => {
+    const b = document.createElement('button');
+    b.className = 'chip'; b.textContent = k === 'all' ? 'All' : k; b.setAttribute('aria-pressed', k === cat);
+    b.onclick = () => { cat = k; [...chips.children].forEach(x => x.setAttribute('aria-pressed', x === b)); buildGrid(); };
+    chips.appendChild(b);
+  });
+  function setFmt(f) {
+    if (f === 'lottie' && !hasLottie) return;
+    fmt = f;
+    document.getElementById('fmt-svg').setAttribute('aria-pressed', f === 'svg');
+    document.getElementById('fmt-lottie').setAttribute('aria-pressed', f === 'lottie');
+    buildGrid();
+  }
+  document.getElementById('fmt-svg').onclick = () => setFmt('svg');
+  document.getElementById('fmt-lottie').onclick = () => setFmt('lottie');
+  if (!hasLottie) document.getElementById('fmt-lottie').disabled = true;
+
+  function buildGrid() {
+    gridAnims.splice(0).forEach(a => a.destroy());
+    grid.innerHTML = '';
+    CLIPS.filter(c => cat === 'all' || c.category === cat).forEach(c => {
+      const card = document.createElement('div');
+      card.className = 'card'; card.tabIndex = 0; card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', 'Inspect ' + c.name);
+      card.setAttribute('aria-current', c.name === selected);
+      const stage = document.createElement('div'); stage.className = 'stage checker';
+      let replay = () => {};
+      if (fmt === 'svg') {
+        const img = document.createElement('img'); img.alt = c.name; img.src = svgUrl(c); stage.appendChild(img);
+        replay = () => { const old = img.src; img.src = svgUrl(c); URL.revokeObjectURL(old); };
+      } else {
+        const holder = document.createElement('div'); stage.appendChild(holder);
+        const a = lottie.loadAnimation({ container: holder, renderer: 'svg', loop: c.loop, autoplay: true, animationData: c.lottieData });
+        gridAnims.push(a);
+        replay = () => a.goToAndPlay(0, true);
+      }
+      if (!c.loop) {
+        const r = document.createElement('button'); r.className = 'replay'; r.textContent = 'Replay';
+        r.onclick = e => { e.stopPropagation(); replay(); };
+        stage.appendChild(r);
+      }
+      const row = document.createElement('div'); row.className = 'row';
+      row.innerHTML = `<span class="nm"></span><span class="badge ${c.loop ? 'loop' : 'once'}">${c.loop ? 'loop' : 'once'}</span>`;
+      row.querySelector('.nm').textContent = c.name;
+      const sub = document.createElement('div'); sub.className = 'sub';
+      sub.textContent = `${c.category} · ${c.base_pose} · ${c.frames} fr · ${c.seconds}s`;
+      card.append(stage, row, sub);
+      const pick = () => { select(c.name); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); };
+      card.onclick = pick; card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } };
+      grid.appendChild(card);
+    });
+  }
+
+  /* ---------- inspector (both formats driven to the same frame) ---------- */
+  const insSvg = document.getElementById('ins-svg'), insLot = document.getElementById('ins-lottie');
+  const range = document.getElementById('ins-range'), frameLbl = document.getElementById('ins-frame');
+  const playBtn = document.getElementById('ins-play');
+  let insAnim = null, svgEl = null, playing = true, frame = 0, t0 = 0, f0 = 0, cur = null;
+  function select(name) {
+    selected = name; cur = byName[name];
+    [...grid.children].forEach(el => el.setAttribute('aria-current', el.getAttribute('aria-label') === 'Inspect ' + name));
+    document.getElementById('ins-name').textContent = cur.name;
+    document.getElementById('ins-cat').textContent = cur.category;
+    document.getElementById('ins-desc').textContent = cur.description;
+    document.getElementById('ins-pose').textContent = cur.start_pose === cur.end_pose ? cur.base_pose : `${cur.start_pose} → ${cur.end_pose}`;
+    document.getElementById('ins-frames').textContent = `${cur.frames} @ ${cur.fps} fps`;
+    document.getElementById('ins-secs').textContent = `${cur.seconds} s`;
+    document.getElementById('ins-loop').textContent = cur.loop ? 'loops' : 'plays once, holds last pose';
+    insSvg.innerHTML = cur.svgText.replace(/ id="/g, ' data-id="');
+    svgEl = insSvg.querySelector('svg'); svgEl.setAttribute('width', '100%'); svgEl.setAttribute('height', '100%');
+    svgEl.pauseAnimations();
+    if (insAnim) insAnim.destroy();
+    insAnim = hasLottie ? lottie.loadAnimation({ container: insLot, renderer: 'svg', loop: false, autoplay: false, animationData: cur.lottieData }) : null;
+    if (!hasLottie) insLot.innerHTML = '<p style="padding:12px">lottie-web did not load.</p>';
+    range.max = cur.frames - 1;
+    frame = 0; f0 = 0; t0 = performance.now();
+    show(0);
+  }
+  function show(f) {
+    frame = f; range.value = f; frameLbl.textContent = f;
+    if (svgEl) svgEl.setCurrentTime(f / cur.fps);
+    if (insAnim) insAnim.goToAndStop(f, true);
+  }
+  function tick(now) {
+    if (playing && cur && !document.getElementById('view-clips').hidden) {
+      let f = f0 + Math.floor((now - t0) / 1000 * cur.fps);
+      if (cur.loop) f = f % cur.frames; else if (f > cur.frames - 1) f = cur.frames - 1;
+      if (f !== frame) show(f);
+    }
+    requestAnimationFrame(tick);
+  }
+  playBtn.onclick = () => {
+    playing = !playing; playBtn.textContent = playing ? 'Pause' : 'Play';
+    if (playing) { if (!cur.loop && frame >= cur.frames - 1) frame = 0; f0 = frame; t0 = performance.now(); }
+  };
+  range.oninput = () => { playing = false; playBtn.textContent = 'Play'; show(+range.value); };
+
+  /* ---------- cursor follow ---------- */
+  const Follow = (() => {
+    const pond = document.getElementById('pond'), pet = document.getElementById('pet'), dot = document.getElementById('dot');
+    const nowEl = document.getElementById('now'), compass = document.getElementById('compass');
+    const NAMES = ['idle_breathe', 'int_look_up', 'int_look_up_right', 'int_look_right', 'int_look_down_right', 'int_look_down',
+      'int_look_down_left', 'int_look_left', 'int_look_up_left', 'int_petted', 'int_poked', 'int_dragged',
+      'sleep_fall_asleep', 'sleep_loop', 'sleep_wake_up', 'move_hop'];
+    const layers = {}; let built = false, active = null, state = 'idle', lastMove = performance.now(), timer = null, oneShot = null;
+    function build() {
+      if (built || !hasLottie) return; built = true;
+      NAMES.forEach(n => {
+        const d = document.createElement('div'); d.hidden = true; pet.appendChild(d);
+        const a = lottie.loadAnimation({ container: d, renderer: 'svg', loop: false, autoplay: false, animationData: byName[n].lottieData });
+        a.addEventListener('complete', () => onComplete(n));
+        layers[n] = { el: d, anim: a };
+      });
+      play('idle_breathe');
+    }
+    function play(n, opts = {}) {
+      if (!layers[n]) return;
+      if (active === n && !opts.restart) return;
+      if (active) { layers[active].el.hidden = true; layers[active].anim.stop(); }
+      active = n; layers[n].el.hidden = false; layers[n].anim.goToAndPlay(0, true);
+      nowEl.textContent = n;
+      const dir = n.startsWith('int_look_') ? n.slice(9) : (n === 'idle_breathe' ? 'idle' : '');
+      [...compass.children].forEach(s => s.classList.toggle('on', s.dataset.d === dir));
+    }
+    function onComplete(n) {
+      if (n !== active) return;
+      if (oneShot && oneShot.name === n) { const next = oneShot.next; oneShot = null; next(); return; }
+      if (byName[n].loop) layers[n].anim.goToAndPlay(0, true);   // keep looping
+    }
+    function once(n, next) { oneShot = { name: n, next }; play(n, { restart: true }); }
+    function headPoint() {
+      const r = pet.getBoundingClientRect();
+      return { x: r.left + r.width * 0.5, y: r.top + r.height * 0.47 };
+    }
+    function look(cx, cy) {
+      const h = headPoint(); const dx = cx - h.x, dy = cy - h.y;
+      if (Math.hypot(dx, dy) < pet.offsetWidth * 0.22) return play('idle_breathe');
+      const dirs = ['right', 'down_right', 'down', 'down_left', 'left', 'up_left', 'up', 'up_right'];
+      const k = Math.round(Math.atan2(dy, dx) / (Math.PI / 4));
+      play('int_look_' + dirs[(k + 8) % 8]);
+    }
+    function onMove(e) {
+      const pr = pond.getBoundingClientRect();
+      dot.style.left = (e.clientX - pr.left) + 'px'; dot.style.top = (e.clientY - pr.top) + 'px'; dot.style.opacity = .8;
+      lastMove = performance.now();
+      if (state === 'drag') { dragTo(e); return; }
+      if (state === 'busy') return;
+      if (state === 'asleep') { state = 'busy'; once('sleep_wake_up', () => { state = 'idle'; play('idle_breathe'); }); return; }
+      look(e.clientX, e.clientY);
+    }
+    function idleCheck() {
+      const quiet = performance.now() - lastMove;
+      if (state === 'idle' && quiet > 15000) { state = 'busy'; once('sleep_fall_asleep', () => { state = 'asleep'; play('sleep_loop'); }); }
+      else if (state === 'idle' && quiet > 3000 && active !== 'idle_breathe') play('idle_breathe');
+    }
+    let clickTimer = null, down = null;
+    function dragTo(e) {
+      const pr = pond.getBoundingClientRect(), w = pet.offsetWidth;
+      const x = Math.max(0, Math.min(pr.width - w, e.clientX - pr.left - w / 2));
+      const y = Math.max(0, Math.min(pr.height - w, pr.bottom - e.clientY - w * 0.62));
+      pet.style.left = x + 'px'; pet.style.bottom = y + 'px';
+    }
+    pet.addEventListener('pointerdown', e => {
+      if (state === 'asleep' || state === 'busy') return;
+      down = { x: e.clientX, y: e.clientY }; pet.setPointerCapture(e.pointerId);
+    });
+    pet.addEventListener('pointermove', e => {
+      if (down && state !== 'drag' && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 8) {
+        state = 'drag'; pet.classList.add('dragging'); oneShot = null; play('int_dragged');
+      }
+    });
+    pet.addEventListener('pointerup', () => {
+      const wasDrag = state === 'drag'; down = null;
+      if (wasDrag) {
+        pet.classList.remove('dragging'); pet.style.left = ''; pet.style.bottom = '';
+        state = 'busy'; once('move_hop', () => { state = 'idle'; play('idle_breathe'); });
+        return;
+      }
+      if (state !== 'idle') return;
+      if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; state = 'busy'; once('int_poked', () => { state = 'idle'; play('idle_breathe'); }); return; }
+      clickTimer = setTimeout(() => { clickTimer = null; if (state !== 'idle') return; state = 'busy'; once('int_petted', () => { state = 'idle'; play('idle_breathe'); }); }, 260);
+    });
+    pond.addEventListener('pointerleave', () => { dot.style.opacity = 0; });
+    return {
+      start() { build(); window.addEventListener('pointermove', onMove); if (!timer) timer = setInterval(idleCheck, 500); if (active) layers[active].anim.play(); },
+      stop() { window.removeEventListener('pointermove', onMove); clearInterval(timer); timer = null; if (active) layers[active].anim.pause(); },
+    };
+  })();
+
+  buildGrid();
+  select(selected);
+  requestAnimationFrame(tick);
+  route();
+})();
+</script>

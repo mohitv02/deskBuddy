@@ -1,0 +1,162 @@
+<svg data-clip="int_look_down" data-frames="120" data-fps="30" data-loop="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<title>int_look_down</title>
+<desc>Chibi monkey desktop pet - int_look_down (120 frames @ 30fps, loop)</desc>
+<g class="n-branch">
+<g class="d-branch">
+<path d="M330 50C338 39.33 345 30.33 351 23" fill="none" stroke="#4a2b18" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M330 50C338 39.33 345 30.33 351 23" fill="none" stroke="#a8743f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M126 58C190 50 300 56 396 44" fill="none" stroke="#4a2b18" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M126 58C190 50 300 56 396 44" fill="none" stroke="#a8743f" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M206 54C212.67 51.33 219.33 51.33 226 54" fill="none" stroke="#8a5a2e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M300 50C306.67 47.33 312.67 47 318 49" fill="none" stroke="#8a5a2e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M150 58C149.57 73.26 134.98 83.99 120.46 80.83C123.12 65.44 137.34 56.07 150 58Z" fill="#8acb7f" stroke="#4a2b18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M146.17 61.37C140 68.01 133.16 73.5 125.65 77.83" fill="none" stroke="#5c9f54" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M352 24C349.77 8.9 362.28 -4.2 377.13 -3.61C377.18 12.01 364.8 23.7 352 24Z" fill="#8acb7f" stroke="#4a2b18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M355.19 20.02C360.11 12.41 365.89 5.81 372.53 0.24" fill="none" stroke="#5c9f54" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<g class="n-pivot" transform="translate(234.88 52)"><g><animateTransform attributeName="transform" type="rotate" values="0;5;-5;0" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.75;1" calcMode="spline" keySplines="0 0 0.58 1;0.42 0 0.58 1;0.42 0 1 1"/>
+<g class="n-char" transform="translate(21.12 322.08) scale(0.66 0.66)">
+<g class="n-roll" transform="translate(0 -200) rotate(180) translate(0 200)">
+<g class="n-body" transform="translate(0 -40)"><g><animateTransform attributeName="transform" type="scale" values="1 1;1.03 0.97;1 1" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(0 40)">
+<g class="n-tail1" transform="translate(0 -56) rotate(90) translate(0 56)">
+<g class="d-tail-ol1">
+<path d="M0 -56C18.67 -58.67 37.33 -58.67 56 -56" fill="none" stroke="#4a2b18" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail2" transform="translate(56 -56) translate(-56 56)">
+<g class="d-tail-ol2">
+<path d="M56 -56C73.33 -53.33 90.67 -53.33 108 -56" fill="none" stroke="#4a2b18" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail3" transform="translate(108 -56) translate(-108 56)">
+<g class="d-tail-ol3">
+<path d="M108 -56L134 -56C158 -56 170 -76 162 -94C154 -110 130 -110 124 -94C120 -82 130 -74 140 -78" fill="none" stroke="#4a2b18" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+<g class="d-tail-fur1">
+<path d="M0 -56C18.67 -58.67 37.33 -58.67 56 -56" fill="none" stroke="#8b5a2b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail2" transform="translate(56 -56) translate(-56 56)">
+<g class="d-tail-fur2">
+<path d="M56 -56C73.33 -53.33 90.67 -53.33 108 -56" fill="none" stroke="#8b5a2b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail3" transform="translate(108 -56) translate(-108 56)">
+<g class="d-tail-fur3">
+<path d="M108 -56L134 -56C158 -56 170 -76 162 -94C154 -110 130 -110 124 -94C120 -82 130 -74 140 -78" fill="none" stroke="#8b5a2b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+<g class="d-body">
+<path d="M0 -198C46 -198 66 -150 66 -104C66 -56 42 -34 0 -34C-42 -34 -66 -56 -66 -104C-66 -150 -46 -198 0 -198Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 -134C20.99 -134 38 -116.09 38 -94C38 -71.91 20.99 -54 0 -54C-20.99 -54 -38 -71.91 -38 -94C-38 -116.09 -20.99 -134 0 -134Z" fill="#f2c894"/>
+</g>
+</g></g></g>
+<g class="n-legL" transform="translate(-26 -48)"><g><animateTransform attributeName="transform" type="rotate" values="12;10;14;12" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.75;1" calcMode="spline" keySplines="0 0 0.58 1;0.42 0 0.58 1;0.42 0 1 1"/><g transform="translate(26 48)">
+<g class="d-legL">
+<path d="M-26 -48L-40 -18" fill="none" stroke="#4a2b18" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-26 -48L-40 -18" fill="none" stroke="#8b5a2b" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-22 -12C-22 -24 -34 -28 -46 -27C-60 -26 -68 -18 -67 -10C-66 -3 -58 0 -45 0C-30 0 -22 -4 -22 -12Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+<g class="n-legR" transform="translate(26 -48)"><g><animateTransform attributeName="transform" type="rotate" values="-12;-14;-10;-12" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.75;1" calcMode="spline" keySplines="0 0 0.58 1;0.42 0 0.58 1;0.42 0 1 1"/><g transform="translate(-26 48)">
+<g class="d-legR">
+<path d="M26 -48L40 -18" fill="none" stroke="#4a2b18" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M26 -48L40 -18" fill="none" stroke="#8b5a2b" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 -12C22 -24 34 -28 46 -27C60 -26 68 -18 67 -10C66 -3 58 0 45 0C30 0 22 -4 22 -12Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+<g class="n-body" transform="translate(0 -40)"><g><animateTransform attributeName="transform" type="scale" values="1 1;1.03 0.97;1 1" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.5;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(0 40)">
+<g class="n-tail1" transform="translate(0 -56) rotate(90) translate(0 56)">
+<g class="n-tail2" transform="translate(56 -56) translate(-56 56)">
+<g class="n-tail3" transform="translate(108 -56) translate(-108 56)">
+</g>
+</g>
+<g class="n-tail2" transform="translate(56 -56) translate(-56 56)">
+<g class="n-tail3" transform="translate(108 -56) translate(-108 56)">
+</g>
+</g>
+</g>
+<g class="n-head" transform="translate(0 -182) translate(0 182)">
+<g class="n-earL" transform="translate(-112 -285)"><g><animateTransform attributeName="transform" type="rotate" values="0;-8;8;0" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.75;1" calcMode="spline" keySplines="0 0 0.58 1;0.42 0 0.58 1;0.42 0 1 1"/><g transform="translate(112 288)">
+<g class="d-earL">
+<path d="M-140 -330C-117.91 -330 -100 -312.09 -100 -290C-100 -267.91 -117.91 -250 -140 -250C-162.09 -250 -180 -267.91 -180 -290C-180 -312.09 -162.09 -330 -140 -330Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-141 -314C-128.3 -314 -118 -303.25 -118 -290C-118 -276.75 -128.3 -266 -141 -266C-153.7 -266 -164 -276.75 -164 -290C-164 -303.25 -153.7 -314 -141 -314Z" fill="#f4a7a0"/>
+</g>
+</g></g></g>
+<g class="n-earR" transform="translate(112 -285)"><g><animateTransform attributeName="transform" type="rotate" values="0;-8;8;0" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.75;1" calcMode="spline" keySplines="0 0 0.58 1;0.42 0 0.58 1;0.42 0 1 1"/><g transform="translate(-112 288)">
+<g class="d-earR">
+<path d="M140 -330C162.09 -330 180 -312.09 180 -290C180 -267.91 162.09 -250 140 -250C117.91 -250 100 -267.91 100 -290C100 -312.09 117.91 -330 140 -330Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M141 -314C153.7 -314 164 -303.25 164 -290C164 -276.75 153.7 -266 141 -266C128.3 -266 118 -276.75 118 -290C118 -303.25 128.3 -314 141 -314Z" fill="#f4a7a0"/>
+</g>
+</g></g></g>
+<g class="d-tuft">
+<path d="M-20 -392C-26 -412 -12 -428 -2 -416C4 -434 28 -430 22 -408C30 -408 33 -398 25 -392L-20 -392Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="d-head">
+<path d="M0 -400C67.38 -400 122 -351.65 122 -292C122 -232.35 67.38 -184 0 -184C-67.38 -184 -122 -232.35 -122 -292C-122 -351.65 -67.38 -400 0 -400Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-face" transform="translate(0 -282) translate(0 270)">
+<g class="d-patch">
+<path d="M0 -312C18 -342 74 -340 79 -296C84 -252 48 -208 0 -205C-48 -208 -84 -252 -79 -296C-74 -340 -18 -342 0 -312Z" fill="#f2c894"/>
+</g>
+<g class="n-cheekL" transform="translate(-64 -240) translate(64 240)">
+<g class="d-cheekL">
+<path d="M-64 -249C-56.27 -249 -50 -244.97 -50 -240C-50 -235.03 -56.27 -231 -64 -231C-71.73 -231 -78 -235.03 -78 -240C-78 -244.97 -71.73 -249 -64 -249Z" fill="#f7a3a3"/>
+</g>
+</g>
+<g class="n-cheekR" transform="translate(64 -240) translate(-64 240)">
+<g class="d-cheekR">
+<path d="M64 -249C71.73 -249 78 -244.97 78 -240C78 -235.03 71.73 -231 64 -231C56.27 -231 50 -235.03 50 -240C50 -244.97 56.27 -249 64 -249Z" fill="#f7a3a3"/>
+</g>
+</g>
+<g class="d-nose">
+<path d="M-6 -254.2C-4.23 -254.2 -2.8 -252.77 -2.8 -251C-2.8 -249.23 -4.23 -247.8 -6 -247.8C-7.77 -247.8 -9.2 -249.23 -9.2 -251C-9.2 -252.77 -7.77 -254.2 -6 -254.2Z" fill="#2f1b10"/>
+<path d="M6 -254.2C7.77 -254.2 9.2 -252.77 9.2 -251C9.2 -249.23 7.77 -247.8 6 -247.8C4.23 -247.8 2.8 -249.23 2.8 -251C2.8 -252.77 4.23 -254.2 6 -254.2Z" fill="#2f1b10"/>
+</g>
+<g class="n-mouth" transform="translate(0 -230) translate(0 230)">
+<g class="d-mouth-smile">
+<path d="M-9 -236C-3 -229.33 3 -229.33 9 -236" fill="none" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<g class="n-eyes" transform="translate(0 -286) translate(0 280)">
+<g class="n-eyeL" transform="translate(-36 -280)"><g><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 0.1;1 1;1 1" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.58333;0.6;0.625;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(36 280)">
+<g class="d-eyeL-open">
+<path d="M-36 -303C-26.06 -303 -18 -292.7 -18 -280C-18 -267.3 -26.06 -257 -36 -257C-45.94 -257 -54 -267.3 -54 -280C-54 -292.7 -45.94 -303 -36 -303Z" fill="#2f1b10"/>
+<path d="M-30 -296.2C-26.02 -296.2 -22.8 -292.98 -22.8 -289C-22.8 -285.02 -26.02 -281.8 -30 -281.8C-33.98 -281.8 -37.2 -285.02 -37.2 -289C-37.2 -292.98 -33.98 -296.2 -30 -296.2Z" fill="#ffffff"/>
+<path d="M-42 -275.4C-40.12 -275.4 -38.6 -273.88 -38.6 -272C-38.6 -270.12 -40.12 -268.6 -42 -268.6C-43.88 -268.6 -45.4 -270.12 -45.4 -272C-45.4 -273.88 -43.88 -275.4 -42 -275.4Z" fill="#ffffff"/>
+</g>
+</g></g></g>
+<g class="n-eyeR" transform="translate(36 -280)"><g><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 0.1;1 1;1 1" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.58333;0.6;0.625;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(-36 280)">
+<g class="d-eyeR-open">
+<path d="M36 -303C45.94 -303 54 -292.7 54 -280C54 -267.3 45.94 -257 36 -257C26.06 -257 18 -267.3 18 -280C18 -292.7 26.06 -303 36 -303Z" fill="#2f1b10"/>
+<path d="M42 -296.2C45.98 -296.2 49.2 -292.98 49.2 -289C49.2 -285.02 45.98 -281.8 42 -281.8C38.02 -281.8 34.8 -285.02 34.8 -289C34.8 -292.98 38.02 -296.2 42 -296.2Z" fill="#ffffff"/>
+<path d="M30 -275.4C31.88 -275.4 33.4 -273.88 33.4 -272C33.4 -270.12 31.88 -268.6 30 -268.6C28.12 -268.6 26.6 -270.12 26.6 -272C26.6 -273.88 28.12 -275.4 30 -275.4Z" fill="#ffffff"/>
+</g>
+</g></g></g>
+</g>
+<g class="n-brows" transform="translate(0 -314) translate(0 314)">
+</g>
+</g>
+</g>
+<g class="n-armL" transform="translate(-48 -150)"><g><animateTransform attributeName="transform" type="rotate" values="115;109;121;115" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.75;1" calcMode="spline" keySplines="0 0 0.58 1;0.42 0 0.58 1;0.42 0 1 1"/><g transform="translate(48 150)">
+<g class="d-armL">
+<path d="M-48 -150L-64 -98" fill="none" stroke="#4a2b18" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-48 -150L-64 -98" fill="none" stroke="#8b5a2b" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-50 -100C-50 -108 -56 -112 -61 -109C-64 -106 -63 -100 -59 -97L-50 -100Z" fill="#f2c894" stroke="#4a2b18" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-68 -105C-60.27 -105 -54 -98.28 -54 -90C-54 -81.72 -60.27 -75 -68 -75C-75.73 -75 -82 -81.72 -82 -90C-82 -98.28 -75.73 -105 -68 -105Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+<g class="n-armR" transform="translate(48 -150)"><g><animateTransform attributeName="transform" type="rotate" values="-115;-121;-109;-115" dur="4.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.75;1" calcMode="spline" keySplines="0 0 0.58 1;0.42 0 0.58 1;0.42 0 1 1"/><g transform="translate(-48 150)">
+<g class="d-armR">
+<path d="M48 -150L64 -98" fill="none" stroke="#4a2b18" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M48 -150L64 -98" fill="none" stroke="#8b5a2b" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50 -100C50 -108 56 -112 61 -109C64 -106 63 -100 59 -97L50 -100Z" fill="#f2c894" stroke="#4a2b18" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M68 -105C75.73 -105 82 -98.28 82 -90C82 -81.72 75.73 -75 68 -75C60.27 -75 54 -81.72 54 -90C54 -98.28 60.27 -105 68 -105Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+</g></g></g>
+</g>
+</g>
+</g></g>
+</svg>

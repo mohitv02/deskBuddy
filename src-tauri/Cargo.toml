@@ -1,0 +1,43 @@
+[package]
+name = "deskbuddy"
+version = "0.1.0"
+description = "Floating mascot, todos and an encrypted vault for the desktop"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/mohitv02/desktopPet"
+
+[lib]
+name = "deskbuddy_lib"
+crate-type = ["rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.41.1", features = ["bundled-sqlcipher"] }
+base64 = "0.23.1"
+chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
+notify-rust = "4.18.2"
+argon2 = "0.6.0"
+zeroize = "1.9.1"
+getrandom = "0.4.3"
+keyring = "4.2.0"
+tauri-plugin-global-shortcut = "2.4.1"
+tokio = { version = "1.54.1", features = ["sync", "time", "macros"] }
+tokio-tungstenite = { version = "0.30.0", default-features = false, features = ["connect"] }
+futures-util = "0.3.34"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+# Same GTK version Tauri 2 links against; used for the X11 input shape (click-through).
+gtk = "0.18"
+# Pure-Rust X11 client for fullscreen detection.
+x11rb = "0.13"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

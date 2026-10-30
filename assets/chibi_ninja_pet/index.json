@@ -1,0 +1,397 @@
+{
+ "fps": 30,
+ "width": 512,
+ "height": 512,
+ "clips": [
+  {
+   "name": "idle_breathe",
+   "category": "idle",
+   "frames": 120,
+   "seconds": 4.0,
+   "loop": true,
+   "description": "Default loop: calm ready stance, slow breathing, breeze, blink.",
+   "lottie": "lottie/idle_breathe.json",
+   "svg": "svg/idle_breathe.svg"
+  },
+  {
+   "name": "idle_look_left_right",
+   "category": "idle",
+   "frames": 120,
+   "seconds": 4.0,
+   "loop": true,
+   "description": "Sharp alert glances left and right, brows narrowing.",
+   "lottie": "lottie/idle_look_left_right.json",
+   "svg": "svg/idle_look_left_right.svg"
+  },
+  {
+   "name": "idle_yawn",
+   "category": "idle",
+   "frames": 96,
+   "seconds": 3.2,
+   "loop": true,
+   "description": "A cute yawn, quickly covered with a hand, then a cool pose again.",
+   "lottie": "lottie/idle_yawn.json",
+   "svg": "svg/idle_yawn.svg"
+  },
+  {
+   "name": "idle_stretch",
+   "category": "idle",
+   "frames": 96,
+   "seconds": 3.2,
+   "loop": true,
+   "description": "Big overhead arm stretch, scarf flutters.",
+   "lottie": "lottie/idle_stretch.json",
+   "svg": "svg/idle_stretch.svg"
+  },
+  {
+   "name": "idle_twirl_shuriken",
+   "category": "idle",
+   "frames": 96,
+   "seconds": 3.2,
+   "loop": true,
+   "description": "Spins a shuriken on one finger, then tucks it away.",
+   "lottie": "lottie/idle_twirl_shuriken.json",
+   "svg": "svg/idle_twirl_shuriken.svg"
+  },
+  {
+   "name": "idle_meditate",
+   "category": "idle",
+   "frames": 180,
+   "seconds": 6.0,
+   "loop": true,
+   "description": "Sits cross-legged, eyes closed, floating calmly a few pixels above the ground.",
+   "lottie": "lottie/idle_meditate.json",
+   "svg": "svg/idle_meditate.svg"
+  },
+  {
+   "name": "sleep_fall_asleep",
+   "category": "sleep",
+   "frames": 150,
+   "seconds": 5.0,
+   "loop": false,
+   "description": "Nods off while standing guard, then sits and leans on its sword.",
+   "lottie": "lottie/sleep_fall_asleep.json",
+   "svg": "svg/sleep_fall_asleep.svg"
+  },
+  {
+   "name": "sleep_loop",
+   "category": "sleep",
+   "frames": 120,
+   "seconds": 4.0,
+   "loop": true,
+   "description": "Dozing sitting up: snot bubble, rising z z z, headband tails drooping.",
+   "lottie": "lottie/sleep_loop.json",
+   "svg": "svg/sleep_loop.svg"
+  },
+  {
+   "name": "sleep_wake_up",
+   "category": "sleep",
+   "frames": 120,
+   "seconds": 4.0,
+   "loop": false,
+   "description": "Bubble pops, startled jump into a fighting pose, nothing there, embarrassed sweat drop.",
+   "lottie": "lottie/sleep_wake_up.json",
+   "svg": "svg/sleep_wake_up.svg"
+  },
+  {
+   "name": "move_walk",
+   "category": "movement",
+   "frames": 32,
+   "seconds": 1.067,
+   "loop": true,
+   "description": "Sneaky tiptoe walk in place, leaning forward (the app moves the window).",
+   "lottie": "lottie/move_walk.json",
+   "svg": "svg/move_walk.svg"
+  },
+  {
+   "name": "move_run",
+   "category": "movement",
+   "frames": 20,
+   "seconds": 0.667,
+   "loop": true,
+   "description": "Ninja run: arms swept back, speed lines, scarf streaming.",
+   "lottie": "lottie/move_run.json",
+   "svg": "svg/move_run.svg"
+  },
+  {
+   "name": "move_hop",
+   "category": "movement",
+   "frames": 50,
+   "seconds": 1.667,
+   "loop": true,
+   "description": "High flip jump with a twist.",
+   "lottie": "lottie/move_hop.json",
+   "svg": "svg/move_hop.svg"
+  },
+  {
+   "name": "move_teleport",
+   "category": "movement",
+   "frames": 72,
+   "seconds": 2.4,
+   "loop": false,
+   "description": "Vanishes in a smoke puff and reappears in the same spot with a cool pose.",
+   "lottie": "lottie/move_teleport.json",
+   "svg": "svg/move_teleport.svg"
+  },
+  {
+   "name": "move_fall_land",
+   "category": "movement",
+   "frames": 60,
+   "seconds": 2.0,
+   "loop": false,
+   "description": "Drops from above and lands in a three-point superhero landing with a dust puff.",
+   "lottie": "lottie/move_fall_land.json",
+   "svg": "svg/move_fall_land.svg"
+  },
+  {
+   "name": "int_dragged",
+   "category": "interaction",
+   "frames": 30,
+   "seconds": 1.0,
+   "loop": true,
+   "description": "Held by the scarf: legs kicking, flustered face, sweat drop.",
+   "lottie": "lottie/int_dragged.json",
+   "svg": "svg/int_dragged.svg"
+  },
+  {
+   "name": "int_petted",
+   "category": "interaction",
+   "frames": 110,
+   "seconds": 3.667,
+   "loop": false,
+   "description": "Tries to stay cool, then melts into happy ^ ^ eyes with blushing cheeks; hearts pop up.",
+   "lottie": "lottie/int_petted.json",
+   "svg": "svg/int_petted.svg"
+  },
+  {
+   "name": "int_poked",
+   "category": "interaction",
+   "frames": 134,
+   "seconds": 4.467,
+   "loop": false,
+   "description": "First poke \"hm?\", then pouty cheeks, angry brows and anger mark, finally a smoke-puff dodge.",
+   "lottie": "lottie/int_poked.json",
+   "svg": "svg/int_poked.svg"
+  },
+  {
+   "name": "int_look_up",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn up and hold (cursor following).",
+   "lottie": "lottie/int_look_up.json",
+   "svg": "svg/int_look_up.svg"
+  },
+  {
+   "name": "int_look_up_right",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn up-right and hold (cursor following).",
+   "lottie": "lottie/int_look_up_right.json",
+   "svg": "svg/int_look_up_right.svg"
+  },
+  {
+   "name": "int_look_right",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn right and hold (cursor following).",
+   "lottie": "lottie/int_look_right.json",
+   "svg": "svg/int_look_right.svg"
+  },
+  {
+   "name": "int_look_down_right",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn down-right and hold (cursor following).",
+   "lottie": "lottie/int_look_down_right.json",
+   "svg": "svg/int_look_down_right.svg"
+  },
+  {
+   "name": "int_look_down",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn down and hold (cursor following).",
+   "lottie": "lottie/int_look_down.json",
+   "svg": "svg/int_look_down.svg"
+  },
+  {
+   "name": "int_look_down_left",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn down-left and hold (cursor following).",
+   "lottie": "lottie/int_look_down_left.json",
+   "svg": "svg/int_look_down_left.svg"
+  },
+  {
+   "name": "int_look_left",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn left and hold (cursor following).",
+   "lottie": "lottie/int_look_left.json",
+   "svg": "svg/int_look_left.svg"
+  },
+  {
+   "name": "int_look_up_left",
+   "category": "interaction",
+   "frames": 40,
+   "seconds": 1.333,
+   "loop": false,
+   "description": "Eyes and head turn up-left and hold (cursor following).",
+   "lottie": "lottie/int_look_up_left.json",
+   "svg": "svg/int_look_up_left.svg"
+  },
+  {
+   "name": "mood_happy",
+   "category": "mood",
+   "frames": 80,
+   "seconds": 2.667,
+   "loop": false,
+   "description": "Little victory jump with a peace sign and sparkles.",
+   "lottie": "lottie/mood_happy.json",
+   "svg": "svg/mood_happy.svg"
+  },
+  {
+   "name": "mood_sad",
+   "category": "mood",
+   "frames": 130,
+   "seconds": 4.333,
+   "loop": false,
+   "description": "Slumped shoulders, droopy headband, teardrop, kicks a pebble.",
+   "lottie": "lottie/mood_sad.json",
+   "svg": "svg/mood_sad.svg"
+  },
+  {
+   "name": "mood_surprised",
+   "category": "mood",
+   "frames": 76,
+   "seconds": 2.533,
+   "loop": false,
+   "description": "Jumps back into a defensive pose, big eyes, \"!\" mark.",
+   "lottie": "lottie/mood_surprised.json",
+   "svg": "svg/mood_surprised.svg"
+  },
+  {
+   "name": "mood_hungry",
+   "category": "mood",
+   "frames": 120,
+   "seconds": 4.0,
+   "loop": false,
+   "description": "Belly rumble lines and a thought bubble with a rice ball.",
+   "lottie": "lottie/mood_hungry.json",
+   "svg": "svg/mood_hungry.svg"
+  },
+  {
+   "name": "mood_love",
+   "category": "mood",
+   "frames": 116,
+   "seconds": 3.867,
+   "loop": false,
+   "description": "Heart eyes, blushing, hides its face behind its scarf.",
+   "lottie": "lottie/mood_love.json",
+   "svg": "svg/mood_love.svg"
+  },
+  {
+   "name": "mood_angry",
+   "category": "mood",
+   "frames": 110,
+   "seconds": 3.667,
+   "loop": false,
+   "description": "Fiery aura flickers around it, determined brows, fist clenched.",
+   "lottie": "lottie/mood_angry.json",
+   "svg": "svg/mood_angry.svg"
+  },
+  {
+   "name": "mood_determined",
+   "category": "mood",
+   "frames": 96,
+   "seconds": 3.2,
+   "loop": false,
+   "description": "Tightens its headband, eyes glint with a sparkle, cool pose.",
+   "lottie": "lottie/mood_determined.json",
+   "svg": "svg/mood_determined.svg"
+  },
+  {
+   "name": "mood_embarrassed",
+   "category": "mood",
+   "frames": 116,
+   "seconds": 3.867,
+   "loop": false,
+   "description": "Blushes, pulls the mask up over its whole face, sweat drop.",
+   "lottie": "lottie/mood_embarrassed.json",
+   "svg": "svg/mood_embarrassed.svg"
+  },
+  {
+   "name": "mood_smile_wink",
+   "category": "mood",
+   "frames": 76,
+   "seconds": 2.533,
+   "loop": false,
+   "description": "Confident smile and wink, with a sparkle.",
+   "lottie": "lottie/mood_smile_wink.json",
+   "svg": "svg/mood_smile_wink.svg"
+  },
+  {
+   "name": "fun_spin",
+   "category": "fun",
+   "frames": 64,
+   "seconds": 2.133,
+   "loop": false,
+   "description": "Spinning jump kick with a swoosh trail.",
+   "lottie": "lottie/fun_spin.json",
+   "svg": "svg/fun_spin.svg"
+  },
+  {
+   "name": "fun_peek",
+   "category": "fun",
+   "frames": 96,
+   "seconds": 3.2,
+   "loop": false,
+   "description": "Peeks in from the right edge of the canvas, then vanishes in a smoke puff.",
+   "lottie": "lottie/fun_peek.json",
+   "svg": "svg/fun_peek.svg"
+  },
+  {
+   "name": "fun_notify",
+   "category": "fun",
+   "frames": 120,
+   "seconds": 4.0,
+   "loop": false,
+   "description": "Unrolls a small scroll with a \"!\" on it, held up toward the viewer.",
+   "lottie": "lottie/fun_notify.json",
+   "svg": "svg/fun_notify.svg"
+  },
+  {
+   "name": "fun_shadow_clone",
+   "category": "fun",
+   "frames": 110,
+   "seconds": 3.667,
+   "loop": false,
+   "description": "Two translucent copies pop out beside it, wave, then disappear in smoke.",
+   "lottie": "lottie/fun_shadow_clone.json",
+   "svg": "svg/fun_shadow_clone.svg"
+  },
+  {
+   "name": "fun_throw_shuriken",
+   "category": "fun",
+   "frames": 84,
+   "seconds": 2.8,
+   "loop": false,
+   "description": "Throws a shuriken off-screen; it boomerangs back to be caught.",
+   "lottie": "lottie/fun_throw_shuriken.json",
+   "svg": "svg/fun_throw_shuriken.svg"
+  }
+ ]
+}

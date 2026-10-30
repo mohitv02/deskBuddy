@@ -1,0 +1,162 @@
+<svg data-clip="sleep_wake_up" data-frames="75" data-fps="30" data-loop="false" xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<title>sleep_wake_up</title>
+<g id="L_shadow">
+ <g class="shadow" transform="translate(256 470)">
+ <g ><animateTransform attributeName="transform" type="scale" values="1.143 1.143;1.143 1.143;0.747 0.747;1 1;1 1" keyTimes="0;0.1333;0.2533;0.5333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <g class="sb"><animateTransform attributeName="transform" type="scale" values="1 1;1 1;0.96 0.96;1 1" keyTimes="0;0.56;0.7733;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+   <path d="M0 -15C50.81 -15 92 -8.28 92 0C92 8.28 50.81 15 0 15C-50.81 15 -92 8.28 -92 0C-92 -8.28 -50.81 -15 0 -15Z" fill="#4b3f63" fill-opacity="0.16"/>
+  </g>
+ </g></g>
+</g>
+<g id="L_ghost">
+ <g class="bob"><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 -4;0 0" keyTimes="0;0.56;0.7733;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <g class="move"><animateTransform attributeName="transform" type="translate" values="256 317;256 317;256 245;256 291;256 291" keyTimes="0;0.1333;0.2533;0.5333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <g transform="scale(0.8 0.8)">
+   <g class="squash" transform="translate(0 120)">
+   <g ><animateTransform attributeName="transform" type="scale" values="1.04 0.97;1.04 0.97;0.9 1.16;1.07 0.94;1 1;1 1" keyTimes="0;0.1333;0.2133;0.36;0.48;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+   <g transform="translate(0 -120)">
+    <g class="tail" transform="translate(0 82)">
+    <g ><animateTransform attributeName="transform" type="scale" values="1 0.55;1 0.55;1 1;1 1" keyTimes="0;0.1333;0.32;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+    <g transform="translate(0 -82)">
+     <g class="wispM">
+      <path d="M-47 82C-43 128 -19.44 173.34 13.22 170C21.1 142.39 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z" fill="#fffdfa"><animate attributeName="d" values="M-47 82C-43 128 -19.44 173.34 13.22 170C21.1 142.39 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -15.5 174.5 16 170C25.5 141 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -32.5 169.5 4 170C6.5 147 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -15.5 174.5 16 170C25.5 141 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -32.5 169.5 4 170C6.5 147 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -19.44 173.34 13.22 170C21.1 142.39 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z" keyTimes="0;0.0833;0.3333;0.5833;0.8333;1" calcMode="spline" keySplines="0.2889 0.579 0.6064 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.4332 0 0.682 0.6155" dur="2.5s" begin="0s" fill="freeze"/></path>
+      <path d="M-32.38 136.05C-21.6 157.5 -5.72 171.94 13.22 170C17.16 156.2 23.6 142.7 30.06 128.4C9.46 142.92 -11.78 145.53 -32.38 136.05Z" fill="#d9cdf5"><animate attributeName="d" values="M-32.38 136.05C-21.6 157.5 -5.72 171.94 13.22 170C17.16 156.2 23.6 142.7 30.06 128.4C9.46 142.92 -11.78 145.53 -32.38 136.05Z;M-30.97 136.41C-19.19 158.06 -2.27 172.61 16 170C20.75 155.5 26.5 142 32.06 127.88C11.26 142.69 -10.17 145.59 -30.97 136.41Z;M-37.08 134.87C-29.59 155.63 -17.17 169.71 4 170C5.25 158.5 14 145 23.44 130.12C3.47 143.69 -17.11 145.31 -37.08 134.87Z;M-30.97 136.41C-19.19 158.06 -2.27 172.61 16 170C20.75 155.5 26.5 142 32.06 127.88C11.26 142.69 -10.17 145.59 -30.97 136.41Z;M-37.08 134.87C-29.59 155.63 -17.17 169.71 4 170C5.25 158.5 14 145 23.44 130.12C3.47 143.69 -17.11 145.31 -37.08 134.87Z;M-32.38 136.05C-21.6 157.5 -5.72 171.94 13.22 170C17.16 156.2 23.6 142.7 30.06 128.4C9.46 142.92 -11.78 145.53 -32.38 136.05Z" keyTimes="0;0.0833;0.3333;0.5833;0.8333;1" calcMode="spline" keySplines="0.2889 0.579 0.6064 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.4332 0 0.682 0.6155" dur="2.5s" begin="0s" fill="freeze"/></path>
+      <path d="M-47 82C-43 128 -19.44 173.34 13.22 170C21.1 142.39 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z" fill="none" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" values="M-47 82C-43 128 -19.44 173.34 13.22 170C21.1 142.39 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -15.5 174.5 16 170C25.5 141 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -32.5 169.5 4 170C6.5 147 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -15.5 174.5 16 170C25.5 141 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -32.5 169.5 4 170C6.5 147 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z;M-47 82C-43 128 -19.44 173.34 13.22 170C21.1 142.39 39 116 47 82C47 82 47 40 47 40C47 40 -47 40 -47 40C-47 40 -47 82 -47 82Z" keyTimes="0;0.0833;0.3333;0.5833;0.8333;1" calcMode="spline" keySplines="0.2889 0.579 0.6064 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.4332 0 0.682 0.6155" dur="2.5s" begin="0s" fill="freeze"/></path>
+     </g>
+     <g class="wispL">
+      <path d="M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z" fill="#fffdfa"><animate attributeName="d" values="M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -131.5 134.5 -126 156C-95.5 155 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -131.5 134.5 -126 156C-95.5 155 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/></path>
+      <path d="M-139.78 117.78C-138.92 130.98 -138.29 140.63 -138 156C-119.25 158.5 -98.5 148.5 -81.44 133.62C-100.69 140.4 -120.53 135.01 -139.78 117.78Z" fill="#d9cdf5"><animate attributeName="d" values="M-139.78 117.78C-138.92 130.98 -138.29 140.63 -138 156C-119.25 158.5 -98.5 148.5 -81.44 133.62C-100.69 140.4 -120.53 135.01 -139.78 117.78Z;M-136.74 119.31C-133.39 133.41 -129.19 143.53 -126 156C-110.75 155.5 -93 145.5 -78.06 131.38C-97.43 139.39 -117.38 135.29 -136.74 119.31Z;M-139.78 117.78C-138.92 130.98 -138.29 140.63 -138 156C-119.25 158.5 -98.5 148.5 -81.44 133.62C-100.69 140.4 -120.53 135.01 -139.78 117.78Z;M-136.74 119.31C-133.39 133.41 -129.19 143.53 -126 156C-110.75 155.5 -93 145.5 -78.06 131.38C-97.43 139.39 -117.38 135.29 -136.74 119.31Z;M-139.78 117.78C-138.92 130.98 -138.29 140.63 -138 156C-119.25 158.5 -98.5 148.5 -81.44 133.62C-100.69 140.4 -120.53 135.01 -139.78 117.78Z" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/></path>
+      <path d="M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z" fill="none" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" values="M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -131.5 134.5 -126 156C-95.5 155 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -131.5 134.5 -126 156C-95.5 155 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z;M-142 80C-140 120 -138.5 129.5 -138 156C-100.5 161 -55 116 -47 82C-47 82 -47 40 -47 40C-47 40 -139 30 -139 30C-139 30 -142 80 -142 80Z" keyTimes="0;0.25;0.5;0.75;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/></path>
+     </g>
+     <g class="wispR">
+      <path d="M47 82C55 116 102.56 159.34 135.22 156C140.1 130.39 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z" fill="#fffdfa"><animate attributeName="d" values="M47 82C55 116 102.56 159.34 135.22 156C140.1 130.39 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 89.5 155.5 126 156C125.5 135 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 106.5 160.5 138 156C144.5 129 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 89.5 155.5 126 156C125.5 135 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 106.5 160.5 138 156C144.5 129 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 102.56 159.34 135.22 156C140.1 130.39 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z" keyTimes="0;0.1667;0.4167;0.6667;0.9167;1" calcMode="spline" keySplines="0.318 0.3845 0.5668 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.3936 0 0.7111 0.421" dur="2.5s" begin="0s" fill="freeze"/></path>
+      <path d="M73.98 125.63C92.32 144.17 116.28 157.94 135.22 156C137.66 143.2 138.85 134.2 139.69 123.4C118 136.13 95.66 136.89 73.98 125.63Z" fill="#d9cdf5"><animate attributeName="d" values="M73.98 125.63C92.32 144.17 116.28 157.94 135.22 156C137.66 143.2 138.85 134.2 139.69 123.4C118 136.13 95.66 136.89 73.98 125.63Z;M69.29 124.45C84.33 142.3 104.83 155.71 126 156C125.75 145.5 129.25 136.5 133.06 125.12C112.02 136.9 90.33 136.68 69.29 124.45Z;M75.4 125.99C94.73 144.74 119.73 158.61 138 156C141.25 142.5 141.75 133.5 141.69 122.88C119.81 135.9 97.27 136.96 75.4 125.99Z;M69.29 124.45C84.33 142.3 104.83 155.71 126 156C125.75 145.5 129.25 136.5 133.06 125.12C112.02 136.9 90.33 136.68 69.29 124.45Z;M75.4 125.99C94.73 144.74 119.73 158.61 138 156C141.25 142.5 141.75 133.5 141.69 122.88C119.81 135.9 97.27 136.96 75.4 125.99Z;M73.98 125.63C92.32 144.17 116.28 157.94 135.22 156C137.66 143.2 138.85 134.2 139.69 123.4C118 136.13 95.66 136.89 73.98 125.63Z" keyTimes="0;0.1667;0.4167;0.6667;0.9167;1" calcMode="spline" keySplines="0.318 0.3845 0.5668 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.3936 0 0.7111 0.421" dur="2.5s" begin="0s" fill="freeze"/></path>
+      <path d="M47 82C55 116 102.56 159.34 135.22 156C140.1 130.39 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z" fill="none" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" values="M47 82C55 116 102.56 159.34 135.22 156C140.1 130.39 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 89.5 155.5 126 156C125.5 135 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 106.5 160.5 138 156C144.5 129 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 89.5 155.5 126 156C125.5 135 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 106.5 160.5 138 156C144.5 129 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z;M47 82C55 116 102.56 159.34 135.22 156C140.1 130.39 140 120 142 80C142 80 139 30 139 30C139 30 47 40 47 40C47 40 47 82 47 82Z" keyTimes="0;0.1667;0.4167;0.6667;0.9167;1" calcMode="spline" keySplines="0.318 0.3845 0.5668 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.3936 0 0.7111 0.421" dur="2.5s" begin="0s" fill="freeze"/></path>
+     </g>
+    </g></g></g>
+    <g class="body">
+     <path d="M-142 80C-144 40 -150 0 -150 -40C-150 -122.8 -82.8 -190 0 -190C82.8 -190 150 -122.8 150 -40C150 0 144 40 142 80C125 102 64 100 47 82C32 104 -32 104 -47 82C-64 100 -125 102 -142 80Z" fill="#fffdfa"/>
+     <path d="M-142 80C-144 40 -150 0 -150 -40C-150 -122.8 -82.8 -190 0 -190C82.8 -190 150 -122.8 150 -40C150 0 144 40 142 80" fill="none" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <g class="face">
+     <g class="cheekL" transform="translate(-96 -16)">
+      <path d="M0 -12C11.6 -12 21 -6.63 21 0C21 6.63 11.6 12 0 12C-11.6 12 -21 6.63 -21 0C-21 -6.63 -11.6 -12 0 -12Z" fill="#ffb6c9"/>
+     </g>
+     <g class="cheekR" transform="translate(96 -16)">
+      <path d="M0 -12C11.6 -12 21 -6.63 21 0C21 6.63 11.6 12 0 12C-11.6 12 -21 6.63 -21 0C-21 -6.63 -11.6 -12 0 -12Z" fill="#ffb6c9"/>
+     </g>
+     <g class="gaze">
+      <g class="eyeL" transform="translate(-58 -58)">
+      <g ><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 1;1 0.08;1 1;1 1;1 0.08;1 1;1 1" keyTimes="0;0.5333;0.56;0.5933;0.6267;0.6667;0.7;0.7333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+       <g class="eyeL_open" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.12;0.48;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+        <path d="M0 -31C13.81 -31 25 -17.12 25 0C25 17.12 13.81 31 0 31C-13.81 31 -25 17.12 -25 0C-25 -17.12 -13.81 -31 0 -31Z" fill="#3f3554"/>
+        <path d="M8 -21.5C12.97 -21.5 17 -17.25 17 -12C17 -6.75 12.97 -2.5 8 -2.5C3.03 -2.5 -1 -6.75 -1 -12C-1 -17.25 3.03 -21.5 8 -21.5Z" fill="#ffffff"/>
+        <path d="M-9 6.5C-6.51 6.5 -4.5 8.51 -4.5 11C-4.5 13.49 -6.51 15.5 -9 15.5C-11.49 15.5 -13.5 13.49 -13.5 11C-13.5 8.51 -11.49 6.5 -9 6.5Z" fill="#ffffff"/>
+       </g>
+       <g class="eyeL_sleepy" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0;0.12;0.48;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+        <path d="M-21 -2C-13 13 13 13 21 -2" fill="none" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+       </g>
+       <g class="eyeL_round" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.12;0.48;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+        <path d="M0 -27C13.81 -27 25 -14.91 25 0C25 14.91 13.81 27 0 27C-13.81 27 -25 14.91 -25 0C-25 -14.91 -13.81 -27 0 -27Z" fill="#ffffff" stroke="#4b3f63" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M0 -9C5.52 -9 10 -4.08 10 2C10 8.08 5.52 13 0 13C-5.52 13 -10 8.08 -10 2C-10 -4.08 -5.52 -9 0 -9Z" fill="#3f3554"/>
+        <path d="M3.5 -6C5.43 -6 7 -4.43 7 -2.5C7 -0.57 5.43 1 3.5 1C1.57 1 0 -0.57 0 -2.5C0 -4.43 1.57 -6 3.5 -6Z" fill="#ffffff"/>
+       </g>
+      </g></g>
+      <g class="eyeR" transform="translate(58 -58)">
+      <g ><animateTransform attributeName="transform" type="scale" values="1 1;1 1;1 1;1 0.08;1 1;1 1;1 0.08;1 1;1 1" keyTimes="0;0.5333;0.56;0.5933;0.6267;0.6667;0.7;0.7333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+       <g class="eyeR_open" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.12;0.48;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+        <path d="M0 -31C13.81 -31 25 -17.12 25 0C25 17.12 13.81 31 0 31C-13.81 31 -25 17.12 -25 0C-25 -17.12 -13.81 -31 0 -31Z" fill="#3f3554"/>
+        <path d="M8 -21.5C12.97 -21.5 17 -17.25 17 -12C17 -6.75 12.97 -2.5 8 -2.5C3.03 -2.5 -1 -6.75 -1 -12C-1 -17.25 3.03 -21.5 8 -21.5Z" fill="#ffffff"/>
+        <path d="M-9 6.5C-6.51 6.5 -4.5 8.51 -4.5 11C-4.5 13.49 -6.51 15.5 -9 15.5C-11.49 15.5 -13.5 13.49 -13.5 11C-13.5 8.51 -11.49 6.5 -9 6.5Z" fill="#ffffff"/>
+       </g>
+       <g class="eyeR_sleepy" opacity="1"><animate attributeName="opacity" values="1;0;0;0" keyTimes="0;0.12;0.48;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+        <path d="M-21 -2C-13 13 13 13 21 -2" fill="none" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+       </g>
+       <g class="eyeR_round" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.12;0.48;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+        <path d="M0 -27C13.81 -27 25 -14.91 25 0C25 14.91 13.81 27 0 27C-13.81 27 -25 14.91 -25 0C-25 -14.91 -13.81 -27 0 -27Z" fill="#ffffff" stroke="#4b3f63" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M0 -9C5.52 -9 10 -4.08 10 2C10 8.08 5.52 13 0 13C-5.52 13 -10 8.08 -10 2C-10 -4.08 -5.52 -9 0 -9Z" fill="#3f3554"/>
+        <path d="M3.5 -6C5.43 -6 7 -4.43 7 -2.5C7 -0.57 5.43 1 3.5 1C1.57 1 0 -0.57 0 -2.5C0 -4.43 1.57 -6 3.5 -6Z" fill="#ffffff"/>
+       </g>
+      </g></g>
+     </g>
+     <g class="mouth" transform="translate(0 -6)">
+     <g ><animateTransform attributeName="transform" type="scale" values="0.6 0.55;0.6 0.55;1.2 1.3;1.1 1.2;1 1;1 1" keyTimes="0;0.12;0.16;0.4;0.4533;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+      <g class="mouth_smile" opacity="0"><animate attributeName="opacity" values="0;1;1" keyTimes="0;0.4533;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+       <path d="M-11 -3C-6 5 6 5 11 -3" fill="none" stroke="#4b3f63" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <g class="mouth_o" opacity="1"><animate attributeName="opacity" values="1;0;0" keyTimes="0;0.4533;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+       <path d="M0 -8C4.42 -8 8 -3.52 8 2C8 7.52 4.42 12 0 12C-4.42 12 -8 7.52 -8 2C-8 -3.52 -4.42 -8 0 -8Z" fill="#7b4a72" stroke="#4b3f63" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+     </g></g>
+     <g class="brows">
+     </g>
+     <g class="snot" opacity="1" transform="translate(30 -24)"><animate attributeName="opacity" values="1;0;0" keyTimes="0;0.12;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+     <g ><animateTransform attributeName="transform" type="scale" values="0.2 0.2;1.5 1.5;1.5 1.5" keyTimes="0;0.1067;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+     <g transform="translate(6 -6)">
+      <path d="M0 -14C7.73 -14 14 -7.73 14 0C14 7.73 7.73 14 0 14C-7.73 14 -14 7.73 -14 0C-14 -7.73 -7.73 -14 0 -14Z" fill="#e3f3ff" stroke="#4b3f63" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M-4.5 -8.5C-2.29 -8.5 -0.5 -6.71 -0.5 -4.5C-0.5 -2.29 -2.29 -0.5 -4.5 -0.5C-6.71 -0.5 -8.5 -2.29 -8.5 -4.5C-8.5 -6.71 -6.71 -8.5 -4.5 -8.5Z" fill="#ffffff"/>
+     </g></g></g>
+    </g>
+    <g class="bow" transform="translate(98 -150)">
+    <g ><animateTransform attributeName="transform" type="rotate" values="40;40;14;32;28;28" keyTimes="0;0.1333;0.24;0.4267;0.56;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+     <path d="M-3 3C-3 3 -14 22 -14 22C-14 22 -6 22 -6 22C-6 22 0 6 0 6C0 6 -3 3 -3 3ZM3 3C3 3 13 23 13 23C13 23 5 24 5 24C5 24 0 6 0 6C0 6 3 3 3 3Z" fill="#b7a0ee" stroke="#4b3f63" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+     <path d="M0 0C-10 -22 -34 -26 -34 -6C-34 10 -12 10 0 0Z" fill="#cbb8f4" stroke="#4b3f63" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+     <path d="M0 0C10 -22 34 -26 34 -6C34 10 12 10 0 0Z" fill="#cbb8f4" stroke="#4b3f63" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+     <path d="M0 -8.5C4.97 -8.5 9 -4.69 9 0C9 4.69 4.97 8.5 0 8.5C-4.97 8.5 -9 4.69 -9 0C-9 -4.69 -4.97 -8.5 0 -8.5Z" fill="#b7a0ee" stroke="#4b3f63" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g></g>
+    <g class="wrap" opacity="1"><animate attributeName="opacity" values="1;0;0" keyTimes="0;0.2933;1" calcMode="discrete" dur="2.5s" begin="0s" fill="freeze"/>
+     <path d="M146.75 20C145 40 143 60 142 80C150 150 -70 158 -162 40C-104 96 96 96 146.75 20Z" fill="#fffdfa"><animate attributeName="d" values="M146.75 20C145 40 143 60 142 80C150 150 -70 158 -162 40C-104 96 96 96 146.75 20Z;M146.75 20C145 40 143 60 142 80C150 150 -70 158 -162 40C-104 96 96 96 146.75 20Z;M146.75 20C145 40 143 60 142 80C146 74 150 60 149 50C147 42 149 30 146.75 20Z;M146.75 20C145 40 143 60 142 80C146 74 150 60 149 50C147 42 149 30 146.75 20Z" keyTimes="0;0.1333;0.2933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/></path>
+     <path d="M135.65 102.41C99.04 150.11 -81.04 143.84 -162 40C-124.96 84.74 119.79 109.85 135.65 102.41Z" fill="#d9cdf5"><animate attributeName="d" values="M135.65 102.41C99.04 150.11 -81.04 143.84 -162 40C-124.96 84.74 119.79 109.85 135.65 102.41Z;M135.65 102.41C99.04 150.11 -81.04 143.84 -162 40C-124.96 84.74 119.79 109.85 135.65 102.41Z;M143.43 77.52C146.89 70.7 149.88 58.8 149 50C149.01 51.88 145.66 68.51 143.43 77.52Z;M143.43 77.52C146.89 70.7 149.88 58.8 149 50C149.01 51.88 145.66 68.51 143.43 77.52Z" keyTimes="0;0.1333;0.2933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/></path>
+     <path d="M142 80C150 150 -70 158 -162 40C-104 96 96 96 146.75 20" fill="none" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"><animate attributeName="d" values="M142 80C150 150 -70 158 -162 40C-104 96 96 96 146.75 20;M142 80C150 150 -70 158 -162 40C-104 96 96 96 146.75 20;M142 80C146 74 150 60 149 50C147 42 149 30 146.75 20;M142 80C146 74 150 60 149 50C147 42 149 30 146.75 20" keyTimes="0;0.1333;0.2933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/></path>
+    </g>
+    <g class="armL"><animateTransform attributeName="transform" type="translate" values="-122 70;-122 70;-176 -40;-170 24;-170 24" keyTimes="0;0.1333;0.2267;0.5333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+    <g ><animateTransform attributeName="transform" type="rotate" values="50;50;-10;16;16" keyTimes="0;0.1333;0.2267;0.5333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+     <path d="M13 -26C17.42 -26 21 -21.97 21 -17C21 -12.03 17.42 -8 13 -8C8.58 -8 5 -12.03 5 -17C5 -21.97 8.58 -26 13 -26Z" fill="#fffdfa" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+     <path d="M0 -26C11.6 -26 21 -14.36 21 0C21 14.36 11.6 26 0 26C-11.6 26 -21 14.36 -21 0C-21 -14.36 -11.6 -26 0 -26Z" fill="#fffdfa" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g></g>
+    <g class="armR"><animateTransform attributeName="transform" type="translate" values="118 66;118 66;176 -40;170 24;170 24" keyTimes="0;0.1333;0.2267;0.5333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+    <g ><animateTransform attributeName="transform" type="rotate" values="-40;-40;10;-16;-16" keyTimes="0;0.1333;0.2267;0.5333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+     <path d="M-13 -26C-8.58 -26 -5 -21.97 -5 -17C-5 -12.03 -8.58 -8 -13 -8C-17.42 -8 -21 -12.03 -21 -17C-21 -21.97 -17.42 -26 -13 -26Z" fill="#fffdfa" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+     <path d="M0 -26C11.6 -26 21 -14.36 21 0C21 14.36 11.6 26 0 26C-11.6 26 -21 14.36 -21 0C-21 -14.36 -11.6 -26 0 -26Z" fill="#fffdfa" stroke="#4b3f63" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g></g>
+   </g></g></g>
+  </g></g>
+ </g>
+</g>
+<g id="L_fx11">
+ <g class="fx"><animateTransform attributeName="transform" type="translate" values="280 297.8;280 297.8;262 283.8;262 283.8" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="rotate" values="0;0;60;60" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="scale" values="0 0;0 0;1.15 1.15;1 1;1 1;0 0;0 0" keyTimes="0;0.12;0.16;0.2133;0.24;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <path d="M0 -6.25C0.88 -0.88 0.88 -0.88 6.25 0C0.88 0.88 0.88 0.88 0 6.25C-0.88 0.88 -0.88 0.88 -6.25 0C-0.88 -0.88 -0.88 -0.88 0 -6.25Z" fill="#c4e6ff" stroke="#4b3f63" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></g></g>
+</g>
+<g id="L_fx12">
+ <g class="fx"><animateTransform attributeName="transform" type="translate" values="280 297.8;280 297.8;298 281.8;298 281.8" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="rotate" values="0;0;60;60" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="scale" values="0 0;0 0;1.15 1.15;1 1;1 1;0 0;0 0" keyTimes="0;0.12;0.16;0.2133;0.24;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <path d="M0 -6.25C0.88 -0.88 0.88 -0.88 6.25 0C0.88 0.88 0.88 0.88 0 6.25C-0.88 0.88 -0.88 0.88 -6.25 0C-0.88 -0.88 -0.88 -0.88 0 -6.25Z" fill="#c4e6ff" stroke="#4b3f63" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></g></g>
+</g>
+<g id="L_fx13">
+ <g class="fx"><animateTransform attributeName="transform" type="translate" values="280 297.8;280 297.8;300 309.8;300 309.8" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="rotate" values="0;0;60;60" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="scale" values="0 0;0 0;1.15 1.15;1 1;1 1;0 0;0 0" keyTimes="0;0.12;0.16;0.2133;0.24;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <path d="M0 -6.25C0.88 -0.88 0.88 -0.88 6.25 0C0.88 0.88 0.88 0.88 0 6.25C-0.88 0.88 -0.88 0.88 -6.25 0C-0.88 -0.88 -0.88 -0.88 0 -6.25Z" fill="#c4e6ff" stroke="#4b3f63" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></g></g>
+</g>
+<g id="L_fx14">
+ <g class="fx"><animateTransform attributeName="transform" type="translate" values="280 297.8;280 297.8;264 311.8;264 311.8" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="rotate" values="0;0;60;60" keyTimes="0;0.12;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="scale" values="0 0;0 0;1.15 1.15;1 1;1 1;0 0;0 0" keyTimes="0;0.12;0.16;0.2133;0.24;0.28;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <path d="M0 -6.25C0.88 -0.88 0.88 -0.88 6.25 0C0.88 0.88 0.88 0.88 0 6.25C-0.88 0.88 -0.88 0.88 -6.25 0C-0.88 -0.88 -0.88 -0.88 0 -6.25Z" fill="#c4e6ff" stroke="#4b3f63" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></g></g>
+</g>
+<g id="L_fx15">
+ <g class="fx"><animateTransform attributeName="transform" type="translate" values="356.8 77;356.8 77;356.8 89.8;356.8 89.8" keyTimes="0;0.16;0.4533;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="rotate" values="12;12;4;4" keyTimes="0;0.16;0.4533;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+ <g ><animateTransform attributeName="transform" type="scale" values="0 0;0 0;1.15 1.15;1 1;1 1;0 0;0 0" keyTimes="0;0.16;0.2267;0.28;0.3867;0.4533;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" dur="2.5s" begin="0s" fill="freeze"/>
+  <path d="M0 -13C0 -13 0 3 0 3M0 11C0 11 0 11.4 0 11.4" fill="none" stroke="#4b3f63" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M0 -13C0 -13 0 3 0 3M0 11C0 11 0 11.4 0 11.4" fill="none" stroke="#ffd95a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></g></g>
+</g>
+</svg>

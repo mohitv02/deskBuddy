@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monkey Pet Cursor Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one full-height playground; the pet hangs top-centre, controls float at the bottom */
+:root {
+  --bg: #eef1e6; --surface: #ffffff; --ink: #2b211a; --muted: #6f6a5f; --line: #d9dccd; --accent: #3f7d3a; --accent-ink: #fff; --banana: #f2c230;
+  --f-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --f-body: "Nunito Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #151812; --surface: #20241b; --ink: #eef0e6; --muted: #a3a796; --line: #343a2d; --accent: #8cc97f; --accent-ink: #13200f; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #151812; --surface: #20241b; --ink: #eef0e6; --muted: #a3a796; --line: #343a2d; --accent: #8cc97f; --accent-ink: #13200f; color-scheme: dark }
+* { box-sizing: border-box }
+html, body { height: 100% }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--f-body); overflow: hidden;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.play { position: relative; height: 100%; display: flex; flex-direction: column; align-items: center }
+.top { width: 100%; max-width: 900px; display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; align-items: baseline; padding-block: 14px 0 }
+h1 { font: 800 26px/1.1 var(--f-display); margin: 0 }
+.top a { color: var(--accent); font-weight: 600; text-decoration: none }
+.hint { color: var(--muted); font-size: 13px; margin: 2px 0 0; max-width: 60ch }
+.petbox { position: relative; width: min(512px, 92vw, 62vh); aspect-ratio: 1; max-width: 100%; margin-top: 4px; cursor: pointer }
+.petbox > svg { position: absolute; inset: 0; width: 100%; height: 100% }
+.status { font: 600 12px var(--f-mono); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; margin-top: 6px }
+.status span { color: var(--accent) }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px }
+button { font: 600 13px/1 var(--f-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; cursor: pointer }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+button[disabled] { opacity: .45; cursor: default }
+.dot { position: fixed; width: 14px; height: 14px; border-radius: 50%; background: var(--banana); border: 2px solid var(--ink); pointer-events: none; transform: translate(-50%, -50%); opacity: 0; transition: opacity .2s }
+</style>
+</head>
+<body>
+<div class="play" id="play">
+  <div class="top">
+    <div>
+      <h1>Cursor-follow demo</h1>
+      <p class="hint">Move your pointer around the monkey and his eyes follow it. Click him to wave. Leave him alone for ten seconds and he falls asleep; move again to wake him.</p>
+    </div>
+    <a href="preview.html">← All clips</a>
+  </div>
+  <div class="petbox" id="pet" role="img" aria-label="Animated monkey"></div>
+  <div class="status">now playing: <span id="now">hang_idle</span></div>
+  <div class="controls">
+    <button id="b-eat">Eat a banana</button>
+    <button id="b-swing">Big swing</button>
+    <button id="b-down">Hop down</button>
+    <button id="b-up" disabled>Climb back up</button>
+  </div>
+</div>
+<div class="dot" id="dot"></div>
+<script src="clips_data.js"></script>
+<script>
+(function () {
+  const BY = {}; (window.MONKEY_CLIPS || []).forEach(c => BY[c.name] = c);
+  const pet = document.getElementById('pet'), now = document.getElementById('now');
+  let cur = null, svg = null, endTimer = null, state = 'follow', lastMove = performance.now(), lookName = 'hang_idle';
+
+  // Head centre in clip coordinates while hanging (512 canvas)
+  const HEAD = { x: 256, y: 300 };
+  const DIRS = ['right', 'down_right', 'down', 'down_left', 'left', 'up_left', 'up', 'up_right'];
+
+  function play(name, { sync = false, then = null } = {}) {
+    const c = BY[name]; if (!c) return;
+    let t = 0;
+    if (sync && svg && cur && cur.frames === c.frames && cur.loop && c.loop) t = svg.getCurrentTime() % (c.frames / 30);
+    const holder = document.createElement('div'); holder.innerHTML = c.svg;
+    const next = holder.firstElementChild;
+    pet.appendChild(next);
+    try { next.setCurrentTime(t); } catch (e) {}
+    if (svg) svg.remove();
+    svg = next; cur = c; now.textContent = name;
+    clearTimeout(endTimer);
+    if (!c.loop && then) endTimer = setTimeout(then, c.frames / 30 * 1000 + 30);
+    else if (c.loop && then) endTimer = setTimeout(then, c.frames / 30 * 1000);
+  }
+
+  function direction(e) {
+    const r = pet.getBoundingClientRect(), s = r.width / 512;
+    const dx = e.clientX - (r.left + HEAD.x * s), dy = e.clientY - (r.top + HEAD.y * s);
+    if (Math.hypot(dx, dy) < 70 * s) return 'hang_idle';
+    const a = Math.atan2(dy, dx);
+    const k = ((Math.round(a / (Math.PI / 4)) % 8) + 8) % 8;
+    return 'int_look_' + DIRS[k];
+  }
+
+  const dot = document.getElementById('dot');
+  window.addEventListener('pointermove', e => {
+    dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; dot.style.opacity = 1;
+    lastMove = performance.now();
+    if (state === 'asleep') { state = 'waking'; play('sleep_wake_up', { then: () => { state = 'follow'; play('hang_idle'); } }); return; }
+    if (state !== 'follow') return;
+    const n = direction(e);
+    if (n !== lookName) { lookName = n; play(n, { sync: true }); }
+  });
+  document.addEventListener('pointerleave', () => { dot.style.opacity = 0; });
+
+  setInterval(() => {
+    const idle = performance.now() - lastMove;
+    if (state === 'follow' && idle > 2500 && lookName !== 'hang_idle') { lookName = 'hang_idle'; play('hang_idle', { sync: true }); }
+    if (state === 'follow' && idle > 10000) {
+      state = 'falling'; play('sleep_fall_asleep', { then: () => { state = 'asleep'; play('sleep_loop'); } });
+    }
+  }, 250);
+
+  const oneShot = (name) => { if (state !== 'follow') return; state = 'busy';
+    play(name, { then: () => { state = 'follow'; lookName = 'hang_idle'; play('hang_idle'); } }); };
+  pet.addEventListener('click', () => {
+    if (state === 'sitting') { play('int_petted', { then: () => play('idle_breathe') }); return; }
+    oneShot('hang_wave');
+  });
+  document.getElementById('b-eat').onclick = () => oneShot('hang_eat_banana');
+  document.getElementById('b-swing').onclick = () => oneShot('hang_swing_big');
+  const bDown = document.getElementById('b-down'), bUp = document.getElementById('b-up');
+  bDown.onclick = () => { if (state !== 'follow') return; state = 'busy'; bDown.disabled = true;
+    play('hang_to_sit', { then: () => { state = 'sitting'; bUp.disabled = false; play('idle_breathe'); } }); };
+  bUp.onclick = () => { if (state !== 'sitting') return; state = 'busy'; bUp.disabled = true;
+    play('sit_to_hang', { then: () => { state = 'follow'; bDown.disabled = false; lookName = 'hang_idle'; play('hang_idle'); } }); };
+
+  play('hang_idle');
+})();
+</script>
+</body>
+</html>

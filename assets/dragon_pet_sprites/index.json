@@ -1,0 +1,332 @@
+{
+  "fps": 30,
+  "width": 512,
+  "height": 512,
+  "ground_y": 470,
+  "clips": [
+    {
+      "name": "idle_breathe",
+      "category": "idle",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "lottie": "lottie/idle_breathe.json",
+      "svg": "svg/idle_breathe.svg"
+    },
+    {
+      "name": "idle_ear_twitch",
+      "category": "idle",
+      "frames": 48,
+      "seconds": 1.6,
+      "loop": false,
+      "lottie": "lottie/idle_ear_twitch.json",
+      "svg": "svg/idle_ear_twitch.svg"
+    },
+    {
+      "name": "idle_look_left_right",
+      "category": "idle",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": false,
+      "lottie": "lottie/idle_look_left_right.json",
+      "svg": "svg/idle_look_left_right.svg"
+    },
+    {
+      "name": "idle_yawn",
+      "category": "idle",
+      "frames": 78,
+      "seconds": 2.6,
+      "loop": false,
+      "lottie": "lottie/idle_yawn.json",
+      "svg": "svg/idle_yawn.svg"
+    },
+    {
+      "name": "idle_stretch",
+      "category": "idle",
+      "frames": 84,
+      "seconds": 2.8,
+      "loop": false,
+      "lottie": "lottie/idle_stretch.json",
+      "svg": "svg/idle_stretch.svg"
+    },
+    {
+      "name": "idle_groom",
+      "category": "idle",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": false,
+      "lottie": "lottie/idle_groom.json",
+      "svg": "svg/idle_groom.svg"
+    },
+    {
+      "name": "sleep_fall_asleep",
+      "category": "sleep",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": false,
+      "lottie": "lottie/sleep_fall_asleep.json",
+      "svg": "svg/sleep_fall_asleep.svg"
+    },
+    {
+      "name": "sleep_loop",
+      "category": "sleep",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/sleep_loop.json",
+      "svg": "svg/sleep_loop.svg"
+    },
+    {
+      "name": "sleep_wake_up",
+      "category": "sleep",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": false,
+      "lottie": "lottie/sleep_wake_up.json",
+      "svg": "svg/sleep_wake_up.svg"
+    },
+    {
+      "name": "move_walk",
+      "category": "movement",
+      "frames": 30,
+      "seconds": 1.0,
+      "loop": true,
+      "lottie": "lottie/move_walk.json",
+      "svg": "svg/move_walk.svg"
+    },
+    {
+      "name": "move_hop",
+      "category": "movement",
+      "frames": 36,
+      "seconds": 1.2,
+      "loop": true,
+      "lottie": "lottie/move_hop.json",
+      "svg": "svg/move_hop.svg"
+    },
+    {
+      "name": "move_fall_land",
+      "category": "movement",
+      "frames": 72,
+      "seconds": 2.4,
+      "loop": false,
+      "lottie": "lottie/move_fall_land.json",
+      "svg": "svg/move_fall_land.svg"
+    },
+    {
+      "name": "int_dragged",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_dragged.json",
+      "svg": "svg/int_dragged.svg"
+    },
+    {
+      "name": "int_petted",
+      "category": "interaction",
+      "frames": 72,
+      "seconds": 2.4,
+      "loop": true,
+      "lottie": "lottie/int_petted.json",
+      "svg": "svg/int_petted.svg"
+    },
+    {
+      "name": "int_poked",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": false,
+      "lottie": "lottie/int_poked.json",
+      "svg": "svg/int_poked.svg"
+    },
+    {
+      "name": "int_look_up",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_up.json",
+      "svg": "svg/int_look_up.svg"
+    },
+    {
+      "name": "int_look_up_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_up_right.json",
+      "svg": "svg/int_look_up_right.svg"
+    },
+    {
+      "name": "int_look_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_right.json",
+      "svg": "svg/int_look_right.svg"
+    },
+    {
+      "name": "int_look_down_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_down_right.json",
+      "svg": "svg/int_look_down_right.svg"
+    },
+    {
+      "name": "int_look_down",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_down.json",
+      "svg": "svg/int_look_down.svg"
+    },
+    {
+      "name": "int_look_down_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_down_left.json",
+      "svg": "svg/int_look_down_left.svg"
+    },
+    {
+      "name": "int_look_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_left.json",
+      "svg": "svg/int_look_left.svg"
+    },
+    {
+      "name": "int_look_up_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_up_left.json",
+      "svg": "svg/int_look_up_left.svg"
+    },
+    {
+      "name": "mood_happy",
+      "category": "mood",
+      "frames": 48,
+      "seconds": 1.6,
+      "loop": false,
+      "lottie": "lottie/mood_happy.json",
+      "svg": "svg/mood_happy.svg"
+    },
+    {
+      "name": "mood_sad",
+      "category": "mood",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": false,
+      "lottie": "lottie/mood_sad.json",
+      "svg": "svg/mood_sad.svg"
+    },
+    {
+      "name": "mood_surprised",
+      "category": "mood",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": false,
+      "lottie": "lottie/mood_surprised.json",
+      "svg": "svg/mood_surprised.svg"
+    },
+    {
+      "name": "mood_hungry",
+      "category": "mood",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": false,
+      "lottie": "lottie/mood_hungry.json",
+      "svg": "svg/mood_hungry.svg"
+    },
+    {
+      "name": "mood_love",
+      "category": "mood",
+      "frames": 84,
+      "seconds": 2.8,
+      "loop": false,
+      "lottie": "lottie/mood_love.json",
+      "svg": "svg/mood_love.svg"
+    },
+    {
+      "name": "mood_smile_wink",
+      "category": "mood",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": false,
+      "lottie": "lottie/mood_smile_wink.json",
+      "svg": "svg/mood_smile_wink.svg"
+    },
+    {
+      "name": "fun_spin",
+      "category": "fun",
+      "frames": 54,
+      "seconds": 1.8,
+      "loop": false,
+      "lottie": "lottie/fun_spin.json",
+      "svg": "svg/fun_spin.svg"
+    },
+    {
+      "name": "fun_peek",
+      "category": "fun",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": false,
+      "lottie": "lottie/fun_peek.json",
+      "svg": "svg/fun_peek.svg"
+    },
+    {
+      "name": "fun_notify",
+      "category": "fun",
+      "frames": 84,
+      "seconds": 2.8,
+      "loop": false,
+      "lottie": "lottie/fun_notify.json",
+      "svg": "svg/fun_notify.svg"
+    },
+    {
+      "name": "full_loop",
+      "category": "sequence",
+      "frames": 456,
+      "seconds": 15.2,
+      "loop": true,
+      "lottie": "lottie/full_loop.json",
+      "svg": "svg/full_loop.svg",
+      "markers": [
+        {
+          "name": "idle_breathe",
+          "start_frame": 0,
+          "frames": 90
+        },
+        {
+          "name": "sleep_fall_asleep",
+          "start_frame": 90,
+          "frames": 90
+        },
+        {
+          "name": "sleep_loop",
+          "start_frame": 180,
+          "frames": 120
+        },
+        {
+          "name": "sleep_wake_up",
+          "start_frame": 300,
+          "frames": 96
+        },
+        {
+          "name": "mood_smile_wink",
+          "start_frame": 396,
+          "frames": 60
+        }
+      ]
+    }
+  ]
+}

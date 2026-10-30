@@ -1,0 +1,572 @@
+[
+ {
+  "clip": "idle_breathe",
+  "frames_checked": [
+   0,
+   17,
+   34,
+   51,
+   68,
+   85,
+   102,
+   119
+  ],
+  "max_mean_abs_diff": 0.0208,
+  "max_pixels_over_40": 34
+ },
+ {
+  "clip": "idle_gill_wiggle",
+  "frames_checked": [
+   0,
+   11,
+   21,
+   32,
+   42,
+   53,
+   63,
+   74
+  ],
+  "max_mean_abs_diff": 0.0226,
+  "max_pixels_over_40": 54
+ },
+ {
+  "clip": "idle_look_left_right",
+  "frames_checked": [
+   0,
+   17,
+   34,
+   51,
+   68,
+   85,
+   102,
+   119
+  ],
+  "max_mean_abs_diff": 0.003,
+  "max_pixels_over_40": 7
+ },
+ {
+  "clip": "idle_yawn",
+  "frames_checked": [
+   0,
+   15,
+   30,
+   45,
+   59,
+   74,
+   89,
+   104
+  ],
+  "max_mean_abs_diff": 0.0257,
+  "max_pixels_over_40": 51
+ },
+ {
+  "clip": "idle_stretch",
+  "frames_checked": [
+   0,
+   13,
+   25,
+   38,
+   51,
+   64,
+   76,
+   89
+  ],
+  "max_mean_abs_diff": 0.0248,
+  "max_pixels_over_40": 43
+ },
+ {
+  "clip": "idle_blow_bubbles",
+  "frames_checked": [
+   0,
+   21,
+   43,
+   64,
+   85,
+   106,
+   128,
+   149
+  ],
+  "max_mean_abs_diff": 0.0208,
+  "max_pixels_over_40": 33
+ },
+ {
+  "clip": "swim_idle",
+  "frames_checked": [
+   0,
+   13,
+   25,
+   38,
+   51,
+   64,
+   76,
+   89
+  ],
+  "max_mean_abs_diff": 0.005,
+  "max_pixels_over_40": 25
+ },
+ {
+  "clip": "sit_to_swim",
+  "frames_checked": [
+   0,
+   6,
+   13,
+   19,
+   25,
+   31,
+   38,
+   44
+  ],
+  "max_mean_abs_diff": 0.0208,
+  "max_pixels_over_40": 33
+ },
+ {
+  "clip": "swim_to_sit",
+  "frames_checked": [
+   0,
+   6,
+   13,
+   19,
+   25,
+   31,
+   38,
+   44
+  ],
+  "max_mean_abs_diff": 0.0262,
+  "max_pixels_over_40": 62
+ },
+ {
+  "clip": "sleep_fall_asleep",
+  "frames_checked": [
+   0,
+   11,
+   21,
+   32,
+   42,
+   53,
+   63,
+   74
+  ],
+  "max_mean_abs_diff": 0.0268,
+  "max_pixels_over_40": 60
+ },
+ {
+  "clip": "sleep_loop",
+  "frames_checked": [
+   0,
+   17,
+   34,
+   51,
+   68,
+   85,
+   102,
+   119
+  ],
+  "max_mean_abs_diff": 0.0265,
+  "max_pixels_over_40": 48
+ },
+ {
+  "clip": "sleep_wake_up",
+  "frames_checked": [
+   0,
+   11,
+   21,
+   32,
+   42,
+   53,
+   63,
+   74
+  ],
+  "max_mean_abs_diff": 0.0319,
+  "max_pixels_over_40": 43
+ },
+ {
+  "clip": "move_walk",
+  "frames_checked": [
+   0,
+   6,
+   11,
+   17,
+   22,
+   28,
+   33,
+   39
+  ],
+  "max_mean_abs_diff": 0.0311,
+  "max_pixels_over_40": 86
+ },
+ {
+  "clip": "move_hop",
+  "frames_checked": [
+   0,
+   5,
+   10,
+   15,
+   20,
+   25,
+   30,
+   35
+  ],
+  "max_mean_abs_diff": 0.0243,
+  "max_pixels_over_40": 52
+ },
+ {
+  "clip": "move_swim",
+  "frames_checked": [
+   0,
+   4,
+   8,
+   12,
+   17,
+   21,
+   25,
+   29
+  ],
+  "max_mean_abs_diff": 0.0044,
+  "max_pixels_over_40": 8
+ },
+ {
+  "clip": "move_fall_land",
+  "frames_checked": [
+   0,
+   11,
+   21,
+   32,
+   42,
+   53,
+   63,
+   74
+  ],
+  "max_mean_abs_diff": 0.0283,
+  "max_pixels_over_40": 38
+ },
+ {
+  "clip": "int_dragged",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0042,
+  "max_pixels_over_40": 6
+ },
+ {
+  "clip": "int_petted",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0411,
+  "max_pixels_over_40": 40
+ },
+ {
+  "clip": "int_poked",
+  "frames_checked": [
+   0,
+   6,
+   13,
+   19,
+   25,
+   31,
+   38,
+   44
+  ],
+  "max_mean_abs_diff": 0.0208,
+  "max_pixels_over_40": 33
+ },
+ {
+  "clip": "int_tickled",
+  "frames_checked": [
+   0,
+   7,
+   13,
+   20,
+   27,
+   34,
+   40,
+   47
+  ],
+  "max_mean_abs_diff": 0.0236,
+  "max_pixels_over_40": 63
+ },
+ {
+  "clip": "int_look_up",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0237,
+  "max_pixels_over_40": 50
+ },
+ {
+  "clip": "int_look_up_right",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0027,
+  "max_pixels_over_40": 7
+ },
+ {
+  "clip": "int_look_right",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0048,
+  "max_pixels_over_40": 7
+ },
+ {
+  "clip": "int_look_down_right",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0241,
+  "max_pixels_over_40": 51
+ },
+ {
+  "clip": "int_look_down",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0279,
+  "max_pixels_over_40": 75
+ },
+ {
+  "clip": "int_look_down_left",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0234,
+  "max_pixels_over_40": 45
+ },
+ {
+  "clip": "int_look_left",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.006,
+  "max_pixels_over_40": 11
+ },
+ {
+  "clip": "int_look_up_left",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0032,
+  "max_pixels_over_40": 6
+ },
+ {
+  "clip": "mood_happy",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0242,
+  "max_pixels_over_40": 40
+ },
+ {
+  "clip": "mood_sad",
+  "frames_checked": [
+   0,
+   17,
+   34,
+   51,
+   68,
+   85,
+   102,
+   119
+  ],
+  "max_mean_abs_diff": 0.0242,
+  "max_pixels_over_40": 47
+ },
+ {
+  "clip": "mood_surprised",
+  "frames_checked": [
+   0,
+   8,
+   15,
+   23,
+   30,
+   38,
+   45,
+   53
+  ],
+  "max_mean_abs_diff": 0.0034,
+  "max_pixels_over_40": 14
+ },
+ {
+  "clip": "mood_hungry",
+  "frames_checked": [
+   0,
+   13,
+   25,
+   38,
+   51,
+   64,
+   76,
+   89
+  ],
+  "max_mean_abs_diff": 0.0039,
+  "max_pixels_over_40": 8
+ },
+ {
+  "clip": "mood_love",
+  "frames_checked": [
+   0,
+   13,
+   25,
+   38,
+   51,
+   64,
+   76,
+   89
+  ],
+  "max_mean_abs_diff": 0.0027,
+  "max_pixels_over_40": 7
+ },
+ {
+  "clip": "mood_smile_wink",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0218,
+  "max_pixels_over_40": 35
+ },
+ {
+  "clip": "fun_spin",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0235,
+  "max_pixels_over_40": 45
+ },
+ {
+  "clip": "fun_peek",
+  "frames_checked": [
+   0,
+   13,
+   25,
+   38,
+   51,
+   64,
+   76,
+   89
+  ],
+  "max_mean_abs_diff": 0.0058,
+  "max_pixels_over_40": 10
+ },
+ {
+  "clip": "fun_notify",
+  "frames_checked": [
+   0,
+   8,
+   17,
+   25,
+   34,
+   42,
+   51,
+   59
+  ],
+  "max_mean_abs_diff": 0.0208,
+  "max_pixels_over_40": 33
+ },
+ {
+  "clip": "fun_bubble_ride",
+  "frames_checked": [
+   0,
+   17,
+   34,
+   51,
+   68,
+   85,
+   102,
+   119
+  ],
+  "max_mean_abs_diff": 0.0027,
+  "max_pixels_over_40": 7
+ }
+]

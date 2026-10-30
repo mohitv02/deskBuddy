@@ -1,0 +1,262 @@
+<title>Chibi Ninja Clips</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a workbench — player + cursor-follow demo side by side, then the full clip library as a grid of live tiles. */
+:root{
+  --bg:#f3f2f7; --surface:#ffffff; --ink:#22212d; --muted:#6a6878; --line:#dddbe6;
+  --accent:#e8303d; --accent-ink:#ffffff; --chip:#ecebf2;
+  --check-a:#ffffff; --check-b:#e7e6ee;
+  --display:"Dela Gothic One","Hiragino Sans","Arial Black",system-ui,sans-serif;
+  --body:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Nunito",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14131b; --surface:#1d1c27; --ink:#eceaf4; --muted:#a19eb2; --line:#2e2c3b; --accent:#ff4855; --accent-ink:#ffffff; --chip:#272635;
+  --check-a:#2a2937; --check-b:#232230; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14131b; --surface:#1d1c27; --ink:#eceaf4; --muted:#a19eb2; --line:#2e2c3b; --accent:#ff4855; --accent-ink:#ffffff; --chip:#272635;
+  --check-a:#2a2937; --check-b:#232230; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,4.4vw,44px);line-height:1.05;margin:0;letter-spacing:.01em;text-wrap:balance}
+h1 .jp{color:var(--accent)}
+.sub{color:var(--muted);margin:6px 0 0;font-family:var(--mono);font-size:13px}
+.seg{display:inline-flex;background:var(--chip);border-radius:999px;padding:4px;gap:4px}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 13px var(--body);padding:7px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible,.chips button:focus-visible,.card:focus-visible,.ctl:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h2{font-family:var(--display);font-weight:400;font-size:18px;margin:0;display:flex;align-items:baseline;gap:10px}
+.panel h2 small{font:500 12px var(--mono);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.checker{background-color:var(--check-a);background-image:conic-gradient(var(--check-b) 25%,transparent 0 50%,var(--check-b) 0 75%,transparent 0);background-size:24px 24px;border-radius:10px;position:relative;overflow:hidden}
+.stage{width:100%;max-width:440px;aspect-ratio:1/1;margin:0 auto}
+.stage>div,.stage>svg,.tile>div,.tile>svg{position:absolute;inset:0;width:100%;height:100%}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font:500 12px var(--mono);background:var(--chip);color:var(--ink);border-radius:999px;padding:3px 10px}
+.pill.loop{background:var(--accent);color:var(--accent-ink)}
+.clipname{font:500 15px var(--mono);word-break:break-all}
+.desc{color:var(--muted);margin:0;font-size:14px;min-height:2.6em}
+.controls{display:flex;align-items:center;gap:10px}
+.ctl{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;width:38px;height:38px;display:grid;place-items:center;cursor:pointer;flex:none}
+.ctl svg{width:16px;height:16px}
+input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.fr{font:500 13px var(--mono);font-variant-numeric:tabular-nums;color:var(--muted);flex:none;min-width:94px;text-align:right}
+.demo-stage{width:100%;max-width:440px;aspect-ratio:1/1;margin:0 auto;touch-action:none;cursor:crosshair}
+.demo-char{position:absolute;inset:0;transition:none}
+.hint{color:var(--muted);font-size:13.5px;margin:0}
+.status{font:500 13px var(--mono);display:flex;gap:8px;align-items:center}
+.status b{font-weight:500;color:var(--accent)}
+.lib{display:flex;flex-direction:column;gap:14px}
+.libhead{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.libhead h2{font-family:var(--display);font-weight:400;font-size:22px;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font:600 13px var(--body);cursor:pointer;display:inline-flex;gap:6px;align-items:baseline}
+.chips button span{font:500 11px var(--mono);color:var(--muted)}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips button[aria-pressed="true"] span{color:var(--bg);opacity:.75}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:6px;cursor:pointer;text-align:left;color:inherit;font:inherit;min-width:0}
+.card[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.tile{aspect-ratio:1/1;width:100%}
+.card .n{font:500 12px var(--mono);word-break:break-all;line-height:1.35}
+.card .m{font:400 11px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.cat-tag{font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+footer{color:var(--muted);font-size:12.5px;font-family:var(--mono)}
+@media (prefers-reduced-motion: reduce){.card{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Chibi Ninja <span class="jp">忍</span> Clips</h1>
+      <p class="sub" id="sub">loading…</p>
+    </div>
+    <div class="seg" role="group" aria-label="Playback format">
+      <button id="fmt-lottie" aria-pressed="true">Lottie</button>
+      <button id="fmt-svg" aria-pressed="false">SMIL SVG</button>
+    </div>
+  </header>
+
+  <section class="top">
+    <div class="panel">
+      <h2>Player <small id="pl-fmt">lottie</small></h2>
+      <div class="checker stage" id="pl-stage"></div>
+      <div class="controls">
+        <button class="ctl" id="pl-play" aria-label="Pause"><svg viewBox="0 0 16 16" id="pl-icon"><rect x="3" y="2" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="9.5" y="2" width="3.5" height="12" rx="1" fill="currentColor"/></svg></button>
+        <input type="range" id="pl-scrub" min="0" max="119" value="0" aria-label="Frame">
+        <span class="fr" id="pl-fr">f 000 / 120</span>
+      </div>
+      <div class="clipname" id="pl-name">idle_breathe</div>
+      <div class="meta" id="pl-meta"></div>
+      <p class="desc" id="pl-desc"></p>
+    </div>
+
+    <div class="panel">
+      <h2>Cursor follow <small>demo · lottie</small></h2>
+      <div class="checker demo-stage" id="demo-stage"><div class="demo-char" id="demo-char"></div></div>
+      <div class="status">now playing <b id="demo-now">idle_breathe</b></div>
+      <p class="hint">Move your pointer around the page and the ninja's eyes and head follow it. Click it to poke it, rub over it to pet it, or press and drag to carry it by the scarf; let go and it drops back down. Leave it alone and it fidgets, then falls asleep.</p>
+    </div>
+  </section>
+
+  <section class="lib">
+    <div class="libhead">
+      <h2>All clips</h2>
+      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+  <footer id="foot">512 × 512 · 30 fps · transparent background · one-shot clips replay after a short pause in this preview</footer>
+</div>
+
+<script type="application/json" id="clipdata">__DATA__</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<script>
+(function boot(){
+  function start(){ if(window.lottie){ main(); } else { document.getElementById('sub').textContent='Could not load the Lottie player. Switch to SMIL SVG to view the clips.'; mainSvgOnly(); } }
+  if(window.lottie) return start();
+  var s=document.createElement('script'); s.src='vendor/lottie.min.js'; s.onload=start; s.onerror=start; document.head.appendChild(s);
+})();
+var DATA=JSON.parse(document.getElementById('clipdata').textContent);
+var CLIPS=DATA.clips, BY={}; CLIPS.forEach(function(c){BY[c.name]=c;});
+var FPS=30, fmt='lottie';
+var CATS=[['all','All',''],['idle','Idle','待機'],['sleep','Sleep','睡眠'],['movement','Movement','移動'],['interaction','Interaction','反応'],['mood','Mood','気分'],['fun','Fun','遊び']];
+function lottieData(name){ return JSON.parse(JSON.stringify(DATA.lottie[name])); }
+function mainSvgOnly(){ fmt='svg'; document.getElementById('fmt-lottie').disabled=true; setFmtButtons(); buildChips(); buildGrid(); player.load('idle_breathe'); }
+function setFmtButtons(){ document.getElementById('fmt-lottie').setAttribute('aria-pressed',fmt==='lottie'); document.getElementById('fmt-svg').setAttribute('aria-pressed',fmt==='svg'); document.getElementById('pl-fmt').textContent=fmt==='lottie'?'lottie':'smil svg'; }
+document.getElementById('sub').textContent=CLIPS.length+' clips · Lottie (bodymovin 5.7) + animated SMIL SVG · 512 × 512 · 30 fps';
+
+/* ---------- a tiny player abstraction over both formats ---------- */
+function Mount(el, name, opts){
+  opts=opts||{}; var c=BY[name], self=this; this.c=c; this.el=el; this.N=c.frames; this.onframe=opts.onframe; this.oncomplete=opts.oncomplete;
+  el.innerHTML='';
+  this.fmt=opts.fmt||fmt; var loop=(opts.loop!==undefined)?opts.loop:c.loop;
+  this.loop=loop;
+  if(this.fmt==='lottie'){
+    var holder=document.createElement('div'); el.appendChild(holder);
+    this.playing=opts.autoplay!==false;
+    this.anim=lottie.loadAnimation({container:holder,renderer:'svg',loop:loop,autoplay:opts.autoplay!==false,animationData:lottieData(name),rendererSettings:{preserveAspectRatio:'xMidYMid meet'}});
+    this.anim.addEventListener('enterFrame',function(e){ self.onframe&&self.onframe(Math.floor(e.currentTime)); });
+    this.anim.addEventListener('complete',function(){ self.oncomplete&&self.oncomplete(); });
+  } else {
+    el.insertAdjacentHTML('beforeend',DATA.svg[name]); this.svg=el.querySelector('svg'); this.svg.setAttribute('width','100%'); this.svg.setAttribute('height','100%');
+    this.svg.setCurrentTime(0); this.playing=opts.autoplay!==false; if(!this.playing) this.svg.pauseAnimations();
+    this.dur=c.frames/FPS; this.done=false;
+    var tick=function(){ if(!self.svg||!self.svg.isConnected) return; var t=self.svg.getCurrentTime();
+      if(!self.loop && t>=self.dur && !self.done){ self.done=true; self.svg.pauseAnimations(); self.svg.setCurrentTime(self.dur-0.0001); self.oncomplete&&self.oncomplete(); }
+      var f=self.loop? Math.floor(t*FPS)%self.N : Math.min(self.N-1,Math.floor(t*FPS)); self.onframe&&self.onframe(f); self.raf=requestAnimationFrame(tick); };
+    this.raf=requestAnimationFrame(tick);
+  }
+}
+Mount.prototype.play=function(){ if(this.anim){ if(!this.loop && this.anim.currentFrame>=this.N-1) this.anim.goToAndPlay(0,true); else this.anim.play(); } else { if(this.done){ this.svg.setCurrentTime(0); this.done=false; } this.svg.unpauseAnimations(); } this.playing=true; };
+Mount.prototype.pause=function(){ if(this.anim) this.anim.pause(); else this.svg.pauseAnimations(); this.playing=false; };
+Mount.prototype.seek=function(f){ if(this.anim) this.anim.goToAndStop(f,true); else { this.svg.pauseAnimations(); this.svg.setCurrentTime(f/FPS); this.done=false; } this.playing=false; this.onframe&&this.onframe(f); };
+Mount.prototype.restart=function(){ if(this.anim) this.anim.goToAndPlay(0,true); else { this.done=false; this.svg.setCurrentTime(0); this.svg.unpauseAnimations(); } this.playing=true; };
+Mount.prototype.destroy=function(){ if(this.anim) this.anim.destroy(); if(this.raf) cancelAnimationFrame(this.raf); this.svg=null; this.el.innerHTML=''; };
+
+/* ---------- player ---------- */
+var player=(function(){
+  var stage=document.getElementById('pl-stage'), scrub=document.getElementById('pl-scrub'), fr=document.getElementById('pl-fr'), btn=document.getElementById('pl-play'), icon=document.getElementById('pl-icon');
+  var m=null, cur='idle_breathe', scrubbing=false;
+  var PAUSE='<rect x="3" y="2" width="3.5" height="12" rx="1" fill="currentColor"/><rect x="9.5" y="2" width="3.5" height="12" rx="1" fill="currentColor"/>', PLAY='<path d="M4 2.5v11l9.5-5.5z" fill="currentColor"/>';
+  function setIcon(){ var p=m&&m.playing; icon.innerHTML=p?PAUSE:PLAY; btn.setAttribute('aria-label',p?'Pause':'Play'); }
+  function pad(n){ return String(n).padStart(3,'0'); }
+  function load(name){
+    cur=name; var c=BY[name]; if(m) m.destroy();
+    m=new Mount(stage,name,{onframe:function(f){ if(!scrubbing){ scrub.value=f; } fr.textContent='f '+pad(f)+' / '+c.frames; },
+      oncomplete:function(){ setIcon(); }});
+    scrub.max=c.frames-1; scrub.value=0;
+    document.getElementById('pl-name').textContent=name;
+    document.getElementById('pl-desc').textContent=c.description;
+    document.getElementById('pl-meta').innerHTML='<span class="pill">'+c.category+'</span><span class="pill">'+c.frames+' frames</span><span class="pill">'+c.seconds.toFixed(2)+' s</span><span class="pill'+(c.loop?' loop':'')+'">'+(c.loop?'loops':'plays once')+'</span>';
+    document.querySelectorAll('.card').forEach(function(k){ k.setAttribute('aria-current',k.dataset.name===name); });
+    setIcon();
+  }
+  btn.addEventListener('click',function(){ if(!m) return; if(m.playing) m.pause(); else m.play(); setIcon(); });
+  scrub.addEventListener('input',function(){ scrubbing=true; m.seek(+scrub.value); setIcon(); });
+  scrub.addEventListener('change',function(){ scrubbing=false; });
+  return {load:load, reload:function(){ load(cur); }};
+})();
+
+/* ---------- library grid ---------- */
+var filter='all', tiles=[];
+function buildChips(){
+  var el=document.getElementById('chips'); el.innerHTML='';
+  CATS.forEach(function(k){ var n=k[0]==='all'?CLIPS.length:CLIPS.filter(function(c){return c.category===k[0];}).length;
+    var b=document.createElement('button'); b.innerHTML=k[1]+(k[2]?' <span>'+k[2]+'</span>':'')+' <span>'+n+'</span>'; b.setAttribute('aria-pressed',filter===k[0]);
+    b.onclick=function(){ filter=k[0]; buildChips(); buildGrid(); }; el.appendChild(b); });
+}
+var io=('IntersectionObserver' in window)? new IntersectionObserver(function(ents){ ents.forEach(function(e){ var t=e.target._tile; if(!t) return;
+  if(e.isIntersecting){ if(!t.m) t.mount(); } else if(t.m){ t.unmount(); } }); },{rootMargin:'200px'}) : null;
+function buildGrid(){
+  tiles.forEach(function(t){ t.unmount(); if(io) io.unobserve(t.el); }); tiles=[];
+  var g=document.getElementById('grid'); g.innerHTML='';
+  CLIPS.filter(function(c){ return filter==='all'||c.category===filter; }).forEach(function(c){
+    var card=document.createElement('div'); card.className='card'; card.dataset.name=c.name; card.setAttribute('role','button'); card.tabIndex=0; card.setAttribute('aria-label','Play '+c.name+' in the player');
+    card.onkeydown=function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); player.load(c.name); } };
+    card.innerHTML='<div class="checker tile"></div><div class="n">'+c.name+'</div><div class="m">'+c.frames+'f · '+c.seconds.toFixed(2)+'s · '+(c.loop?'loop':'once')+'</div>';
+    card.onclick=function(){ player.load(c.name); };
+    g.appendChild(card);
+    var tileEl=card.querySelector('.tile');
+    var t={el:tileEl,m:null,timer:null,
+      mount:function(){ var self=this; this.m=new Mount(tileEl,c.name,{loop:c.loop,oncomplete:function(){ clearTimeout(self.timer); self.timer=setTimeout(function(){ self.m&&self.m.restart(); },900); }}); },
+      unmount:function(){ clearTimeout(this.timer); if(this.m){ this.m.destroy(); this.m=null; } }};
+    tileEl._tile=t; tiles.push(t);
+    if(io) io.observe(tileEl); else t.mount();
+  });
+  document.querySelectorAll('.card').forEach(function(k){ k.setAttribute('aria-current',k.dataset.name===document.getElementById('pl-name').textContent); });
+}
+document.getElementById('fmt-lottie').onclick=function(){ if(!window.lottie) return; fmt='lottie'; setFmtButtons(); player.reload(); buildGrid(); };
+document.getElementById('fmt-svg').onclick=function(){ fmt='svg'; setFmtButtons(); player.reload(); buildGrid(); };
+
+/* ---------- cursor-follow demo ---------- */
+function startDemo(){
+  var stage=document.getElementById('demo-stage'), host=document.getElementById('demo-char'), now=document.getElementById('demo-now');
+  var m=null, cur='', busy=false, lastMove=Date.now(), dir=null, petAcc=0, lastPt=null, drag=null, sleeping=false, idleStage=0;
+  var IDLES=['idle_look_left_right','idle_yawn','idle_stretch','idle_twirl_shuriken','idle_meditate'];
+  function play(name,o){ o=o||{}; if(cur===name && !o.force) return; cur=name; now.textContent=name; if(m) m.destroy();
+    m=new Mount(host,name,{fmt:'lottie',loop:BY[name].loop,oncomplete:function(){ if(o.then) o.then(); }}); }
+  function settle(){ busy=false; dir=null; play('idle_breathe',{force:true}); }
+  function reaction(name,then){ busy=true; play(name,{force:true,then:then||settle}); }
+  var DIRS=['right','down_right','down','down_left','left','up_left','up','up_right'];
+  function charCenter(){ var r=stage.getBoundingClientRect(); return {x:r.left+r.width*0.5, y:r.top+r.height*0.53, s:r.width}; }
+  window.addEventListener('pointermove',function(e){
+    var now_=Date.now();
+    if(drag){ var r=stage.getBoundingClientRect(); var dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+      if(!drag.on && Math.hypot(dx,dy)>6){ drag.on=true; reaction('int_dragged',function(){}); }
+      if(drag.on){ var lim=r.width*0.32; host.style.transform='translate('+Math.max(-lim,Math.min(lim,dx))+'px,'+Math.max(-lim,Math.min(lim*0.6,dy))+'px)'; }
+      lastMove=now_; return; }
+    if(sleeping){ sleeping=false; lastMove=now_; reaction('sleep_wake_up'); return; }
+    lastMove=now_; idleStage=0;
+    if(busy) return;
+    var c=charCenter(), dx=e.clientX-c.x, dy=e.clientY-c.y, d=Math.hypot(dx,dy);
+    if(d<c.s*0.26){ // over the character: rubbing pets it
+      if(lastPt) petAcc+=Math.hypot(e.clientX-lastPt.x,e.clientY-lastPt.y); lastPt={x:e.clientX,y:e.clientY};
+      if(petAcc>c.s*1.6){ petAcc=0; reaction('int_petted'); return; }
+      if(dir!=='center'){ dir='center'; play('idle_breathe'); } return; }
+    petAcc=0; lastPt=null;
+    var k=(Math.round(Math.atan2(dy,dx)/(Math.PI/4))+8)%8, nd=DIRS[k];
+    if(nd!==dir){ dir=nd; play('int_look_'+nd,{force:true}); }
+  });
+  stage.addEventListener('pointerdown',function(e){ var c=charCenter(); if(Math.hypot(e.clientX-c.x,e.clientY-c.y)>c.s*0.3) return;
+    if(sleeping){ sleeping=false; reaction('sleep_wake_up'); return; }
+    drag={x:e.clientX,y:e.clientY,on:false}; try{ stage.setPointerCapture(e.pointerId); }catch(_){} });
+  function up(){ if(!drag) return; var was=drag.on; drag=null; host.style.transform='';
+    if(was){ reaction('move_fall_land'); } else if(!busy){ reaction('int_poked'); } }
+  stage.addEventListener('pointerup',up); stage.addEventListener('pointercancel',up);
+  setInterval(function(){ if(busy||drag||sleeping) return; var idle=Date.now()-lastMove;
+    if(idle>4000 && idleStage===0){ idleStage=1; dir=null; play('idle_breathe'); }
+    else if(idle>9000 && idleStage===1){ idleStage=2; reaction(IDLES[Math.floor(Math.random()*IDLES.length)],function(){ busy=false; play('idle_breathe',{force:true}); }); }
+    else if(idle>24000 && idleStage===2){ idleStage=3; reaction('sleep_fall_asleep',function(){ busy=false; sleeping=true; play('sleep_loop',{force:true}); }); }
+  },500);
+  play('idle_breathe');
+}
+function main(){ setFmtButtons(); buildChips(); buildGrid(); player.load('idle_breathe'); startDemo(); }
+</script>

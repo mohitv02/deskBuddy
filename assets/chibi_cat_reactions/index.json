@@ -1,0 +1,266 @@
+[
+ {
+  "name": "idle_breathe",
+  "category": "Idle",
+  "description": "Default loop: slow squash-and-stretch breathing, one blink",
+  "frames": 90,
+  "seconds": 3.0,
+  "loop": true
+ },
+ {
+  "name": "idle_ear_twitch",
+  "category": "Idle",
+  "description": "One ear flicks quickly, twice",
+  "frames": 90,
+  "seconds": 3.0,
+  "loop": true
+ },
+ {
+  "name": "idle_look_left_right",
+  "category": "Idle",
+  "description": "Glances left, then right",
+  "frames": 120,
+  "seconds": 4.0,
+  "loop": true
+ },
+ {
+  "name": "idle_yawn",
+  "category": "Idle",
+  "description": "Big yawn: mouth opens wide, eyes squint",
+  "frames": 90,
+  "seconds": 3.0,
+  "loop": true
+ },
+ {
+  "name": "idle_stretch",
+  "category": "Idle",
+  "description": "Leans forward, front paws stretch out, tail goes straight up",
+  "frames": 90,
+  "seconds": 3.0,
+  "loop": true
+ },
+ {
+  "name": "idle_groom",
+  "category": "Idle",
+  "description": "Licks a paw",
+  "frames": 120,
+  "seconds": 4.0,
+  "loop": true
+ },
+ {
+  "name": "sleep_fall_asleep",
+  "category": "Sleep",
+  "description": "Eyes droop, head sinks, curls into a loaf (play once, then sleep_loop)",
+  "frames": 75,
+  "seconds": 2.5,
+  "loop": false
+ },
+ {
+  "name": "sleep_loop",
+  "category": "Sleep",
+  "description": "Loaf pose, slow deep breathing, floating z z z and a snot bubble",
+  "frames": 90,
+  "seconds": 3.0,
+  "loop": true
+ },
+ {
+  "name": "sleep_wake_up",
+  "category": "Sleep",
+  "description": "Ears twitch, startled blink, stretches, shakes it off (play once)",
+  "frames": 75,
+  "seconds": 2.5,
+  "loop": false
+ },
+ {
+  "name": "move_walk",
+  "category": "Movement",
+  "description": "Waddle in place: feet step, body rocks side to side",
+  "frames": 48,
+  "seconds": 1.6,
+  "loop": true
+ },
+ {
+  "name": "move_hop",
+  "category": "Movement",
+  "description": "Hop: crouch, jump, squash on landing",
+  "frames": 45,
+  "seconds": 1.5,
+  "loop": true
+ },
+ {
+  "name": "move_fall_land",
+  "category": "Movement",
+  "description": "Dropped: falls in, squashes on landing, shakes off the dizziness (play once)",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": false
+ },
+ {
+  "name": "int_dragged",
+  "category": "Interaction",
+  "description": "Being dragged: dangling legs, surprised face",
+  "frames": 40,
+  "seconds": 1.33,
+  "loop": true
+ },
+ {
+  "name": "int_petted",
+  "category": "Interaction",
+  "description": "Petted: happy ^ ^ eyes, hearts pop up",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_poked",
+  "category": "Interaction",
+  "description": "Poked too much: puffed cheeks, annoyed face",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_up",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look up",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_up_right",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look up-right",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_right",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look right",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_down_right",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look down-right",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_down",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look down",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_down_left",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look down-left",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_left",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look left",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "int_look_up_left",
+  "category": "Interaction",
+  "description": "Follow cursor: eyes look up-left",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "mood_happy",
+  "category": "Moods",
+  "description": "Happy: a little jump with sparkles",
+  "frames": 50,
+  "seconds": 1.67,
+  "loop": true
+ },
+ {
+  "name": "mood_sad",
+  "category": "Moods",
+  "description": "Sad: droopy ears, a teardrop",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "mood_surprised",
+  "category": "Moods",
+  "description": "Surprised: ears up, big round eyes, \"!\" mark",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "mood_hungry",
+  "category": "Moods",
+  "description": "Hungry: rubs its belly, dreaming of fish",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "mood_love",
+  "category": "Moods",
+  "description": "Love: heart eyes, floating hearts",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "mood_smile_wink",
+  "category": "Moods",
+  "description": "Big smile with tongue, playful wink and sparkle, excited tail wag",
+  "frames": 75,
+  "seconds": 2.5,
+  "loop": true
+ },
+ {
+  "name": "fun_spin",
+  "category": "Fun",
+  "description": "Spin / roll: a jumping 360",
+  "frames": 50,
+  "seconds": 1.67,
+  "loop": true
+ },
+ {
+  "name": "fun_peek",
+  "category": "Fun",
+  "description": "Peeking: hides past the right screen edge and peeks out",
+  "frames": 100,
+  "seconds": 3.33,
+  "loop": true
+ },
+ {
+  "name": "fun_notify",
+  "category": "Fun",
+  "description": "Notification alert: waves its paw under a \"!\" badge",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
+  "name": "full_loop",
+  "category": "Sequence",
+  "description": "Idle -> fall asleep -> sleep -> wake up -> smile, as one seamless loop (with markers)",
+  "frames": 405,
+  "seconds": 13.5,
+  "loop": true
+ }
+]

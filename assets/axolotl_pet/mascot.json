@@ -1,0 +1,77 @@
+{
+  "type": "svg-states",
+  "name": "Axolotl",
+  "description": "A pink axolotl: rippling gills, bubble blowing, swimming, belly-flop entrance.",
+  "svgDir": "svg",
+  "states": {
+    "intro": [
+      "move_fall_land.svg",
+      "swim_to_sit.svg"
+    ],
+    "idle": "idle_breathe.svg",
+    "hover": [
+      "int_petted.svg",
+      "mood_love.svg"
+    ],
+    "doubleClick": [
+      "int_tickled.svg",
+      "fun_spin.svg",
+      "mood_smile_wink.svg"
+    ],
+    "clicks": "int_poked.svg",
+    "done": [
+      "mood_happy.svg",
+      "fun_spin.svg",
+      "move_hop.svg"
+    ],
+    "allDone": [
+      "fun_bubble_ride.svg",
+      "mood_love.svg"
+    ],
+    "added": [
+      "idle_gill_wiggle.svg",
+      "move_hop.svg"
+    ],
+    "started": [
+      "move_walk.svg",
+      "move_swim.svg"
+    ],
+    "deleted": "mood_surprised.svg",
+    "overdue": "mood_sad.svg",
+    "hungry": "mood_hungry.svg",
+    "alarm": [
+      "fun_notify.svg",
+      "mood_surprised.svg"
+    ],
+    "alarmClosed": "mood_smile_wink.svg",
+    "snooze": "idle_yawn.svg",
+    "dragged": "int_dragged.svg",
+    "dropped": "move_fall_land.svg@0.45",
+    "fallAsleep": "sleep_fall_asleep.svg",
+    "sleep": "sleep_loop.svg",
+    "wakeUp": "sleep_wake_up.svg",
+    "lookUp": "int_look_up.svg",
+    "lookUpRight": "int_look_up_right.svg",
+    "lookRight": "int_look_right.svg",
+    "lookDownRight": "int_look_down_right.svg",
+    "lookDown": "int_look_down.svg",
+    "lookDownLeft": "int_look_down_left.svg",
+    "lookLeft": "int_look_left.svg",
+    "lookUpLeft": "int_look_up_left.svg"
+  },
+  "idleVariants": [
+    "idle_gill_wiggle.svg",
+    "idle_look_left_right.svg",
+    "idle_stretch.svg",
+    "idle_blow_bubbles.svg",
+    "idle_yawn.svg",
+    "fun_peek.svg",
+    "swim_idle.svg"
+  ],
+  "sleepAfterSeconds": 20,
+  "alarmEffect": "sparks",
+  "effectOrigin": [
+    256,
+    170
+  ]
+}

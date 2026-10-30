@@ -1,0 +1,303 @@
+{
+  "fps": 30,
+  "width": 512,
+  "height": 512,
+  "clips": [
+    {
+      "name": "idle_breathe",
+      "category": "idle",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "description": "Default loop: slow float bob, rippling tail, drifting arms, one blink."
+    },
+    {
+      "name": "idle_look_left_right",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Eyes glance left, hold, then right; body leans with them."
+    },
+    {
+      "name": "idle_yawn",
+      "category": "idle",
+      "frames": 105,
+      "seconds": 3.5,
+      "loop": true,
+      "description": "Big yawn: stretches tall, then squishes back."
+    },
+    {
+      "name": "idle_stretch",
+      "category": "idle",
+      "frames": 105,
+      "seconds": 3.5,
+      "loop": true,
+      "description": "Nub arms up overhead, body stretches taller, tail wisps fan out."
+    },
+    {
+      "name": "idle_fade_blink",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Slowly fades to ~40%, notices, pops back to full with a startled blink."
+    },
+    {
+      "name": "idle_lazy_drift",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Lazy figure-eight drift while humming with a small smile."
+    },
+    {
+      "name": "sleep_fall_asleep",
+      "category": "sleep",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": false,
+      "description": "Eyes droop, sinks lower, curls its tail around itself like a blanket."
+    },
+    {
+      "name": "sleep_loop",
+      "category": "sleep",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Floats low, slow breathing, glow pulse 85-100%, rising z z z, snot bubble."
+    },
+    {
+      "name": "sleep_wake_up",
+      "category": "sleep",
+      "frames": 75,
+      "seconds": 2.5,
+      "loop": false,
+      "description": "Bubble pops, shoots upward startled, two quick blinks, settles into the float."
+    },
+    {
+      "name": "move_walk",
+      "category": "movement",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Glides forward in place (facing right), leaning in, tail streaming behind."
+    },
+    {
+      "name": "move_hop",
+      "category": "movement",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Dips down, zooms up with arms raised, squashes softly back into the float."
+    },
+    {
+      "name": "move_phase",
+      "category": "movement",
+      "frames": 75,
+      "seconds": 2.5,
+      "loop": true,
+      "description": "Fades out completely, reappears in the same spot with a sparkle puff."
+    },
+    {
+      "name": "move_fall_land",
+      "category": "movement",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": false,
+      "description": "Drops in from above flailing, balloon-bounces twice, settles with dizzy stars."
+    },
+    {
+      "name": "int_dragged",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Held by the tail tip (grab point 264,427): stretched like taffy, wobbly scared mouth, arms flailing."
+    },
+    {
+      "name": "int_petted",
+      "category": "interaction",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "description": "Happy ^ ^ eyes, rosier cheeks, wiggles into the hand, hearts pop up."
+    },
+    {
+      "name": "int_poked",
+      "category": "interaction",
+      "frames": 105,
+      "seconds": 3.5,
+      "loop": true,
+      "description": "Jelly wobble, puffed cheeks, angry brows, anger mark, then half see-through with a smug look."
+    },
+    {
+      "name": "int_tickled",
+      "category": "interaction",
+      "frames": 75,
+      "seconds": 2.5,
+      "loop": true,
+      "description": "Giggles and wriggles, eyes squeezed shut, tail wisps curling."
+    },
+    {
+      "name": "int_look_up",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking up with the float bob (cursor following)."
+    },
+    {
+      "name": "int_look_up_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking up-right with the float bob (cursor following)."
+    },
+    {
+      "name": "int_look_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking right with the float bob (cursor following)."
+    },
+    {
+      "name": "int_look_down_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking down-right with the float bob (cursor following)."
+    },
+    {
+      "name": "int_look_down",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking down with the float bob (cursor following)."
+    },
+    {
+      "name": "int_look_down_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking down-left with the float bob (cursor following)."
+    },
+    {
+      "name": "int_look_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking left with the float bob (cursor following)."
+    },
+    {
+      "name": "int_look_up_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "description": "Eyes held looking up-left with the float bob (cursor following)."
+    },
+    {
+      "name": "mood_happy",
+      "category": "moods",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "description": "Twirls in a little circle with sparkles, happy ^ ^ eyes."
+    },
+    {
+      "name": "mood_sad",
+      "category": "moods",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Sinks low, droopy tail, fades to 70%, teardrop."
+    },
+    {
+      "name": "mood_surprised",
+      "category": "moods",
+      "frames": 75,
+      "seconds": 2.5,
+      "loop": true,
+      "description": "Puffs up bigger, round eyes, \"o\" mouth, \"!\" mark."
+    },
+    {
+      "name": "mood_scared",
+      "category": "moods",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Shivers, wobbly mouth, worried brows, then hides its face behind its tail."
+    },
+    {
+      "name": "mood_hungry",
+      "category": "moods",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Rubs its tummy, thought bubble with a toasted marshmallow."
+    },
+    {
+      "name": "mood_love",
+      "category": "moods",
+      "frames": 105,
+      "seconds": 3.5,
+      "loop": true,
+      "description": "Heart eyes, body tints pale pink (flat colour swap), floating hearts."
+    },
+    {
+      "name": "mood_smile_wink",
+      "category": "moods",
+      "frames": 75,
+      "seconds": 2.5,
+      "loop": true,
+      "description": "Big open smile with tongue, playful wink with a sparkle."
+    },
+    {
+      "name": "fun_boo",
+      "category": "fun",
+      "frames": 105,
+      "seconds": 3.5,
+      "loop": true,
+      "description": "Dips out of view at the bottom, pops up with arms raised and a big BOO, then giggles."
+    },
+    {
+      "name": "fun_spin",
+      "category": "fun",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "description": "Fast corkscrew spin with the tail whipping around, then a dizzy wobble."
+    },
+    {
+      "name": "fun_peek",
+      "category": "fun",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "description": "Fades in halfway through the right edge, peeks, blinks, fades out."
+    },
+    {
+      "name": "fun_notify",
+      "category": "fun",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "description": "Holds up the lantern under a round yellow \"!\" badge, flame flickering, happy open mouth."
+    },
+    {
+      "name": "fun_lantern_glow",
+      "category": "fun",
+      "frames": 150,
+      "seconds": 5.0,
+      "loop": true,
+      "description": "Lights the lantern, face glows warm, looks around, then blows the flame out."
+    }
+  ]
+}

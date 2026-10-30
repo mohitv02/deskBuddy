@@ -1,0 +1,19 @@
+{
+  "type": "svg-states",
+  "name": "Classic Dragon",
+  "description": "The original four-pose dragon: happy, flying, fire, sad.",
+  "states": {
+    "idle": "happy.svg",
+    "hover": "fly.svg",
+    "alarm": "flame.svg",
+    "alarmClosed": "fly.svg",
+    "clicks": "flame.svg",
+    "done": "fly.svg",
+    "snooze": "sad.svg"
+  },
+  "alarmEffect": "flames",
+  "effectOrigin": [
+    400,
+    420
+  ]
+}

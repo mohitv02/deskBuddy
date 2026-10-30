@@ -1,0 +1,105 @@
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#stage,
+#mascot {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
+}
+#stage {
+  position: relative;
+}
+/* Until main.ts knows whether a custom mascot replaces it, the built-in
+   character stays hidden, so it never flashes up before the custom one. */
+body.loading #mascot {
+  display: none;
+}
+/* Switching pets: the old one shrinks away, the new one pops in. */
+body.loading #stage {
+  opacity: 0;
+}
+#stage {
+  transform-origin: 50% 92%;
+  animation: pet-in 0.42s cubic-bezier(0.2, 0.9, 0.3, 1.15) both;
+}
+body.leaving #stage {
+  animation: pet-out 0.28s ease-in both;
+}
+@keyframes pet-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(4%);
+  }
+}
+@keyframes pet-out {
+  to {
+    opacity: 0;
+    transform: scale(0.8) translateY(4%);
+  }
+}
+#sprite {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  background-repeat: no-repeat;
+}
+#sprite[hidden] {
+  display: none;
+}
+#sprite.shake {
+  animation: shake 0.14s linear infinite;
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  25% {
+    transform: translateX(calc(-50% - 3px)) rotate(-6deg);
+  }
+  75% {
+    transform: translateX(calc(-50% + 3px)) rotate(6deg);
+  }
+}
+#svg-states {
+  position: absolute;
+  inset: 0;
+}
+/* Facing left: thrown clips are drawn facing right. */
+#svg-states.flipped {
+  transform: scaleX(-1);
+}
+#svg-states[hidden] {
+  display: none;
+}
+#svg-states .clip {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.16s ease-in-out;
+}
+#svg-states .clip.entering {
+  opacity: 0;
+  transition: none;
+}
+#svg-states svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* The SVG's own CSS clock is stopped; svgstates.ts steps the animations
+   itself (or, without Web Animations support, this is the pause). */
+#svg-states.frozen,
+#svg-states.frozen * {
+  animation-play-state: paused !important;
+}

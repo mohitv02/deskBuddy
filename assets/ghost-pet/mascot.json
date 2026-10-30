@@ -1,0 +1,75 @@
+{
+  "type": "svg-states",
+  "name": "Ghost",
+  "description": "A floaty ghost with a lantern: drifts, phases out, says BOO, hides behind its tail when scared.",
+  "svgDir": "svg",
+  "states": {
+    "intro": [
+      "move_fall_land.svg",
+      "move_phase.svg"
+    ],
+    "idle": "idle_breathe.svg",
+    "hover": [
+      "int_petted.svg",
+      "mood_love.svg"
+    ],
+    "doubleClick": [
+      "int_tickled.svg",
+      "fun_spin.svg",
+      "mood_smile_wink.svg"
+    ],
+    "clicks": "int_poked.svg",
+    "done": [
+      "mood_happy.svg",
+      "move_hop.svg",
+      "fun_spin.svg"
+    ],
+    "allDone": [
+      "mood_love.svg",
+      "fun_lantern_glow.svg"
+    ],
+    "added": "move_hop.svg",
+    "started": "move_walk.svg",
+    "deleted": [
+      "move_phase.svg",
+      "mood_surprised.svg"
+    ],
+    "overdue": [
+      "mood_scared.svg",
+      "mood_sad.svg"
+    ],
+    "hungry": "mood_hungry.svg",
+    "alarm": "fun_notify.svg",
+    "alarmClosed": "mood_smile_wink.svg",
+    "snooze": "idle_yawn.svg",
+    "dragged": "int_dragged.svg",
+    "dropped": "move_fall_land.svg@0.45",
+    "fallAsleep": "sleep_fall_asleep.svg",
+    "sleep": "sleep_loop.svg",
+    "wakeUp": "sleep_wake_up.svg",
+    "lookUp": "int_look_up.svg",
+    "lookUpRight": "int_look_up_right.svg",
+    "lookRight": "int_look_right.svg",
+    "lookDownRight": "int_look_down_right.svg",
+    "lookDown": "int_look_down.svg",
+    "lookDownLeft": "int_look_down_left.svg",
+    "lookLeft": "int_look_left.svg",
+    "lookUpLeft": "int_look_up_left.svg"
+  },
+  "idleVariants": [
+    "idle_look_left_right.svg",
+    "idle_fade_blink.svg",
+    "idle_lazy_drift.svg",
+    "idle_stretch.svg",
+    "idle_yawn.svg",
+    "fun_boo.svg",
+    "fun_lantern_glow.svg",
+    "fun_peek.svg"
+  ],
+  "sleepAfterSeconds": 20,
+  "alarmEffect": "sparks",
+  "effectOrigin": [
+    256,
+    170
+  ]
+}

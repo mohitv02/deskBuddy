@@ -1,0 +1,71 @@
+{
+  "type": "svg-states",
+  "name": "Ember",
+  "description": "A four-legged obsidian dragon that acts like a puppy, and turns to face you: walks up to you, boops the screen, breathes fire at you.",
+  "svgDir": "svg",
+  "states": {
+    "intro": [
+      "intro_walk.svg",
+      "intro_fly.svg",
+      "drop_in.svg"
+    ],
+    "idle": "idle.svg",
+    "hover": [
+      "head_tilt.svg",
+      "play_bow.svg"
+    ],
+    "doubleClick": [
+      "boop.svg",
+      "belly_up.svg"
+    ],
+    "clicks": [
+      "pounce.svg",
+      "fireball.svg"
+    ],
+    "done": [
+      "happy_hop.svg",
+      "barrel_roll.svg"
+    ],
+    "allDone": [
+      "fly_front.svg",
+      "boop.svg"
+    ],
+    "added": "front_moment.svg",
+    "started": [
+      "front_walk.svg",
+      "walk.svg"
+    ],
+    "deleted": "front_fire.svg",
+    "hungry": "sniff.svg",
+    "alarm": [
+      "front_fire_alarm.svg",
+      "fire.svg"
+    ],
+    "alarmClosed": "shake_off.svg",
+    "snooze": "snooze.svg",
+    "dragged": "dragged.svg",
+    "falling": "fall.svg",
+    "dropped": "land.svg",
+    "thrown": "tumble.svg",
+    "thrownLanded": "thrown_fire.svg",
+    "fallAsleep": "lie_down.svg",
+    "sleep": "sleep.svg",
+    "wakeUp": "wake_up.svg"
+  },
+  "idleVariants": [
+    "idle_blink.svg",
+    "sniff.svg",
+    "sit_idle.svg",
+    "stretch_yawn.svg",
+    "fireball.svg",
+    "front_moment.svg",
+    "fly_front.svg",
+    "barrel_roll.svg"
+  ],
+  "sleepAfterSeconds": 20,
+  "alarmEffect": "flames",
+  "effectOrigin": [
+    205,
+    128
+  ]
+}
