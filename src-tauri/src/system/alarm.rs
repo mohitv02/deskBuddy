@@ -3,6 +3,9 @@
 //! alarm animation, and a click-through effect overlay around the mascot.
 //! Ringing stops on any of: notification action/dismiss, clicking the mascot,
 //! the panel's Stop/Done buttons, completing the todo, or after RING_FOR.
+//!
+//! Evening reminder: once a day at 17:00, if open todos due today (or overdue)
+//! have no alarm left to ring, it rings for that todo, or once for all of them.
 
 use std::path::PathBuf;
 use std::process::{Child, Command, Stdio};
@@ -15,6 +18,7 @@ use tauri::{AppHandle, Emitter, Manager};
 
 use crate::db::{now_ms, todos, Db};
 use crate::paths;
+use crate::settings::SettingsStore;
 use crate::system::window;
 
 const CHECK_EVERY: Duration = Duration::from_secs(5);
@@ -23,6 +27,11 @@ const RING_FOR: Duration = Duration::from_secs(60);
 const MISSED_GRACE_MS: i64 = 12 * 60 * 60 * 1000;
 pub const SNOOZE: Duration = Duration::from_secs(10 * 60);
 const SYSTEM_SOUND: &str = "/usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga";
+/// The evening reminder rings during this local hour (from 17:00, or as soon
+/// as DeskBuddy is running before 18:00).
+const EVENING_HOUR: u32 = 17;
+/// `todo_id` of the evening reminder for several todos (real ids start at 1).
+pub const SUMMARY_ID: i64 = 0;
 
 #[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -30,6 +39,8 @@ pub struct AlarmInfo {
     pub todo_id: i64,
     pub title: String,
     pub due: Option<String>,
+    /// Notification body instead of "Due at …" (the evening reminder's list).
+    pub details: Option<String>,
 }
 
 struct Active {
@@ -58,13 +69,46 @@ pub fn spawn_scheduler(app: AppHandle) {
             }
             Err(e) => eprintln!("deskbuddy: alarm check failed: {e}"),
         }
+        if let Err(e) = evening_reminder(&app) {
+            eprintln!("deskbuddy: evening reminder failed: {e}");
+        }
         std::thread::sleep(CHECK_EVERY);
     });
 }
 
+/// At 17:00, once a day: ring for today's open todos that have no alarm left.
+fn evening_reminder(app: &AppHandle) -> Result<(), String> {
+    use chrono::Timelike;
+    let now = chrono::Local::now();
+    let today = now.format("%Y-%m-%d").to_string();
+    let store = app.state::<SettingsStore>();
+    // Not while another alarm rings: wait for it to stop, then ring.
+    if now.hour() != EVENING_HOUR || store.get().evening_reminder_day == today || app.state::<AlarmState>().current().is_some() {
+        return Ok(());
+    }
+    let open = app.state::<Db>().with(|c| todos::open_without_alarm(c, &today)).map_err(|e| e.to_string())?;
+    store.update(|s| s.evening_reminder_day = today);
+    match open.as_slice() {
+        [] => {}
+        [todo] => ring(app, todo),
+        todos => {
+            let mut details: Vec<String> = todos.iter().take(5).map(|t| format!("• {}", t.title)).collect();
+            if todos.len() > 5 {
+                details.push(format!("…and {} more", todos.len() - 5));
+            }
+            let title = format!("{} todos still open today", todos.len());
+            ring_info(app, AlarmInfo { todo_id: SUMMARY_ID, title, due: None, details: Some(details.join("\n")) });
+        }
+    }
+    Ok(())
+}
+
 pub fn ring(app: &AppHandle, todo: &todos::Todo) {
+    ring_info(app, AlarmInfo { todo_id: todo.id, title: todo.title.clone(), due: todo.due.clone(), details: None });
+}
+
+fn ring_info(app: &AppHandle, info: AlarmInfo) {
     stop(app);
-    let info = AlarmInfo { todo_id: todo.id, title: todo.title.clone(), due: todo.due.clone() };
     let stop_flag = Arc::new(AtomicBool::new(false));
     *app.state::<AlarmState>().0.lock().unwrap() = Some(Active { info: info.clone(), stop: stop_flag.clone() });
 
@@ -162,16 +206,20 @@ fn spawn_sound(app: AppHandle, stop_flag: Arc<AtomicBool>) {
 fn spawn_notification(app: AppHandle, info: AlarmInfo) {
     let _ = std::thread::Builder::new().name("alarm-notify".into()).spawn(move || {
         let time = info.due.as_deref().and_then(|d| d.get(11..16)).unwrap_or("now");
-        let shown = notify_rust::Notification::new()
+        let body = info.details.clone().unwrap_or_else(|| format!("Due at {time}"));
+        let mut notification = notify_rust::Notification::new();
+        notification
             .appname("DeskBuddy")
             .summary(&format!("⏰ {}", info.title))
-            .body(&format!("Due at {time}"))
+            .body(&body)
             .icon("alarm-symbolic")
             .urgency(notify_rust::Urgency::Critical)
-            .action("default", "Open")
-            .action("done", "Mark done")
-            .action("snooze", "Snooze 10 min")
-            .show();
+            .action("default", "Open");
+        // The evening summary covers several todos: nothing single to finish or snooze.
+        if info.todo_id != SUMMARY_ID {
+            notification.action("done", "Mark done").action("snooze", "Snooze 10 min");
+        }
+        let shown = notification.show();
         let handle = match shown {
             Ok(h) => h,
             Err(e) => return eprintln!("deskbuddy: notification failed: {e}"),

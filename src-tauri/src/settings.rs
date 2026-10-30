@@ -42,6 +42,8 @@ pub struct Settings {
     /// This machine's address as others know it; empty = whatever address the
     /// server sees us connect from.
     pub chat_ip: String,
+    /// Local date (YYYY-MM-DD) the 17:00 reminder last rang, so it rings once a day.
+    pub evening_reminder_day: String,
 }
 
 impl Default for Settings {
@@ -61,6 +63,7 @@ impl Default for Settings {
             chat_server: String::new(),
             chat_name: String::new(),
             chat_ip: String::new(),
+            evening_reminder_day: String::new(),
         }
     }
 }

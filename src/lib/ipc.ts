@@ -119,10 +119,15 @@ export interface SpriteSheet {
 }
 
 export interface AlarmInfo {
+  /** SUMMARY_ALARM for the 17:00 reminder about several todos. */
   todoId: number;
   title: string;
   due: string | null;
+  details: string | null;
 }
+
+/** todoId of the evening reminder that covers several open todos (alarm.rs SUMMARY_ID). */
+export const SUMMARY_ALARM = 0;
 
 export type CustomMascot =
   | { type: "image"; url: string }
@@ -228,6 +233,7 @@ export const ipc = {
   showPanel: (view?: PanelView) => invoke<void>("show_panel", { view }),
   hidePanel: () => invoke<void>("hide_panel"),
   setPanelEditing: (open: boolean) => invoke<void>("set_panel_editing", { open }),
+  setPanelDropdown: (open: boolean) => invoke<void>("set_panel_dropdown", { open }),
   quit: () => invoke<void>("quit_app"),
   customMascot: () => invoke<CustomMascot | null>("custom_mascot"),
   listPets: () => invoke<PetList>("list_pets"),

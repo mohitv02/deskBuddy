@@ -229,6 +229,58 @@ Image-strip dragon (320×200 frames) with **two views**. Side view: walk, fly, t
 | Wakes up | `wake_up` |
 | Idle moments | `idle_blink`, `sniff`, `sit_idle`, `stretch_yawn`, `fireball`, `front_moment`, `fly_front`, `barrel_roll` |
 
+### Mochi (`mochi_pet`)
+Round orange kitten, drawn as one spritesheet (320×320 frames, `spritesheet.png` + `spritesheet.json`). Blinks, twitches its ears, swings its striped tail, grooms, stretches, peeks in from the edge, hops and spins. **Emotions:** happy (sparkles), sad, surprised, hungry, love. `scripts/prepare-pets.py` turns each sheet row into a clip and adds `drop_in` (fall → land), `tumble` (looping spin), `look_around` (left → right), and one still per direction from `follow_cursor` for the eyes that follow the pointer. Unused: `look_up` and `look_down` (the pointer stills do that job). The `apng/`, `gifs/` and `frames/` folders are copies of the sheet and aren't used by the app.
+
+| Event | Clips |
+|---|---|
+| Appears | `drop_in`, `peek` |
+| Idle | `breathe` |
+| Mouse over | `petted` |
+| Double-click | `hop`, `spin` |
+| Click spree | `poked` |
+| Todo added | `ear_twitch`, `hop` |
+| Todo started | `walk` |
+| Todo completed | `happy`, `hop` |
+| All todos done | `love`, `spin` |
+| Todo deleted | `surprised` |
+| Overdue | `sad` |
+| Hungry (meal time) | `hungry` |
+| Alarm ringing | `notify` (with sparks) |
+| Alarm stopped | `happy` |
+| Alarm snoozed | `yawn` |
+| Dragged / falling / dropped | `dragged` / `fall` / `land` |
+| Thrown | `tumble` |
+| Dozes off / sleeping / wakes up | `fall_asleep` / `sleep` / `wake_up` |
+| Pointer nearby | `look_n`, `look_ne`, `look_e`, `look_se`, `look_s`, `look_sw`, `look_w`, `look_nw` |
+| Idle moments | `idle_blink`, `ear_twitch`, `tail_swing`, `look_around`, `yawn`, `stretch`, `groom`, `peek` |
+
+### Penguin (`penguin-pet`)
+Chibi penguin with a navy back, heart-shaped white face and red knitted scarf. Waddles, hops, flaps its flippers, preens, belly-slides, throws snowballs, catches a fish, peeks in from the edge, dangles by its scarf when dragged. **Emotions:** happy, sad, surprised, hungry, love, cold (shivers), smile-wink; laughs when tickled. Every clip is used.
+
+| Event | Clips |
+|---|---|
+| Appears | `move_fall_land` |
+| Idle | `idle_breathe` |
+| Mouse over | `int_petted`, `mood_love` |
+| Double-click | `int_tickled`, `fun_spin`, `mood_smile_wink` |
+| Click spree | `int_poked` |
+| Todo added | `idle_flap`, `move_hop` |
+| Todo started | `move_walk` |
+| Todo completed | `mood_happy`, `fun_spin`, `move_hop` |
+| All todos done | `fun_fish_catch`, `mood_love` |
+| Todo deleted | `mood_surprised` |
+| Worried (overdue todo) | `mood_sad`, `mood_cold` |
+| Hungry (meal time) | `mood_hungry` |
+| Alarm ringing | `fun_notify` (with sparks) |
+| Alarm stopped | `mood_smile_wink` |
+| Alarm snoozed | `idle_yawn` |
+| Dragged / dropped | `int_dragged` / `move_fall_land` (from the landing) |
+| Thrown | `move_belly_slide` |
+| Dozes off / sleeping / wakes up | `sleep_fall_asleep` / `sleep_loop` / `sleep_wake_up` |
+| Watching you | `int_look_*` (8 directions) |
+| Idle moments | `idle_look_left_right`, `idle_stretch`, `idle_groom`, `idle_flap`, `idle_yawn`, `fun_peek`, `fun_snowball` |
+
 ### Classic Dragon (`dragon`)
 The original four-pose pack: happy (idle), fly (hover, done, alarm stopped), flame (alarm, clicks),
 sad (snooze). CSS-animated, so its clips swap instantly instead of crossfading.

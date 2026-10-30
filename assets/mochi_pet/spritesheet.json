@@ -1,0 +1,227 @@
+{
+  "frame_size": [
+    320,
+    320
+  ],
+  "animations": {
+    "breathe": {
+      "row": 0,
+      "frames": 12,
+      "fps": 8,
+      "loop": true,
+      "group": "idle",
+      "note": "Default idle loop"
+    },
+    "idle_blink": {
+      "row": 1,
+      "frames": 4,
+      "fps": 12,
+      "loop": false,
+      "group": "idle"
+    },
+    "ear_twitch": {
+      "row": 2,
+      "frames": 6,
+      "fps": 14,
+      "loop": false,
+      "group": "idle"
+    },
+    "tail_swing": {
+      "row": 3,
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "group": "idle"
+    },
+    "look_up": {
+      "row": 4,
+      "frames": 7,
+      "fps": 10,
+      "loop": false,
+      "group": "idle"
+    },
+    "look_down": {
+      "row": 5,
+      "frames": 7,
+      "fps": 10,
+      "loop": false,
+      "group": "idle"
+    },
+    "look_left": {
+      "row": 6,
+      "frames": 7,
+      "fps": 10,
+      "loop": false,
+      "group": "idle"
+    },
+    "look_right": {
+      "row": 7,
+      "frames": 7,
+      "fps": 10,
+      "loop": false,
+      "group": "idle"
+    },
+    "yawn": {
+      "row": 8,
+      "frames": 12,
+      "fps": 10,
+      "loop": false,
+      "group": "idle"
+    },
+    "stretch": {
+      "row": 9,
+      "frames": 10,
+      "fps": 8,
+      "loop": false,
+      "group": "idle"
+    },
+    "groom": {
+      "row": 10,
+      "frames": 12,
+      "fps": 8,
+      "loop": false,
+      "group": "idle"
+    },
+    "fall_asleep": {
+      "row": 11,
+      "frames": 8,
+      "fps": 6,
+      "loop": false,
+      "group": "sleep"
+    },
+    "sleep": {
+      "row": 12,
+      "frames": 12,
+      "fps": 6,
+      "loop": true,
+      "group": "sleep"
+    },
+    "wake_up": {
+      "row": 13,
+      "frames": 10,
+      "fps": 10,
+      "loop": false,
+      "group": "sleep"
+    },
+    "walk": {
+      "row": 14,
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "group": "move",
+      "note": "Move the window sideways in your app while this plays"
+    },
+    "hop": {
+      "row": 15,
+      "frames": 10,
+      "fps": 12,
+      "loop": false,
+      "group": "move"
+    },
+    "fall": {
+      "row": 16,
+      "frames": 4,
+      "fps": 12,
+      "loop": true,
+      "group": "move",
+      "note": "Loop while the user has dropped the pet and it is falling"
+    },
+    "land": {
+      "row": 17,
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "group": "move"
+    },
+    "dragged": {
+      "row": 18,
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "group": "interact",
+      "note": "Loop while the user is dragging the pet"
+    },
+    "petted": {
+      "row": 19,
+      "frames": 10,
+      "fps": 10,
+      "loop": true,
+      "group": "interact",
+      "note": "Play on click / mouse hover"
+    },
+    "poked": {
+      "row": 20,
+      "frames": 8,
+      "fps": 12,
+      "loop": true,
+      "group": "interact",
+      "note": "Play after several quick clicks"
+    },
+    "follow_cursor": {
+      "row": 21,
+      "frames": 9,
+      "fps": 0,
+      "loop": false,
+      "group": "interact",
+      "note": "Not an animation: pick the frame by direction to the cursor. Order: C, N, NE, E, SE, S, SW, W, NW"
+    },
+    "happy": {
+      "row": 22,
+      "frames": 10,
+      "fps": 12,
+      "loop": true,
+      "group": "mood"
+    },
+    "sad": {
+      "row": 23,
+      "frames": 8,
+      "fps": 8,
+      "loop": true,
+      "group": "mood"
+    },
+    "surprised": {
+      "row": 24,
+      "frames": 8,
+      "fps": 12,
+      "loop": false,
+      "group": "mood"
+    },
+    "hungry": {
+      "row": 25,
+      "frames": 10,
+      "fps": 8,
+      "loop": true,
+      "group": "mood"
+    },
+    "love": {
+      "row": 26,
+      "frames": 8,
+      "fps": 10,
+      "loop": true,
+      "group": "mood"
+    },
+    "spin": {
+      "row": 27,
+      "frames": 15,
+      "fps": 14,
+      "loop": false,
+      "group": "fun"
+    },
+    "peek": {
+      "row": 28,
+      "frames": 12,
+      "fps": 8,
+      "loop": false,
+      "group": "fun",
+      "note": "Peeks in from the right edge of the frame. Mirror horizontally for the left edge"
+    },
+    "notify": {
+      "row": 29,
+      "frames": 10,
+      "fps": 10,
+      "loop": true,
+      "group": "fun",
+      "note": "Loop when your app wants the user's attention"
+    }
+  }
+}

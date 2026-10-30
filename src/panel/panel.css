@@ -419,6 +419,9 @@ textarea:focus {
   color: var(--muted);
   opacity: 0.55;
 }
+.sheet input.invalid {
+  border-color: var(--danger);
+}
 .sheet input:disabled {
   opacity: 0.35;
 }

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useEscape } from "../useEscape";
 import type { TodoInput, TodoStatus } from "../../lib/ipc";
-import { dueDate, dueTime, isoDate, isOverdue } from "../../lib/dates";
+import { dueDate, dueTime, isoDate, isOverdue, parseTime } from "../../lib/dates";
 
 interface Props {
   initial: TodoInput;
@@ -18,7 +18,12 @@ export function TodoEditor({ initial, isNew, onSave, onDelete, onCancel, onTestA
   const [title, setTitle] = useState(initial.title);
   const [notes, setNotes] = useState(initial.notes ?? "");
   const [date, setDate] = useState(initial.due ? dueDate(initial.due) : "");
-  const [time, setTime] = useState(initial.due ? (dueTime(initial.due) ?? "") : "");
+  // Typed as text: WebKitGTK's 12-hour time picker leaves the value empty until
+  // AM/PM is picked too, and then blocks submit with an empty validation bubble.
+  const [timeText, setTimeText] = useState(initial.due ? (dueTime(initial.due) ?? "") : "");
+  const parsedTime = parseTime(timeText);
+  const time = parsedTime ?? "";
+  const badTime = timeText.trim() !== "" && parsedTime === null;
   const [priority, setPriority] = useState(initial.priority ?? 0);
   const [project, setProject] = useState(initial.project ?? "");
   const [status, setStatus] = useState<TodoStatus>(initial.status ?? "open");
@@ -30,7 +35,7 @@ export function TodoEditor({ initial, isNew, onSave, onDelete, onCancel, onTestA
   useEscape(onCancel);
   const submitted = useRef(false); // one save per sheet, even on key repeat
   const submit = () => {
-    if (!title.trim() || submitted.current) return;
+    if (!title.trim() || badTime || submitted.current) return;
     submitted.current = true;
     void onSave({ title, notes, due: date ? (time ? `${date}T${time}` : date) : null, priority, project, status, alarm }).then((ok) => {
       if (!ok) submitted.current = false;
@@ -69,7 +74,7 @@ export function TodoEditor({ initial, isNew, onSave, onDelete, onCancel, onTestA
             <span>
               Due date{" "}
               {date && (
-                <button type="button" className="link" onClick={() => (setDate(""), setTime(""))}>
+                <button type="button" className="link" onClick={() => (setDate(""), setTimeText(""))}>
                   clear
                 </button>
               )}
@@ -79,14 +84,16 @@ export function TodoEditor({ initial, isNew, onSave, onDelete, onCancel, onTestA
           <label>
             Time
             <input
-              type="time"
-              className={time ? "" : "unset"}
-              value={time}
+              className={badTime ? "invalid" : ""}
+              value={timeText}
+              placeholder="e.g. 18:30 or 6:30 pm"
+              inputMode="text"
               onChange={(e) => {
-                setTime(e.target.value);
+                setTimeText(e.target.value);
                 // A time on its own means today.
-                if (e.target.value && !date) setDate(isoDate(new Date()));
+                if (parseTime(e.target.value) && !date) setDate(isoDate(new Date()));
               }}
+              onBlur={() => parsedTime && setTimeText(parsedTime)}
             />
           </label>
         </div>
@@ -95,7 +102,8 @@ export function TodoEditor({ initial, isNew, onSave, onDelete, onCancel, onTestA
             <input type="checkbox" checked={alarm} onChange={(e) => setAlarm(e.target.checked)} />
             🔔 Ring at {time || "the due time"}
           </label>
-          {alarm && !time && <span className="hint">pick a time above for the alarm to ring</span>}
+          {badTime && <span className="hint">can't read that time: try 18:30 or 6:30 pm</span>}
+          {alarm && !time && !badTime && <span className="hint">type a time above for the alarm to ring</span>}
           {alarm && timePassed && <span className="hint">that time has passed, so it won't ring</span>}
           {onTestAlarm && (
             <button type="button" className="link" onClick={onTestAlarm}>

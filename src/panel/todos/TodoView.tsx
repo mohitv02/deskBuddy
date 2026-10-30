@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
-import { ipc, type AlarmInfo, type Todo, type TodoInput } from "../../lib/ipc";
+import { ipc, SUMMARY_ALARM, type AlarmInfo, type Todo, type TodoInput } from "../../lib/ipc";
 import { isDueTodayOrEarlier, isSameLocalDay } from "../../lib/dates";
 import { parseQuickAdd } from "../../lib/quickAdd";
 import { TodoEditor } from "./TodoEditor";
@@ -142,8 +142,12 @@ export function TodoView({ onEditingChange }: { onEditingChange: (open: boolean)
         <div className="alarm-banner" role="alert">
           <span className="alarm-bell">⏰</span>
           <span className="alarm-title">{ringing.title}</span>
-          <button onClick={() => void run(() => ipc.alarmComplete(ringing.todoId))}>Done</button>
-          <button onClick={() => void run(() => ipc.alarmSnooze(ringing.todoId))}>Snooze 10m</button>
+          {ringing.todoId !== SUMMARY_ALARM && (
+            <>
+              <button onClick={() => void run(() => ipc.alarmComplete(ringing.todoId))}>Done</button>
+              <button onClick={() => void run(() => ipc.alarmSnooze(ringing.todoId))}>Snooze 10m</button>
+            </>
+          )}
           <button onClick={() => void ipc.alarmStop()}>Stop</button>
         </div>
       )}

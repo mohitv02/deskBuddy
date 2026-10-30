@@ -39,9 +39,27 @@ export function App() {
       if (e.key === "Escape" && !editorOpen.current && !pinnedRef.current) void ipc.hidePanel();
     };
     window.addEventListener("keydown", onKey);
+    // A native <select> popup takes focus from the panel window (Linux), which
+    // would otherwise auto-hide an unpinned panel. Flag it while it's open.
+    let dropdown = false;
+    const setDropdown = (open: boolean) => {
+      if (dropdown === open) return;
+      dropdown = open;
+      void ipc.setPanelDropdown(open);
+    };
+    const onPointer = (e: MouseEvent) => setDropdown(e.target instanceof HTMLSelectElement);
+    const onChange = (e: Event) => e.target instanceof HTMLSelectElement && setDropdown(false);
+    const onFocus = () => setDropdown(false);
+    window.addEventListener("mousedown", onPointer, true);
+    window.addEventListener("change", onChange, true);
+    window.addEventListener("focus", onFocus);
     return () => {
       void unlisten.then((f) => f());
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("mousedown", onPointer, true);
+      window.removeEventListener("change", onChange, true);
+      window.removeEventListener("focus", onFocus);
+      setDropdown(false);
     };
   }, []);
 

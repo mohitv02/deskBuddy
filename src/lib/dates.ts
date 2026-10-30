@@ -20,6 +20,21 @@ export function dueTime(due: string): string | null {
   return due.length > 10 ? due.slice(11, 16) : null;
 }
 
+/** Typed time -> "HH:MM": "23:06", "9:30", "930", "9", "11:06 pm", "11pm", "7.15a". Null if unreadable. */
+export function parseTime(text: string): string | null {
+  const m = /^(\d{1,2})(?:[:.]?(\d{2}))?\s*([ap])?\.?m?\.?$/i.exec(text.trim());
+  if (!m) return null;
+  let h = Number(m[1]);
+  const min = Number(m[2] ?? 0);
+  const half = m[3]?.toLowerCase();
+  if (min > 59) return null;
+  if (half) {
+    if (h < 1 || h > 12) return null;
+    h = (h % 12) + (half === "p" ? 12 : 0);
+  } else if (h > 23) return null;
+  return `${pad(h)}:${pad(min)}`;
+}
+
 /** Past its date (or past its time, if it has one). */
 export function isOverdue(due: string | null, now = new Date()): boolean {
   if (!due) return false;

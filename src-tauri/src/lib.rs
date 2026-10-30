@@ -93,6 +93,7 @@ pub fn run() {
             commands::show_panel,
             commands::hide_panel,
             commands::set_panel_editing,
+            commands::set_panel_dropdown,
             commands::quit_app,
             commands::custom_mascot,
             commands::list_pets,

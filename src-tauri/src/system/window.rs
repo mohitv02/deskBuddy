@@ -27,6 +27,9 @@ const PANEL_BLUR_GRACE: Duration = Duration::from_millis(200);
 /// Set by the panel while an editor sheet is open, so a half-typed entry
 /// isn't hidden when you click away to copy something.
 pub static PANEL_EDITING: AtomicBool = AtomicBool::new(false);
+/// Set by the panel while a native <select> dropdown is open: on Linux its
+/// popup is a separate window that takes focus away from the panel.
+pub static PANEL_DROPDOWN: AtomicBool = AtomicBool::new(false);
 #[allow(dead_code)]
 const DRAG_THRESHOLD_PX: f64 = 4.0;
 
@@ -103,13 +106,27 @@ pub fn create_mascot(app: &AppHandle, s: &Settings) -> tauri::Result<WebviewWind
     win.show()?;
 
     let handle = app.clone();
-    win.on_window_event(move |event| {
-        if let WindowEvent::Moved(pos) = event {
+    win.on_window_event(move |event| match event {
+        WindowEvent::Moved(pos) => {
             remember_position(&handle, *pos);
             super::gravity::note_moved();
         }
+        // Edge tiling or maximize grew the window: an invisible full-size pane
+        // would swallow clicks on that part of the screen, so snap back.
+        WindowEvent::Resized(size) => restore_mascot_size(&handle, *size),
+        _ => {}
     });
     Ok(win)
+}
+
+fn restore_mascot_size(app: &AppHandle, size: tauri::PhysicalSize<u32>) {
+    let Some(win) = app.get_webview_window(MASCOT) else { return };
+    let want = app.state::<SettingsStore>().get().icon_size as f64;
+    let got = size.to_logical::<f64>(win.scale_factor().unwrap_or(1.0));
+    if (got.width - want).abs() > 1.0 || (got.height - want).abs() > 1.0 {
+        let _ = win.unmaximize();
+        let _ = win.set_size(tauri::LogicalSize::new(want, want));
+    }
 }
 
 fn remember_position(app: &AppHandle, pos: PhysicalPosition<i32>) {
@@ -245,6 +262,11 @@ pub const ICON_SIZES: std::ops::RangeInclusive<u32> = 48..=256;
 /// Resize the mascot live; the page re-lays itself out on "mascot-relayout".
 pub fn set_mascot_size(app: &AppHandle, size: u32) -> tauri::Result<()> {
     let Some(win) = app.get_webview_window(MASCOT) else { return Ok(()) };
+    // Loosen the fixed-size hints first, or GTK clamps the resize to the old size.
+    #[cfg(target_os = "linux")]
+    if let Ok(gw) = win.gtk_window() {
+        linux::pin_size(&gw, size as i32);
+    }
     win.set_size(tauri::LogicalSize::new(size as f64, size as f64))?;
     #[cfg(target_os = "linux")]
     if let Ok(gw) = win.gtk_window() {
@@ -292,6 +314,7 @@ pub fn create_panel(app: &AppHandle) -> tauri::Result<WebviewWindow> {
                 std::thread::sleep(PANEL_BLUR_GRACE);
                 let keep = panel.app_handle().state::<SettingsStore>().get().panel_pinned
                     || PANEL_EDITING.load(Ordering::SeqCst)
+                    || PANEL_DROPDOWN.load(Ordering::SeqCst)
                     || super::dialog::OPEN.load(Ordering::SeqCst)
                     || panel.is_focused().unwrap_or(true);
                 if !keep {
@@ -496,7 +519,21 @@ mod linux {
         let Ok(gw) = win.gtk_window() else { return };
         gw.set_skip_pager_hint(true);
         gw.set_skip_taskbar_hint(true);
+        pin_size(&gw, size);
         set_input_shape(&gw, size);
+    }
+
+    /// min = max size hints: mutter then treats the window as fixed-size and
+    /// won't edge-tile or maximize it when it is dragged against a screen edge.
+    pub fn pin_size(gw: &gtk::ApplicationWindow, size: i32) {
+        let geometry = gtk::gdk::Geometry::new(
+            size, size, size, size, 0, 0, 0, 0, 0.0, 0.0, gtk::gdk::Gravity::NorthWest,
+        );
+        gw.set_geometry_hints(
+            None::<&gtk::Widget>,
+            Some(&geometry),
+            gtk::gdk::WindowHints::MIN_SIZE | gtk::gdk::WindowHints::MAX_SIZE,
+        );
     }
 
     /// Restrict the X11 input region to an ellipse around the mascot so clicks on

@@ -6,7 +6,7 @@ A desktop companion for Linux (Ubuntu/GNOME): an animated pet that lives on your
 
 ## Features
 
-- **A pet on your desktop.** Nine pets (Buddy, Axolotl, Chibi Cat, Chibi Ninja, Baby Dragon, Ghost, Monkey, Ember, Classic Dragon). They react to your todos, follow your cursor, fall asleep, and can be dragged, thrown and petted. See [assets/PETS.md](assets/PETS.md).
+- **A pet on your desktop.** Eleven pets (Buddy, Axolotl, Chibi Cat, Chibi Ninja, Baby Dragon, Ghost, Monkey, Ember, Mochi, Penguin, Classic Dragon). They react to your todos, follow your cursor, fall asleep, and can be dragged, thrown and petted. See [assets/PETS.md](assets/PETS.md).
 - **Todos with alarms.** Recurring alarms, snooze, and overdue reminders.
 - **Encrypted vault.** SQLCipher + Argon2id, full-text search, a clipboard that clears itself, and encrypted backups.
 - **Works offline.** No telemetry and no accounts. The only network traffic is the optional chat server, and only if you configure one.
@@ -127,6 +127,7 @@ src-tauri/src/               backend (Rust)
 ### Alarms
 
 - **Setting one.** Any todo with a due **time** rings at that time; a date with no time never rings. Examples: `Submit report @today 17:00`, or set a time in the editor. The editor has a "🔔 Ring at …" switch (on by default) and a **Test alarm now** button. Todos with a pending alarm show a 🔔.
+- **Evening reminder (17:00).** Once a day at 17:00, DeskBuddy checks the todos in the Today list (due today or overdue) that aren't done and have no alarm left to ring. If there's one, it rings for that todo as usual. If there are several, it rings once with a notification listing them (up to five), with Open and Stop but no Done or Snooze. If DeskBuddy starts between 17:00 and 18:00, it still rings that day. The day it last rang is stored as `eveningReminderDay` in `settings.json`, so a restart doesn't ring it again.
 - **When it rings:**
   - A looping alarm sound. It uses `~/.config/deskbuddy/alarm.oga`, `.ogg` or `.wav` if you provide one, otherwise the system alarm sound, played with `paplay`, `pw-play` or `canberra-gtk-play`.
   - A GNOME notification with **Open**, **Mark done** and **Snooze 10 min**.
@@ -209,9 +210,9 @@ src-tauri/src/               backend (Rust)
 
 ### Choosing a pet
 
-**Settings → Mascot → Pet → Change ›** lists the built-in Buddy, every bundled pack (Axolotl, Chibi Cat, Chibi Ninja, Baby Dragon, Ghost, Monkey, Ember, Classic Dragon) and, if present, your own files from `~/.config/deskbuddy/`. Picking one swaps it live: the old pet shrinks away and the new one pops in, with no restart. Below the grid, the page shows which clips play for each event (hover, clicks, todo added / started / done / all done / deleted / overdue, alarms, being dragged, sleep, the pointer nearby, …); each clip has a ▶ button that plays it on the desktop. A state can list several clips, and one is picked at random each time. The choice is saved as `pet` in `settings.json`. Drag the pet up and let go, and it drops back down a few inches (the window falls with gravity, at most 200 px and never off the screen), then plays its landing clip. With nothing happening for **Sleep after** (Settings, default 20 seconds) it dozes off. When it's unset, your own files win if you have any, as before.
+**Settings → Mascot → Pet → Change ›** lists the built-in Buddy, every bundled pack (Axolotl, Chibi Cat, Chibi Ninja, Baby Dragon, Ghost, Monkey, Ember, Mochi, Classic Dragon) and, if present, your own files from `~/.config/deskbuddy/`. Picking one swaps it live: the old pet shrinks away and the new one pops in, with no restart. Below the grid, the page shows which clips play for each event (hover, clicks, todo added / started / done / all done / deleted / overdue, alarms, being dragged, sleep, the pointer nearby, …); each clip has a ▶ button that plays it on the desktop. A state can list several clips, and one is picked at random each time. The choice is saved as `pet` in `settings.json`. Drag the pet up and let go, and it drops back down a few inches (the window falls with gravity, at most 200 px and never off the screen), then plays its landing clip. With nothing happening for **Sleep after** (Settings, default 20 seconds) it dozes off. When it's unset, your own files win if you have any, as before.
 
-The packs ship as app resources (`pets/` next to the binary, from `bundle.resources` in `tauri.conf.json`). Each pack's mapping is its `assets/<pack>/mascot.json`. [`assets/PETS.md`](assets/PETS.md) describes every pet's moves, emotions and mapping. After adding or regenerating a pack, run `python3 scripts/prepare-pets.py`: it stamps clip timing from `index.json` onto the SVGs and builds Ember's PNG strips (side and front views) into SVG clips.
+The packs ship as app resources (`pets/` next to the binary, from `bundle.resources` in `tauri.conf.json`). Each pack's mapping is its `assets/<pack>/mascot.json`. [`assets/PETS.md`](assets/PETS.md) describes every pet's moves, emotions and mapping. After adding or regenerating a pack, run `python3 scripts/prepare-pets.py`: it stamps clip timing from `index.json` onto the SVGs and builds Ember's PNG strips (side and front views) and Mochi's spritesheet into SVG clips.
 
 ### State-set mascot (e.g. the axolotl or the dragon)
 

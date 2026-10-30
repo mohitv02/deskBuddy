@@ -1,0 +1,69 @@
+{
+  "type": "svg-states",
+  "name": "Mochi",
+  "description": "A round orange kitten: twitches its ears, swings its striped tail, grooms, and spins with joy.",
+  "svgDir": "svg",
+  "states": {
+    "intro": [
+      "drop_in.svg",
+      "peek.svg"
+    ],
+    "idle": "breathe.svg",
+    "hover": "petted.svg",
+    "doubleClick": [
+      "hop.svg",
+      "spin.svg"
+    ],
+    "clicks": "poked.svg",
+    "done": [
+      "happy.svg",
+      "hop.svg"
+    ],
+    "allDone": [
+      "love.svg",
+      "spin.svg"
+    ],
+    "added": [
+      "ear_twitch.svg",
+      "hop.svg"
+    ],
+    "started": "walk.svg",
+    "deleted": "surprised.svg",
+    "overdue": "sad.svg",
+    "hungry": "hungry.svg",
+    "alarm": "notify.svg",
+    "alarmClosed": "happy.svg",
+    "snooze": "yawn.svg",
+    "dragged": "dragged.svg",
+    "falling": "fall.svg",
+    "dropped": "land.svg",
+    "thrown": "tumble.svg",
+    "fallAsleep": "fall_asleep.svg",
+    "sleep": "sleep.svg",
+    "wakeUp": "wake_up.svg",
+    "lookUp": "look_n.svg",
+    "lookUpRight": "look_ne.svg",
+    "lookRight": "look_e.svg",
+    "lookDownRight": "look_se.svg",
+    "lookDown": "look_s.svg",
+    "lookDownLeft": "look_sw.svg",
+    "lookLeft": "look_w.svg",
+    "lookUpLeft": "look_nw.svg"
+  },
+  "idleVariants": [
+    "idle_blink.svg",
+    "ear_twitch.svg",
+    "tail_swing.svg",
+    "look_around.svg",
+    "yawn.svg",
+    "stretch.svg",
+    "groom.svg",
+    "peek.svg"
+  ],
+  "sleepAfterSeconds": 20,
+  "alarmEffect": "sparks",
+  "effectOrigin": [
+    160,
+    90
+  ]
+}

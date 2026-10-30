@@ -1,0 +1,367 @@
+{
+  "fps": 30,
+  "width": 512,
+  "height": 512,
+  "clips": [
+    {
+      "name": "idle_breathe",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/idle_breathe.json",
+      "svg": "svg/idle_breathe.svg",
+      "default": true
+    },
+    {
+      "name": "idle_look_left_right",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/idle_look_left_right.json",
+      "svg": "svg/idle_look_left_right.svg"
+    },
+    {
+      "name": "idle_yawn",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/idle_yawn.json",
+      "svg": "svg/idle_yawn.svg"
+    },
+    {
+      "name": "idle_stretch",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/idle_stretch.json",
+      "svg": "svg/idle_stretch.svg"
+    },
+    {
+      "name": "idle_groom",
+      "category": "idle",
+      "frames": 150,
+      "seconds": 5.0,
+      "loop": true,
+      "lottie": "lottie/idle_groom.json",
+      "svg": "svg/idle_groom.svg"
+    },
+    {
+      "name": "idle_flap",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/idle_flap.json",
+      "svg": "svg/idle_flap.svg"
+    },
+    {
+      "name": "sleep_fall_asleep",
+      "category": "sleep",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": false,
+      "lottie": "lottie/sleep_fall_asleep.json",
+      "svg": "svg/sleep_fall_asleep.svg"
+    },
+    {
+      "name": "sleep_loop",
+      "category": "sleep",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/sleep_loop.json",
+      "svg": "svg/sleep_loop.svg",
+      "holds_pose": true,
+      "note": "holds the asleep pose (follows sleep_fall_asleep)"
+    },
+    {
+      "name": "sleep_wake_up",
+      "category": "sleep",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": false,
+      "lottie": "lottie/sleep_wake_up.json",
+      "svg": "svg/sleep_wake_up.svg"
+    },
+    {
+      "name": "move_walk",
+      "category": "movement",
+      "frames": 40,
+      "seconds": 1.333,
+      "loop": true,
+      "lottie": "lottie/move_walk.json",
+      "svg": "svg/move_walk.svg",
+      "note": "waddle in place; the app moves the window"
+    },
+    {
+      "name": "move_hop",
+      "category": "movement",
+      "frames": 50,
+      "seconds": 1.667,
+      "loop": true,
+      "lottie": "lottie/move_hop.json",
+      "svg": "svg/move_hop.svg"
+    },
+    {
+      "name": "move_belly_slide",
+      "category": "movement",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "lottie": "lottie/move_belly_slide.json",
+      "svg": "svg/move_belly_slide.svg",
+      "note": "slides toward the right; the app moves the window"
+    },
+    {
+      "name": "move_fall_land",
+      "category": "movement",
+      "frames": 75,
+      "seconds": 2.5,
+      "loop": false,
+      "lottie": "lottie/move_fall_land.json",
+      "svg": "svg/move_fall_land.svg"
+    },
+    {
+      "name": "int_dragged",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_dragged.json",
+      "svg": "svg/int_dragged.svg",
+      "holds_pose": true,
+      "note": "held pose while dragged; pivots at the scarf"
+    },
+    {
+      "name": "int_petted",
+      "category": "interaction",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "lottie": "lottie/int_petted.json",
+      "svg": "svg/int_petted.svg"
+    },
+    {
+      "name": "int_poked",
+      "category": "interaction",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true,
+      "lottie": "lottie/int_poked.json",
+      "svg": "svg/int_poked.svg"
+    },
+    {
+      "name": "int_tickled",
+      "category": "interaction",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "lottie": "lottie/int_tickled.json",
+      "svg": "svg/int_tickled.svg"
+    },
+    {
+      "name": "int_look_up",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_up.json",
+      "svg": "svg/int_look_up.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "int_look_up_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_up_right.json",
+      "svg": "svg/int_look_up_right.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "int_look_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_right.json",
+      "svg": "svg/int_look_right.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "int_look_down_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_down_right.json",
+      "svg": "svg/int_look_down_right.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "int_look_down",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_down.json",
+      "svg": "svg/int_look_down.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "int_look_down_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_down_left.json",
+      "svg": "svg/int_look_down_left.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "int_look_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_left.json",
+      "svg": "svg/int_look_left.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "int_look_up_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/int_look_up_left.json",
+      "svg": "svg/int_look_up_left.svg",
+      "holds_pose": true,
+      "note": "holds the look direction (cursor follow)"
+    },
+    {
+      "name": "mood_happy",
+      "category": "mood",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/mood_happy.json",
+      "svg": "svg/mood_happy.svg"
+    },
+    {
+      "name": "mood_sad",
+      "category": "mood",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/mood_sad.json",
+      "svg": "svg/mood_sad.svg"
+    },
+    {
+      "name": "mood_surprised",
+      "category": "mood",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "lottie": "lottie/mood_surprised.json",
+      "svg": "svg/mood_surprised.svg"
+    },
+    {
+      "name": "mood_hungry",
+      "category": "mood",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/mood_hungry.json",
+      "svg": "svg/mood_hungry.svg"
+    },
+    {
+      "name": "mood_love",
+      "category": "mood",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/mood_love.json",
+      "svg": "svg/mood_love.svg"
+    },
+    {
+      "name": "mood_cold",
+      "category": "mood",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/mood_cold.json",
+      "svg": "svg/mood_cold.svg"
+    },
+    {
+      "name": "mood_smile_wink",
+      "category": "mood",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "lottie": "lottie/mood_smile_wink.json",
+      "svg": "svg/mood_smile_wink.svg"
+    },
+    {
+      "name": "fun_spin",
+      "category": "fun",
+      "frames": 90,
+      "seconds": 3.0,
+      "loop": true,
+      "lottie": "lottie/fun_spin.json",
+      "svg": "svg/fun_spin.svg"
+    },
+    {
+      "name": "fun_peek",
+      "category": "fun",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/fun_peek.json",
+      "svg": "svg/fun_peek.svg",
+      "holds_pose": true,
+      "note": "starts and ends off-canvas (empty frame)"
+    },
+    {
+      "name": "fun_notify",
+      "category": "fun",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "lottie": "lottie/fun_notify.json",
+      "svg": "svg/fun_notify.svg",
+      "holds_pose": true,
+      "note": "notification pose; loop while the alert is active"
+    },
+    {
+      "name": "fun_snowball",
+      "category": "fun",
+      "frames": 150,
+      "seconds": 5.0,
+      "loop": true,
+      "lottie": "lottie/fun_snowball.json",
+      "svg": "svg/fun_snowball.svg"
+    },
+    {
+      "name": "fun_fish_catch",
+      "category": "fun",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "lottie": "lottie/fun_fish_catch.json",
+      "svg": "svg/fun_fish_catch.svg"
+    }
+  ]
+}

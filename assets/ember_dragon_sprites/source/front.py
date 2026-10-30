@@ -509,7 +509,8 @@ def draw_fire(ctx, F):
         return
     m = mouth_world(F)
     T = 2 * math.pi * F['fire_t']
-    R = 5 + 50 * inten
+    R = 5 + 36 * inten
+    m = (m[0], m[1] - 14 * inten)   # lift the burst off the body so it blasts out above the chin
     g = cairo.RadialGradient(m[0], m[1], 0, m[0], m[1], R * 2.6)
     g.add_color_stop_rgba(0, 1, 0.7, 0.3, 0.5 * inten)
     g.add_color_stop_rgba(1, 1, 0.35, 0.05, 0)

@@ -178,6 +178,12 @@ pub fn set_panel_editing(open: bool) {
     window::PANEL_EDITING.store(open, std::sync::atomic::Ordering::SeqCst);
 }
 
+/// A <select> dropdown is open in the panel: don't auto-hide it on focus loss.
+#[tauri::command]
+pub fn set_panel_dropdown(open: bool) {
+    window::PANEL_DROPDOWN.store(open, std::sync::atomic::Ordering::SeqCst);
+}
+
 #[tauri::command]
 pub fn quit_app(app: AppHandle, store: State<'_, SettingsStore>) {
     store.flush();

@@ -13,6 +13,8 @@ Run once after adding or regenerating a pack (it is idempotent):
   assets/ember_dragon_sprites/svg/, each a frame strip stepped by a discrete
   SMIL animation, so the same player drives it. Clips can chain several
   strips, e.g. fall -> land for the intro.
+* Mochi (one spritesheet): the same, from assets/mochi_pet/spritesheet.png
+  into assets/mochi_pet/svg/.
 
 Needs Pillow (pip install pillow).
 """
@@ -27,7 +29,7 @@ from PIL import Image
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 
-SVG_PACKS = ["axolotl_pet", "chibi_cat_reactions", "chibi_ninja_pet", "dragon_pet_sprites", "ghost-pet", "monkey-pet"]
+SVG_PACKS = ["axolotl_pet", "chibi_cat_reactions", "chibi_ninja_pet", "dragon_pet_sprites", "ghost-pet", "monkey-pet", "penguin-pet"]
 
 
 def tag_svg_pack(pack: str) -> int:
@@ -48,6 +50,37 @@ def tag_svg_pack(pack: str) -> int:
         path.write_text(text)
         changed += 1
     return changed
+
+
+def strip_svg(prefix: str, name: str, loop: bool, cells: list, order: list[int], durations: list[float], view_box: str) -> str:
+    """One clip as an SVG: the distinct frames side by side in one WebP strip,
+    stepped through `order` (indices into `cells`) by a discrete SMIL animation."""
+    fw, fh = cells[0].size
+    strip = Image.new("RGBA", (fw * len(cells), fh))
+    for n, cell in enumerate(cells):
+        strip.paste(cell, (n * fw, 0))
+    buf = io.BytesIO()
+    # WebP keeps the alpha edges clean at about a fifth of the PNG size, which
+    # matters: every clip travels to the mascot page as text.
+    strip.save(buf, "WEBP", quality=90, method=6)
+    png = base64.b64encode(buf.getvalue()).decode()
+
+    total = sum(durations)
+    fps = max(1 / d for d in durations)
+    key_times, t = [], 0.0
+    for d in durations:
+        key_times.append(f"{t / total:.5f}")
+        t += d
+    values = ";".join(str(-n * fw) for n in order)
+    repeat = 'repeatCount="indefinite"' if loop else 'fill="freeze"'
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{view_box}" width="512" height="512" '
+        f'data-clip="{name}" data-frames="{total * fps:.3f}" data-fps="{fps:g}" data-loop="{str(loop).lower()}">\n'
+        f'<defs><clipPath id="{prefix}-{name}-frame"><rect width="{fw}" height="{fh}"/></clipPath></defs>\n'
+        f'<g clip-path="url(#{prefix}-{name}-frame)"><image width="{fw * len(cells)}" height="{fh}" href="data:image/webp;base64,{png}">'
+        f'<animate attributeName="x" calcMode="discrete" values="{values}" keyTimes="{";".join(key_times)}" dur="{total:.4f}s" {repeat}/>'
+        f"</image></g>\n</svg>\n"
+    )
 
 
 # --- Ember ------------------------------------------------------------------
@@ -130,31 +163,7 @@ def ember_clip(name: str, loop: bool, parts) -> str:
         order += [(anim, i) for i in seq] * repeat
         durations += [1 / meta[anim]["fps"]] * len(seq) * repeat
     slot = {key: n for n, key in enumerate(cells)}
-    strip = Image.new("RGBA", (FW * len(cells), FH))
-    for key, cell in cells.items():
-        strip.paste(cell, (slot[key] * FW, 0))
-    buf = io.BytesIO()
-    # WebP keeps the alpha edges clean at about a fifth of the PNG size, which
-    # matters: every clip travels to the mascot page as text.
-    strip.save(buf, "WEBP", quality=90, method=6)
-    png = base64.b64encode(buf.getvalue()).decode()
-
-    total = sum(durations)
-    fps = max(1 / d for d in durations)
-    key_times, t = [], 0.0
-    for d in durations:
-        key_times.append(f"{t / total:.5f}")
-        t += d
-    values = ";".join(str(-slot[key] * FW) for key in order)
-    repeat = 'repeatCount="indefinite"' if loop else 'fill="freeze"'
-    return (
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{VIEW_BOX}" width="512" height="512" '
-        f'data-clip="{name}" data-frames="{total * fps:.3f}" data-fps="{fps:g}" data-loop="{str(loop).lower()}">\n'
-        f'<defs><clipPath id="ember-{name}-frame"><rect width="{FW}" height="{FH}"/></clipPath></defs>\n'
-        f'<g clip-path="url(#ember-{name}-frame)"><image width="{FW * len(cells)}" height="{FH}" href="data:image/webp;base64,{png}">'
-        f'<animate attributeName="x" calcMode="discrete" values="{values}" keyTimes="{";".join(key_times)}" dur="{total:.4f}s" {repeat}/>'
-        f"</image></g>\n</svg>\n"
-    )
+    return strip_svg("ember", name, loop, list(cells.values()), [slot[key] for key in order], durations, VIEW_BOX)
 
 
 def build_ember() -> int:
@@ -167,7 +176,61 @@ def build_ember() -> int:
     return len(EMBER_CLIPS)
 
 
+# --- Mochi ------------------------------------------------------------------
+
+MOCHI = ASSETS / "mochi_pet"
+# spritesheet.png: one 320x320 frame per cell, one animation per row. The cat
+# sits with its feet on y ~ 305, so the square frame is used as is.
+MOCHI_VIEW_BOX = "0 0 320 320"
+# follow_cursor is a still per direction, in the order C, N, NE, E, SE, S, SW, W, NW.
+MOCHI_LOOKS = ["look_n", "look_ne", "look_e", "look_se", "look_s", "look_sw", "look_w", "look_nw"]
+
+# clip name -> (loop, [(animation, (first, end) frame range or ALL, repeat)]);
+# every other animation in spritesheet.json becomes a clip of the same name.
+MOCHI_CLIPS = {
+    "drop_in": (False, [("fall", ALL, 3), ("land", ALL, 1)]),
+    "tumble": (True, [("spin", ALL, 1)]),
+    "look_around": (False, [("look_left", ALL, 1), ("look_right", ALL, 1)]),
+    **{name: (True, [("follow_cursor", (i + 1, i + 2), 1)]) for i, name in enumerate(MOCHI_LOOKS)},
+}
+
+
+def mochi_clip(sheet: Image.Image, meta: dict, name: str, loop: bool, parts) -> str:
+    fw, fh = meta["frame_size"]
+    anims = meta["animations"]
+    cells: dict[tuple[str, int], Image.Image] = {}
+    order: list[tuple[str, int]] = []
+    durations: list[float] = []
+    for anim, span, repeat in parts:
+        a = anims[anim]
+        first, end = span or (0, a["frames"])
+        seq = list(range(first, end))
+        for i in seq:
+            if (anim, i) not in cells:
+                cells[(anim, i)] = sheet.crop((i * fw, a["row"] * fh, (i + 1) * fw, (a["row"] + 1) * fh))
+        order += [(anim, i) for i in seq] * repeat
+        # Stills (fps 0) are held; one second is just the loop length.
+        durations += [1 / a["fps"] if a["fps"] else 1.0] * len(seq) * repeat
+    slot = {key: n for n, key in enumerate(cells)}
+    return strip_svg("mochi", name, loop, list(cells.values()), [slot[key] for key in order], durations, MOCHI_VIEW_BOX)
+
+
+def build_mochi() -> int:
+    meta = json.loads((MOCHI / "spritesheet.json").read_text())
+    sheet = Image.open(MOCHI / "spritesheet.png").convert("RGBA")
+    clips = {name: (a["loop"], [(name, ALL, 1)]) for name, a in meta["animations"].items() if a["fps"]}
+    clips.update(MOCHI_CLIPS)
+    out = MOCHI / "svg"
+    out.mkdir(exist_ok=True)
+    for old in out.glob("*.svg"):
+        old.unlink()
+    for name, (loop, parts) in clips.items():
+        (out / f"{name}.svg").write_text(mochi_clip(sheet, meta, name, loop, parts))
+    return len(clips)
+
+
 if __name__ == "__main__":
     for pack in SVG_PACKS:
         print(f"{pack}: tagged {tag_svg_pack(pack)} clips")
     print(f"ember_dragon_sprites: built {build_ember()} clips")
+    print(f"mochi_pet: built {build_mochi()} clips")

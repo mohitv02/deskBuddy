@@ -233,6 +233,16 @@ pub fn take_due_alarms(conn: &mut Connection, now: i64) -> Result<Vec<Todo>> {
     Ok(due)
 }
 
+/// Open todos due on or before `today` (the panel's "Today" list) with no
+/// alarm still to ring, oldest due first. For the evening reminder.
+pub fn open_without_alarm(conn: &Connection, today: &str) -> Result<Vec<Todo>> {
+    let mut stmt = conn.prepare(&format!(
+        "SELECT {COLUMNS} FROM todos WHERE status != 'done' AND remind_at IS NULL AND due IS NOT NULL AND substr(due, 1, 10) <= ?1 ORDER BY due"
+    ))?;
+    let rows = stmt.query_map([today], from_row)?;
+    Ok(rows.collect::<rusqlite::Result<_>>()?)
+}
+
 pub fn snooze(conn: &Connection, id: i64, until: i64) -> Result<Todo> {
     if conn.execute("UPDATE todos SET remind_at = ?1 WHERE id = ?2 AND status != 'done'", params![until, id])? == 0 {
         return Err(Error::NotFound);
@@ -330,6 +340,31 @@ mod tests {
     fn timed(title: &str, offset_min: i64) -> TodoInput {
         let t = chrono::Local::now() + chrono::Duration::minutes(offset_min);
         TodoInput { due: Some(t.format("%Y-%m-%dT%H:%M").to_string()), ..input(title) }
+    }
+
+    #[test]
+    fn evening_reminder_picks_todays_open_todos_without_alarm() {
+        let db = Db::open_in_memory().unwrap();
+        db.with(|c| {
+            let day = today();
+            create(c, &TodoInput { due: Some(day.clone()), ..input("today") })?;
+            create(c, &TodoInput { due: Some("2000-01-01".into()), ..input("overdue") })?;
+            create(c, &TodoInput { due: Some(format!("{day}T00:01")), alarm: Some(false), ..input("muted") })?;
+            create(c, &timed("has alarm", 30))?;
+            create(c, &TodoInput { due: Some("2099-01-01".into()), ..input("later") })?;
+            create(c, &input("no date"))?;
+            let done = create(c, &TodoInput { due: Some(day.clone()), ..input("done") })?;
+            set_status(c, done.id, Status::Done)?;
+            let mut titles: Vec<_> = open_without_alarm(c, &day)?.into_iter().map(|t| t.title).collect();
+            titles.sort();
+            assert_eq!(titles, ["muted", "overdue", "today"]);
+            Ok(())
+        })
+        .unwrap();
+    }
+
+    fn today() -> String {
+        chrono::Local::now().format("%Y-%m-%d").to_string()
     }
 
     #[test]
