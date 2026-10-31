@@ -3,6 +3,8 @@ mod chat;
 mod commands;
 mod crypto;
 mod db;
+mod e2e;
+mod host;
 mod legacy;
 mod mascot;
 mod paths;
@@ -121,6 +123,20 @@ pub fn run() {
             commands::delete_todo,
             commands::reorder_todos,
             commands::chat_status,
+            commands::chat_identity,
+            commands::team_create,
+            commands::team_join,
+            commands::team_invite,
+            commands::team_address,
+            commands::team_leave,
+            commands::team_rotate,
+            commands::link_request,
+            commands::link_respond,
+            commands::archive_release,
+            commands::archive_lock,
+            commands::chat_discover,
+            commands::chat_host_status,
+            commands::chat_host_save,
             commands::chat_conversations,
             commands::chat_open,
             commands::chat_retry,

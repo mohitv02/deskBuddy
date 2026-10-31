@@ -1,5 +1,5 @@
-//! Live connections by user address. One machine may hold several sockets
-//! (e.g. two app windows); a user is online while any of them is open.
+//! Live connections on this server, by device. One device may hold several
+//! sockets (e.g. two app windows); it is online while any of them is open.
 
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -20,45 +20,49 @@ pub struct Hub {
 
 impl Hub {
     /// Returns the connection id and whether the user just came online.
-    pub fn register(&self, ip: &str, outbox: Outbox) -> (u64, bool) {
+    pub fn register(&self, device: &str, outbox: Outbox) -> (u64, bool) {
         let id = self.next_id.fetch_add(1, Ordering::Relaxed);
         let mut conns = self.conns.lock().unwrap_or_else(|p| p.into_inner());
-        let sockets = conns.entry(ip.to_string()).or_default();
+        let sockets = conns.entry(device.to_string()).or_default();
         let first = sockets.is_empty();
         sockets.insert(id, outbox);
         (id, first)
     }
 
     /// Returns whether the user went offline.
-    pub fn unregister(&self, ip: &str, id: u64) -> bool {
+    pub fn unregister(&self, device: &str, id: u64) -> bool {
         let mut conns = self.conns.lock().unwrap_or_else(|p| p.into_inner());
-        let Some(sockets) = conns.get_mut(ip) else { return false };
+        let Some(sockets) = conns.get_mut(device) else { return false };
         sockets.remove(&id);
         let empty = sockets.is_empty();
         if empty {
-            conns.remove(ip);
+            conns.remove(device);
         }
         empty
     }
 
-    pub fn is_online(&self, ip: &str) -> bool {
-        self.conns.lock().unwrap_or_else(|p| p.into_inner()).contains_key(ip)
+    pub fn is_online(&self, device: &str) -> bool {
+        self.conns.lock().unwrap_or_else(|p| p.into_inner()).contains_key(device)
     }
 
-    /// Push to every socket of `ip` except `skip`.
-    pub fn send_to(&self, ip: &str, frame: &str, skip: Option<u64>) {
+    pub fn devices(&self) -> Vec<String> {
+        self.conns.lock().unwrap_or_else(|p| p.into_inner()).keys().cloned().collect()
+    }
+
+    /// Push to every socket of `device` except `skip`.
+    pub fn send_to(&self, device: &str, frame: &str, skip: Option<u64>) {
         let conns = self.conns.lock().unwrap_or_else(|p| p.into_inner());
-        for (id, outbox) in conns.get(ip).into_iter().flatten() {
+        for (id, outbox) in conns.get(device).into_iter().flatten() {
             if Some(*id) != skip {
                 let _ = outbox.try_send(frame.to_string());
             }
         }
     }
 
-    /// Push to every connected user except `skip_ip`.
-    pub fn broadcast(&self, frame: &str, skip_ip: &str) {
+    /// Push to every connected user except `skip`.
+    pub fn broadcast(&self, frame: &str, skip: &str) {
         let conns = self.conns.lock().unwrap_or_else(|p| p.into_inner());
-        for outbox in conns.iter().filter(|(ip, _)| *ip != skip_ip).flat_map(|(_, s)| s.values()) {
+        for outbox in conns.iter().filter(|(d, _)| *d != skip).flat_map(|(_, s)| s.values()) {
             let _ = outbox.try_send(frame.to_string());
         }
     }

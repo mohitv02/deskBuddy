@@ -48,6 +48,24 @@
     "dropped": "land.svg",
     "thrown": "tumble.svg",
     "thrownLanded": "thrown_fire.svg",
+    "thrownUp": [
+      "throw_whee.svg",
+      "throw_panic.svg"
+    ],
+    "thrownUpLanded": [
+      "land.svg",
+      "land_splat.svg",
+      "land_dizzy.svg"
+    ],
+    "thrownDown": [
+      "throw_dive.svg",
+      "throw_panic.svg"
+    ],
+    "thrownDownLanded": [
+      "land_splat.svg",
+      "land_dizzy.svg",
+      "land_grumpy.svg"
+    ],
     "fallAsleep": "lie_down.svg",
     "sleep": "sleep.svg",
     "wakeUp": "wake_up.svg"

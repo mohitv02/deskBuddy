@@ -26,15 +26,18 @@ pub struct Message {
     pub pinned: bool,
     pub created_at: i64,
     pub edited_at: Option<i64>,
-    /// Who sent it, in a LAN chat; None when it was sent from here.
+    /// Who sent it: their device key (or IP in an old chat); None when it
+    /// was sent from here.
     pub sender_ip: Option<String>,
+    /// Their name when it arrived, for group chats.
+    pub sender_name: String,
     /// Delivery of messages sent from here: "pending", "sent" or "failed".
     pub state: String,
     pub client_msg_id: Option<String>,
 }
 
 const SELECT: &str = "SELECT m.id, m.conversation_id, m.body, m.todo_id, t.status, m.pinned, m.created_at, m.edited_at,
-        m.sender_ip, m.state, m.client_msg_id
+        m.sender_ip, m.state, m.client_msg_id, m.sender_name
      FROM messages m LEFT JOIN todos t ON t.id = m.todo_id";
 
 fn from_row(r: &Row<'_>) -> rusqlite::Result<Message> {
@@ -50,6 +53,7 @@ fn from_row(r: &Row<'_>) -> rusqlite::Result<Message> {
         sender_ip: r.get(8)?,
         state: r.get(9)?,
         client_msg_id: r.get(10)?,
+        sender_name: r.get(11)?,
     })
 }
 
@@ -159,16 +163,16 @@ pub fn create_outgoing(conn: &Connection, conversation: i64, body: &str, client_
 }
 
 /// Messages sent from here that the server has not acknowledged, with the
-/// peer each goes to, oldest first.
+/// server conversation each goes to, oldest first.
 pub fn pending_outgoing(conn: &Connection) -> Result<Vec<(Message, String)>> {
     let mut stmt = conn.prepare(&format!(
         "{SELECT} JOIN conversations c ON c.id = m.conversation_id
-         WHERE m.state = 'pending' AND m.sender_ip IS NULL AND c.peer_ip IS NOT NULL ORDER BY m.id"
+         WHERE m.state = 'pending' AND m.sender_ip IS NULL AND c.room <> 'ip' AND c.remote_id IS NOT NULL ORDER BY m.id"
     ))?;
     let rows = stmt.query_map([], |r| Ok((from_row(r)?, String::new())))?;
     let mut out: Vec<(Message, String)> = rows.collect::<rusqlite::Result<_>>()?;
-    for (m, peer) in &mut out {
-        *peer = conn.query_row("SELECT peer_ip FROM conversations WHERE id = ?1", [m.conversation_id], |r| r.get(0))?;
+    for (m, remote) in &mut out {
+        *remote = conn.query_row("SELECT remote_id FROM conversations WHERE id = ?1", [m.conversation_id], |r| r.get(0))?;
     }
     Ok(out)
 }
@@ -189,8 +193,9 @@ pub fn by_client_id(conn: &Connection, client_msg_id: &str) -> Result<Option<Mes
 /// A message as stored on the chat server.
 pub struct Remote<'a> {
     pub conversation: i64,
-    /// None when it was sent from this machine.
+    /// None when it was sent from this device.
     pub sender_ip: Option<&'a str>,
+    pub sender_name: &'a str,
     pub client_msg_id: &'a str,
     pub seq: i64,
     pub body: &'a str,
@@ -212,9 +217,9 @@ pub fn apply_remote(conn: &Connection, m: &Remote<'_>) -> Result<bool> {
     }
     // OR IGNORE: already stored (same seq, or same sender + clientMsgId).
     let n = conn.execute(
-        "INSERT OR IGNORE INTO messages (conversation_id, body, created_at, sender_ip, client_msg_id, remote_seq, state)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?6, 'sent')",
-        params![m.conversation, m.body, m.created_at, m.sender_ip, m.client_msg_id, m.seq],
+        "INSERT OR IGNORE INTO messages (conversation_id, body, created_at, sender_ip, client_msg_id, remote_seq, state, sender_name)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, 'sent', ?7)",
+        params![m.conversation, m.body, m.created_at, m.sender_ip, m.client_msg_id, m.seq, m.sender_name],
     )?;
     if n > 0 {
         conn.execute(
@@ -313,26 +318,26 @@ mod tests {
     fn outgoing_ack_and_incoming() {
         let db = Db::open_in_memory().unwrap();
         db.with(|c| {
-            let conv = crate::db::conversations::open_remote(c, "10.0.0.2", "Asha")?.id;
+            let conv = crate::db::conversations::open_room(c, "dm", "dm:a|b", "", Some("b"), "Asha")?.id;
             let out = create_outgoing(c, conv, "hi Asha", "c1")?;
             assert_eq!((out.state.as_str(), out.sender_ip.as_deref()), ("pending", None));
             let pending = pending_outgoing(c)?;
-            assert_eq!((pending.len(), pending[0].1.as_str()), (1, "10.0.0.2"));
+            assert_eq!((pending.len(), pending[0].1.as_str()), (1, "dm:a|b"));
             assert!(matches!(update_body(c, out.id, "edited"), Err(Error::Invalid(_))), "chat messages are not editable");
 
             // The server's copy of our own message marks it sent, no duplicate.
-            let mine = Remote { conversation: conv, sender_ip: None, client_msg_id: "c1", seq: 1, body: "hi Asha", created_at: 1 };
+            let mine = Remote { conversation: conv, sender_ip: None, sender_name: "", client_msg_id: "c1", seq: 1, body: "hi Asha", created_at: 1 };
             assert!(apply_remote(c, &mine)?);
             assert!(!apply_remote(c, &mine)?, "second delivery is a no-op");
             assert_eq!(get(c, out.id)?.state, "sent");
             assert!(pending_outgoing(c)?.is_empty());
 
-            let theirs = Remote { conversation: conv, sender_ip: Some("10.0.0.2"), client_msg_id: "c1", seq: 2, body: "hello!", created_at: 2 };
+            let theirs = Remote { conversation: conv, sender_ip: Some("b"), sender_name: "Asha", client_msg_id: "c1", seq: 2, body: "hello!", created_at: 2 };
             assert!(apply_remote(c, &theirs)?, "same clientMsgId from another sender is a different message");
             assert!(!apply_remote(c, &theirs)?);
             let page = list(c, conv, None, 10)?;
             assert_eq!(bodies(&page), ["hi Asha", "hello!"]);
-            assert_eq!(page[1].sender_ip.as_deref(), Some("10.0.0.2"));
+            assert_eq!((page[1].sender_ip.as_deref(), page[1].sender_name.as_str()), (Some("b"), "Asha"));
             assert_eq!(search(c, conv, "hello", 10)?.len(), 1);
 
             assert_eq!(set_state(c, out.id, "failed")?.state, "failed");

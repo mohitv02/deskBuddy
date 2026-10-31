@@ -60,6 +60,34 @@
     ],
     "dragged": "int_dragged.svg",
     "dropped": "move_fall_land.svg@0.45",
+    "thrown": [
+      "thrown_tumble.svg",
+      "thrown_flail.svg"
+    ],
+    "thrownLanded": [
+      "land_dizzy.svg",
+      "land_dust_off.svg",
+      "move_fall_land.svg@0.45",
+      "fun_throw_shuriken.svg"
+    ],
+    "thrownUp": [
+      "thrown_up_whee.svg",
+      "thrown_panic.svg"
+    ],
+    "thrownUpLanded": [
+      "move_fall_land.svg@0.45",
+      "land_splat.svg",
+      "land_dizzy.svg"
+    ],
+    "thrownDown": [
+      "thrown_down_dive.svg",
+      "thrown_panic.svg"
+    ],
+    "thrownDownLanded": [
+      "land_splat.svg",
+      "land_dizzy.svg",
+      "mood_angry.svg"
+    ],
     "fallAsleep": "sleep_fall_asleep.svg",
     "sleep": "sleep_loop.svg",
     "wakeUp": "sleep_wake_up.svg",
@@ -89,5 +117,6 @@
   "effectOrigin": [
     256,
     160
-  ]
+  ],
+  "throwEffect": false
 }

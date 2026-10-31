@@ -9,11 +9,36 @@
     "alarmClosed": "fly.svg",
     "clicks": "flame.svg",
     "done": "fly.svg",
-    "snooze": "sad.svg"
+    "snooze": "sad.svg",
+    "thrown": [
+      "throw_tumble.svg"
+    ],
+    "thrownLanded": [
+      "land_dizzy.svg",
+      "land_grumpy.svg"
+    ],
+    "thrownUp": [
+      "throw_whee.svg",
+      "throw_panic.svg"
+    ],
+    "thrownUpLanded": [
+      "land_splat.svg",
+      "land_dizzy.svg"
+    ],
+    "thrownDown": [
+      "throw_dive.svg",
+      "throw_panic.svg"
+    ],
+    "thrownDownLanded": [
+      "land_splat.svg",
+      "land_dizzy.svg",
+      "land_grumpy.svg"
+    ]
   },
   "alarmEffect": "flames",
   "effectOrigin": [
     400,
     420
-  ]
+  ],
+  "throwEffect": false
 }

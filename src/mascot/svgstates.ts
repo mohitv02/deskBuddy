@@ -41,7 +41,22 @@ type State =
   | "dropped"
   | "thrown"
   | "thrownLanded"
+  | "thrownUp"
+  | "thrownUpLanded"
+  | "thrownDown"
+  | "thrownDownLanded"
   | Look;
+
+type Fling = "side" | "up" | "down";
+
+/** Each kind of throw: the state while flying, and the one for the landing. */
+const FLINGS: Record<Fling, [flying: State, landing: State]> = {
+  side: ["thrown", "thrownLanded"],
+  up: ["thrownUp", "thrownUpLanded"],
+  down: ["thrownDown", "thrownDownLanded"],
+};
+/** Drawn facing right; mirrored when flying or landing the other way. */
+const DIRECTED: string[] = Object.values(FLINGS).flat();
 
 const LOOKS: Look[] = ["lookUp", "lookUpRight", "lookRight", "lookDownRight", "lookDown", "lookDownLeft", "lookLeft", "lookUpLeft"];
 
@@ -53,6 +68,8 @@ const FALLBACK: Partial<Record<State, State[]>> = {
   allDone: ["done", "hover"],
   falling: ["dragged"],
   thrown: ["falling", "dragged"],
+  thrownUp: ["falling", "dragged"],
+  thrownDown: ["falling", "dragged"],
 };
 
 /** States replaced by idle when missing; every other missing state is skipped. */
@@ -65,7 +82,7 @@ export const MOODS = ["allDone", "added", "started", "deleted"];
 const MESSAGE_DEFAULT: State[] = ["doubleClick", "added", "done"];
 
 /** Held as long as their condition lasts; a one-shot clip here loops. */
-const HELD: string[] = ["idle", "hover", "alarm", "sleep", "dragged", "falling", "thrown"];
+const HELD: string[] = ["idle", "hover", "alarm", "sleep", "dragged", "falling", "thrown", "thrownUp", "thrownDown"];
 
 const TEMP_MS: Partial<Record<State, number>> = {
   alarmClosed: 3000,
@@ -81,6 +98,8 @@ const TEMP_MS: Partial<Record<State, number>> = {
   hungry: 4000,
   dropped: 2500,
   thrownLanded: 3000,
+  thrownUpLanded: 3000,
+  thrownDownLanded: 3000,
 };
 const IDLE_FPS = 6;
 const ACTIVE_FPS = 24;
@@ -169,7 +188,8 @@ export class SvgStateAnimator {
   private dragging = false;
   /** Let go up high: the window is dropping back down. */
   private dropping = false;
-  /** Flung sideways: the direction it flies (1 = right, -1 = left), 0 if not. */
+  /** Flung: which way (null if not), and sideways 1 = right, -1 = left, 0 = straight. */
+  private fling: Fling | null = null;
   private throwDir = 0;
   /** The thrown clips face right; the other way is mirrored. */
   private facing = 1;
@@ -302,6 +322,7 @@ export class SvgStateAnimator {
   dragStart() {
     this.dragging = true;
     this.dropping = false;
+    this.fling = null;
     this.throwDir = 0;
     this.asleep = false;
     this.temp = null;
@@ -318,26 +339,30 @@ export class SvgStateAnimator {
     this.render();
   }
 
-  /** Flung sideways: tumbles along in that direction until it stops. */
-  thrown(dir: number) {
+  /** Flung sideways (tumbles along until it stops), up (flies up and falls
+   * back) or down (slams into the ground); `dir` is the sideways part. */
+  thrown(dir: number, kind: Fling = "side") {
     if (!this.dragging) return;
     this.dropping = true;
-    this.throwDir = dir < 0 ? -1 : 1;
-    this.facing = this.throwDir;
-    this.choose("thrown");
+    this.fling = FLINGS[kind] ? kind : "side";
+    this.throwDir = Math.sign(dir);
+    this.facing = this.throwDir || 1;
+    this.choose(FLINGS[this.fling][0]);
     this.render();
   }
 
-  /** Back on the ground: play the landing (after a throw: turn round and get even). */
+  /** Back on the ground: play the landing (after a throw: turned round, facing you). */
   landed() {
     if (!this.dragging) return;
     this.dragging = false;
     this.dropping = false;
     this.scheduleSleep();
-    if (this.throwDir && this.states.has("thrownLanded")) {
-      this.facing = -this.throwDir;
-      this.flash("thrownLanded");
+    const landing = this.fling && FLINGS[this.fling][1];
+    if (landing && this.states.has(landing)) {
+      this.facing = -this.throwDir || 1;
+      this.flash(landing);
     } else this.flash("dropped");
+    this.fling = null;
     this.throwDir = 0;
     this.render();
   }
@@ -472,7 +497,7 @@ export class SvgStateAnimator {
     const state = (s: State): [string, string] => [this.resolve(s), this.fileFor(s)];
     if (this.ringing) return state("alarm");
     if (this.dragging) {
-      const carried: State = this.throwDir ? "thrown" : this.dropping ? "falling" : "dragged";
+      const carried: State = this.fling ? FLINGS[this.fling][0] : this.dropping ? "falling" : "dragged";
       if (this.resolve(carried) !== "idle") return state(carried);
     }
     if (this.temp && now < this.temp.until) return state(this.temp.state);
@@ -488,7 +513,7 @@ export class SvgStateAnimator {
     // Anything else interrupts an idle variant for good.
     if (state !== "variant") this.variant = null;
     this.shownState = state;
-    const directed = state === "thrown" || state === "thrownLanded";
+    const directed = DIRECTED.includes(state);
     this.el.classList.toggle("flipped", directed && this.facing < 0);
     if (file === this.shown) return;
     const prev = this.layer;

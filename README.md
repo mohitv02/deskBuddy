@@ -1,8 +1,8 @@
 # DeskBuddy
 
-A desktop companion for Linux (Ubuntu/GNOME): an animated pet that lives on your screen, a todo list with alarms, an encrypted and searchable vault for passwords and notes, and optional LAN chat between machines.
+A desktop companion for Linux (Ubuntu/GNOME): an animated pet that lives on your screen, a todo list with alarms, an encrypted and searchable vault for passwords and notes, and optional end-to-end encrypted team chat.
 
-> Status: **all five phases done**: floating mascot, todos with alarms, an encrypted and searchable vault, settings, a global shortcut, start on login, and `.deb` / AppImage packages. LAN chat is newer and optional.
+> Status: **all five phases done**: floating mascot, todos with alarms, an encrypted and searchable vault, settings, a global shortcut, start on login, and `.deb` / AppImage packages. Team chat is newer and optional.
 
 ## Features
 
@@ -10,7 +10,7 @@ A desktop companion for Linux (Ubuntu/GNOME): an animated pet that lives on your
 - **Todos with alarms.** Recurring alarms, snooze, and overdue reminders.
 - **Encrypted vault.** SQLCipher + Argon2id, full-text search, a clipboard that clears itself, and encrypted backups.
 - **Works offline.** No telemetry and no accounts. The only network traffic is the optional chat server, and only if you configure one.
-- **LAN chat (optional).** Message other DeskBuddy machines on your network through a small self-hosted server ([server/](server/)).
+- **Team chat (optional).** End-to-end encrypted direct, team and team-to-team chats through servers you host yourself ([server/](server/)).
 
 ## Quick start
 
@@ -68,8 +68,12 @@ src-tauri/src/               backend (Rust)
     hotkey.rs                global shortcut + GNOME conflict check + tests
     autostart.rs             ~/.config/autostart entry + tests
     fullscreen.rs            event-driven X11 fullscreen detection
+  chat.rs                    chat client: login, failover, sync, teams and links
+  e2e.rs                     end-to-end encryption (device keys, team keys, archive halves) + tests
+  host.rs                    "Host a server" settings: the server's .env and /health
   db/                        data-access layer (all SQL lives here)
     migrations.rs            forward-only migrations via PRAGMA user_version
+    chat_keys.rs             this device's identity and team keys + tests
     todos.rs                 todo repository + unit tests
     vault.rs                 vault repository, FTS5 search + unit tests
   mascot.rs                  loads a custom mascot image or sprite sheet
@@ -333,11 +337,21 @@ Only one instance runs per user. Launching again while it's running doesn't star
 
 ## Chat (optional)
 
-Chat is off until you enter a server in **Settings → Chat**. You run the server yourself: a small Rust WebSocket service backed by MongoDB, in [server/](server/). See [server/README.md](server/README.md) to set it up (`cp server/.env.example server/.env`, then `cargo run --release`). Each machine is identified by its LAN IP address. There is no login, so only run the server on a network you trust.
+Chat is off until you connect to a server in **Settings → Chat** (type its address, or **Find servers on this network**). You or your team run the server: a small Rust service backed by MongoDB, in [server/](server/). See [server/README.md](server/README.md) for setup and the design.
+
+- **Identity.** Each install has its own key pair; its public key is your device id. The server checks a signature at every login, so nobody can pose as you, and IP addresses no longer matter.
+- **End-to-end encryption.** Messages are encrypted in the app (XChaCha20-Poly1305) before they leave it. Servers and their databases only see ciphertext, plus who wrote to whom and when.
+- **Direct chats** (＋ in the chat bar) with anyone on the same server, or in a team linked to yours for personal chats.
+- **Teams** (👥 in the chat bar). Create a team and share its invite (`DBT1-…`). The invite holds the team key, so send it privately. **New key** removes everyone until they join again with the new invite; use it when someone leaves.
+- **Team to team.** Give another team your team's address (`DBA1-…`, safe to share). They send one of three requests: a *group chat* for both teams, a *temporary group* that closes after 1–72 hours, or *personal chats* between members. Any member can accept. Both teams see a safety number: compare it on a call, and if it differs someone swapped the keys.
+- **Temporary groups and their archive.** When one closes, its messages leave everyone's app. The archive stays on the servers for the period you chose, or forever. It is encrypted with a key made of two halves, one held by each team, so it can be read again only when **both** teams press *Release our half*. Either team can lock it again.
+- **Several servers per team.** Servers that share one MongoDB database act as one; the app learns all of them and switches if one is down. Teams on different databases (different "homes") are connected server to server, and messages wait in a queue while the other side is offline.
+
+Chats from the old IP-based server stay readable but can't be continued.
 
 ## Privacy
 
-There's no telemetry. With chat off (the default), the app makes no network connections at all; the CSP allows only `ipc:` connections. With chat on, the Rust side connects only to the server you configured.
+There's no telemetry. With chat off (the default), the app makes no network connections at all; the CSP allows only `ipc:` connections. With chat on, the Rust side connects only to your chat servers. **Find servers on this network** sends one mDNS query, only when you click it.
 
 ## Contributing
 

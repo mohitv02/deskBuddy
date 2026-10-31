@@ -2,6 +2,7 @@
 //! sees typed functions. Both database files are SQLCipher-encrypted with raw
 //! 256-bit keys (see `crypto`).
 
+pub mod chat_keys;
 pub mod conversations;
 pub mod messages;
 pub mod migrations;

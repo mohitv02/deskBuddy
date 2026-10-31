@@ -6,7 +6,7 @@ use rusqlite::Connection;
 use super::Result;
 
 /// `deskbuddy.db` — todos. Unlocked automatically (key in the login keyring).
-pub const TODOS: &[&str] = &[TODOS_V1, TODOS_V2, TODOS_V3, TODOS_V4, TODOS_V5];
+pub const TODOS: &[&str] = &[TODOS_V1, TODOS_V2, TODOS_V3, TODOS_V4, TODOS_V5, TODOS_V6];
 
 /// `vault.db` — vault entries. Unlocked with the master password.
 pub const VAULT: &[&str] = &[VAULT_V1];
@@ -123,6 +123,42 @@ const TODOS_V4: &str = "ALTER TABLE conversations ADD COLUMN peer_ip TEXT NULL;
 // How the pet reacts to a message from this person: '' = the default
 // reaction, 'none' = no reaction, otherwise a pet state such as 'doubleClick'.
 const TODOS_V5: &str = "ALTER TABLE conversations ADD COLUMN reaction TEXT NOT NULL DEFAULT '';";
+
+// Chat v2: end-to-end encrypted, identified by device keys instead of IPs.
+// chat_identity holds this install's Ed25519 + X25519 secrets; teams and
+// team_keys hold the keys from team invites (old versions stay so old
+// messages still decrypt). A remote conversation's `room` is 'dm', 'team' or
+// 'link' (remote_id is then the server's conversation id), or 'ip' for a v1
+// chat kept read-only. messages.sender_ip now holds the sender's id: an IP
+// for v1, a device key for v2.
+const TODOS_V6: &str = "CREATE TABLE chat_identity (
+        id          INTEGER PRIMARY KEY CHECK (id = 1),
+        sign_secret BLOB    NOT NULL,
+        dh_secret   BLOB    NOT NULL,
+        created_at  INTEGER NOT NULL
+    );
+    CREATE TABLE teams (
+        id          TEXT    PRIMARY KEY,
+        name        TEXT    NOT NULL,
+        dh_secret   BLOB    NOT NULL,
+        key_version INTEGER NOT NULL,
+        home        TEXT    NOT NULL DEFAULT '',
+        servers     TEXT    NOT NULL DEFAULT '[]', -- JSON list of http://host:port
+        removed     INTEGER NOT NULL DEFAULT 0 CHECK (removed IN (0, 1)),
+        joined_at   INTEGER NOT NULL
+    );
+    CREATE TABLE team_keys (
+        team_id TEXT    NOT NULL REFERENCES teams (id) ON DELETE CASCADE,
+        version INTEGER NOT NULL,
+        key     BLOB    NOT NULL,
+        PRIMARY KEY (team_id, version)
+    ) WITHOUT ROWID;
+    ALTER TABLE conversations ADD COLUMN room TEXT NOT NULL DEFAULT 'ip' CHECK (room IN ('ip', 'dm', 'team', 'link'));
+    ALTER TABLE conversations ADD COLUMN peer_device TEXT NULL;
+    ALTER TABLE conversations ADD COLUMN read_only TEXT NOT NULL DEFAULT '';
+    CREATE UNIQUE INDEX conversations_room ON conversations (remote_id) WHERE room <> 'ip';
+    UPDATE conversations SET read_only = 'This chat used the old IP-based server.' WHERE kind = 'remote';
+    ALTER TABLE messages ADD COLUMN sender_name TEXT NOT NULL DEFAULT '';";
 
 pub fn run(conn: &Connection, migrations: &[&str]) -> Result<()> {
     let current: i64 = conn.pragma_query_value(None, "user_version", |r| r.get(0))?;

@@ -18,6 +18,8 @@ const REACTABLE = [
   "snooze",
   "dropped",
   "thrownLanded",
+  "thrownUpLanded",
+  "thrownDownLanded",
   "intro",
   "wakeUp",
 ];

@@ -41,8 +41,12 @@ export const GROUPS: [title: string, rows: Row[]][] = [
       ["dragged", "Dragged", "while you move it"],
       ["falling", "Falling", "let go higher up: it drops back down a few inches"],
       ["dropped", "Lands", "when it's back on the ground"],
-      ["thrown", "Thrown", "flick it sideways while dragging: it tumbles along"],
-      ["thrownLanded", "Gets even", "after a throw: it turns back and lets you have it"],
+      ["thrown", "Thrown sideways", "flick it left or right as you let go: it tumbles along"],
+      ["thrownLanded", "Lands, sideways", "after a sideways throw: it turns back to face you"],
+      ["thrownUp", "Thrown up", "flick it up, straight or diagonally: it flies up and falls back"],
+      ["thrownUpLanded", "Lands, from up high", "after an upward throw"],
+      ["thrownDown", "Thrown down", "flick it down: it slams into the ground"],
+      ["thrownDownLanded", "Lands, slammed", "after a downward throw"],
     ],
   ],
   [
@@ -76,6 +80,8 @@ const FALLBACK: Record<string, string[]> = {
   allDone: ["done", "hover"],
   falling: ["dragged"],
   thrown: ["falling", "dragged"],
+  thrownUp: ["falling", "dragged"],
+  thrownDown: ["falling", "dragged"],
 };
 const BASIC = ["idle", "hover", "alarm", "alarmClosed", "clicks", "done", "snooze", "sleep", "allDone", "falling"];
 
@@ -115,6 +121,14 @@ const CLIP_NAMES: Record<string, string> = {
   fire: "Breathes fire (side view)",
   dragged: "Dangles, held by the scruff",
   int_dragged: "Dangles, surprised",
+  thrown_tumble: "Rolls head over heels, dizzy",
+  thrown_flail: "Flies along, flailing",
+  thrown_up_whee: "Arms up: \"whee!\"",
+  thrown_panic: "Flails, shocked",
+  thrown_down_dive: "Head-first ninja dive",
+  land_dizzy: "Crash-lands, sees stars",
+  land_splat: "Splats flat, pops back up",
+  land_dust_off: "Dusts itself off: \"hmph\"",
 };
 
 /** "mood_smile_wink" -> "Smile wink". */

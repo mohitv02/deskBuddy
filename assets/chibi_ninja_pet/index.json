@@ -392,6 +392,86 @@
    "description": "Throws a shuriken off-screen; it boomerangs back to be caught.",
    "lottie": "lottie/fun_throw_shuriken.json",
    "svg": "svg/fun_throw_shuriken.svg"
+  },
+  {
+   "name": "thrown_tumble",
+   "category": "thrown",
+   "frames": 24,
+   "seconds": 0.8,
+   "loop": true,
+   "description": "Thrown sideways: curled into a ball, rolling head over heels with spinning spiral eyes.",
+   "lottie": "lottie/thrown_tumble.json",
+   "svg": "svg/thrown_tumble.svg"
+  },
+  {
+   "name": "thrown_flail",
+   "category": "thrown",
+   "frames": 24,
+   "seconds": 0.8,
+   "loop": true,
+   "description": "Thrown sideways: flies along leaning back, arms and legs flailing, big panicked eyes, sweat drop.",
+   "lottie": "lottie/thrown_flail.json",
+   "svg": "svg/thrown_flail.svg"
+  },
+  {
+   "name": "thrown_up_whee",
+   "category": "thrown",
+   "frames": 30,
+   "seconds": 1.0,
+   "loop": true,
+   "description": "Thrown up: arms out in a V, legs swinging, happy eyes and an open-mouthed \"whee!\", sparkles.",
+   "lottie": "lottie/thrown_up_whee.json",
+   "svg": "svg/thrown_up_whee.svg"
+  },
+  {
+   "name": "thrown_panic",
+   "category": "thrown",
+   "frames": 24,
+   "seconds": 0.8,
+   "loop": true,
+   "description": "Thrown up or down: flails its arms over its head, legs kicking, blank shocked eyes, \"!\" and a sweat drop.",
+   "lottie": "lottie/thrown_panic.json",
+   "svg": "svg/thrown_panic.svg"
+  },
+  {
+   "name": "thrown_down_dive",
+   "category": "thrown",
+   "frames": 20,
+   "seconds": 0.667,
+   "loop": true,
+   "description": "Thrown down: head-first ninja dive, arms out in front, sharp eyes and a battle cry, speed lines above.",
+   "lottie": "lottie/thrown_down_dive.json",
+   "svg": "svg/thrown_down_dive.svg"
+  },
+  {
+   "name": "land_dizzy",
+   "category": "landing",
+   "frames": 120,
+   "seconds": 4.0,
+   "loop": false,
+   "description": "Crash-lands with a squash, wobbles around with spiral eyes and stars circling its head, then shakes it off.",
+   "lottie": "lottie/land_dizzy.json",
+   "svg": "svg/land_dizzy.svg"
+  },
+  {
+   "name": "land_splat",
+   "category": "landing",
+   "frames": 100,
+   "seconds": 3.333,
+   "loop": false,
+   "description": "Splats flat as a pancake, quivers, pops back up with a boing, shakes itself off.",
+   "lottie": "lottie/land_splat.json",
+   "svg": "svg/land_splat.svg"
+  },
+  {
+   "name": "land_dust_off",
+   "category": "landing",
+   "frames": 110,
+   "seconds": 3.667,
+   "loop": false,
+   "description": "Lands with a stumble, pats the dust off its gi with a grumpy -_- face, then turns away: \"hmph\".",
+   "lottie": "lottie/land_dust_off.json",
+   "svg": "svg/land_dust_off.svg"
   }
  ]
 }

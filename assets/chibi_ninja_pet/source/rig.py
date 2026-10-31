@@ -4,11 +4,22 @@ from core import *
 
 PAL = dict(out='#17151f', suit='#2f2f3d', suit_hi='#4a4b60', red='#e8303d', red_dk='#a91f2b', skin='#ffd3b3',
            cheek='#ff8a9c', white='#ffffff', eye='#17151f', mouth='#9a9bb4', steel='#c9ccda', steel_dk='#8d90a3',
-           wood='#c98b55', wood_dk='#8a5a33', smoke='#eeeef5', paper='#f8f0dc', rice='#ffffff', nori='#2f2f3d')
+           wood='#c98b55', wood_dk='#8a5a33', smoke='#eeeef5', paper='#f8f0dc', rice='#ffffff', nori='#2f2f3d', star='#ffd84a')
 GHOST = dict(PAL, out='#6f7590', suit='#b9c0db', suit_hi='#cfd5ea', red='#f3a3aa', red_dk='#e98c95', skin='#ffe9dc',
              cheek='#ffc7d0', eye='#6f7590', mouth='#8f95ad')
 OW = 6      # main outline width
 GROUND = 470
+
+def spiral(c, r=11, turns=2.2, n=34):
+    """Archimedean spiral from the centre of an eye outwards."""
+    pts = []
+    for k in range(n):
+        u = k / (n - 1); a = u * turns * 2 * math.pi
+        pts.append((c[0] + r * u * math.cos(a), c[1] + r * u * math.sin(a)))
+    return smooth(pts, closed=False, t=1 / 6)
+
+def star5(cx, cy, R, r):
+    return poly([(cx + (R if k % 2 == 0 else r) * math.cos(math.radians(-90 + 36 * k)), cy + (R if k % 2 == 0 else r) * math.sin(math.radians(-90 + 36 * k))) for k in range(10)])
 
 def build_character(pre='', pal=PAL, props=True):
     C = {k: hexc(v) for k, v in pal.items()}
@@ -118,6 +129,11 @@ def build_character(pre='', pal=PAL, props=True):
         'big': n('eyes_big', (256, EY), eye_open(EL, 1.22) + eye_open(ER, 1.22), op=0),
         'dot': n('eyes_dot', (256, EY), [Prim(circle(EL[0], EL[1], 15), fill=C['white'], stroke=out, w=4.5), Prim(circle(EL[0], EL[1], 5), fill=out),
                                          Prim(circle(ER[0], ER[1], 15), fill=C['white'], stroke=out, w=4.5), Prim(circle(ER[0], ER[1], 5), fill=out)], op=0),
+        # dizzy @ @: the spirals spin on their own nodes (spiralL / spiralR)
+        'spiral': n('eyes_spiral', (256, EY), [Prim(circle(EL[0], EL[1], 15), fill=C['white'], stroke=out, w=4.5), Prim(circle(ER[0], ER[1], 15), fill=C['white'], stroke=out, w=4.5)],
+                    [n('spiralL', EL, [Prim(spiral(EL), stroke=out, w=3.5)]), n('spiralR', ER, [Prim(spiral(ER), stroke=out, w=3.5)])], op=0),
+        # annoyed - _ -
+        'meh': n('eyes_meh', (256, EY), [Prim(line((211, 271), (237, 271)), stroke=out, w=6), Prim(line((275, 271), (301, 271)), stroke=out, w=6)], op=0),
     }
     eyes = n('eyes', (256, EY), [], list(variants.values()))
     B = lambda pts, w=6: Prim(line(*pts), stroke=out, w=w)
@@ -142,6 +158,7 @@ def build_character(pre='', pal=PAL, props=True):
         'yawn': n('mouth_yawn', (256, MY), [Prim(ellipse(256, 322, 13, 16), fill=out, stroke=M, w=4), Prim(ellipse(256, 331, 8, 5), fill=red)], op=0),
         'pout': n('mouth_pout', (256, MY), [Prim(line((245, 320), (250, 315), (256, 320), (262, 315), (267, 320)), stroke=M, w=4.5)], op=0),
         'flat': n('mouth_flat', (256, MY), [Prim(line((247, 319), (265, 319)), stroke=M, w=5)], op=0),
+        'wavy': n('mouth_wavy', (256, MY), [Prim(smooth([(240, 321), (248, 314), (256, 321), (264, 328), (272, 321)], closed=False, corners={0, 4}), stroke=M, w=5)], op=0),
     }
     mouthN = n('mouth', (256, MY), [], list(mouths.values()))
     maskup = n('maskup', (256, 302), outlined(rrect(179, 232, 154, 72, 30), suit, out, 5) + [Prim(line((200, 262), (312, 262)), stroke=C['suit_hi'], w=4)], scale=(100, 0), op=0)
@@ -217,6 +234,8 @@ def build_effects(C=None):
                   + [Prim(circle(x - r * 0.3, y - r * 0.32, r * 0.32), fill=C['white']) for x, y, r in BIG[:5]], scale=(0, 0), op=0))
     for k in range(3):
         E.append(Node(f'spark{k}', (0, 0), [Prim(star4(0, 0, 15, 4.5), fill=C['white'], stroke=out, w=4)], scale=(0, 0), op=0))
+    for k in range(3):
+        E.append(Node(f'star{k}', (0, 0), [Prim(star5(0, 0, 20, 9), fill=C['star'], stroke=out, w=4)], scale=(0, 0), op=0))
     for k in range(3):
         E.append(Node(f'heart{k}', (0, 0), [Prim(heart(0, 0, 13), fill=C['red'], stroke=out, w=4), Prim(circle(-5, -6, 2.6), fill=C['white'])], scale=(0, 0), op=0))
     zz = lambda s: Path([(-8 * s, -8 * s), (8 * s, -8 * s), (-8 * s, 8 * s), (8 * s, 8 * s)], closed=False)

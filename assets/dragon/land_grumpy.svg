@@ -1,0 +1,105 @@
+<svg data-clip="land_grumpy" data-frames="90" data-fps="30" data-loop="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="512" height="512"><g><animateTransform attributeName="transform" type="translate" dur="3s" fill="freeze" calcMode="spline" values="0 -62.8;0 0;0 0" keyTimes="0.0000;0.0444;1.0000" keySplines="0.42 0 1 1;0 0 1 1"/><g transform="translate(400 750)"><g><animateTransform attributeName="transform" type="scale" dur="3s" fill="freeze" calcMode="spline" values="0.92 1.1;1.18 0.84;0.97 1.04;1 1;1 1" keyTimes="0.0000;0.0444;0.1111;0.1667;1.0000" keySplines="0.42 0 1 1;0.12 0.85 0.25 1;0.42 0 0.58 1;0 0 1 1"/><g transform="translate(-400 -750)">
+    <style>
+        .outline { stroke: #2B0E63; stroke-width: 16; stroke-linejoin: round; stroke-linecap: round; }
+        .red-fill { fill: #FF3355; }
+        .cream-fill { fill: #FFE0AC; }
+        .white-fill { fill: #FFFFFF; }
+        .dark-fill { fill: #180838; }
+        .shadow-fill { fill: #CD8EC9; }
+        .fire-outer { fill: #FF8521; }
+        .fire-inner { fill: #FFDE3D; }
+
+        #dragon-group { transform-origin: 400px 450px; animation: float-idle 2s ease-in-out infinite alternate; }
+        #shadow { transform-origin: 400px 750px; opacity: 0.8; }
+        
+        #arm-left { transform-origin: 320px 520px; animation: raise-arm-left 1.5s ease-in-out infinite; }
+        #arm-right { transform-origin: 480px 520px; animation: raise-arm-right 1.5s ease-in-out infinite; }
+        #fireball-container { transform-origin: 400px 520px; animation: shoot-huge 1.5s ease-in infinite; }
+
+        @keyframes float-idle {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-15px); }
+        }
+        @keyframes raise-arm-left {
+            0%, 100% { transform: rotate(0deg); }
+            20%, 60% { transform: rotate(-40deg) translateY(-10px); }
+        }
+        @keyframes raise-arm-right {
+            0%, 100% { transform: rotate(0deg); }
+            20%, 60% { transform: rotate(40deg) translateY(-10px); }
+        }
+        @keyframes shoot-huge {
+            0% { transform: scale(0) translateY(0); opacity: 0; }
+            15% { transform: scale(1) translateY(0); opacity: 1; }
+            40% { transform: scale(7) translateY(-30px); opacity: 1; }
+            75% { transform: scale(12) translateY(-60px); opacity: 0; }
+            100% { transform: scale(0) translateY(0); opacity: 0; }
+        }
+    </style>
+
+    <g id="shadow"><ellipse cx="400" cy="730" rx="140" ry="20" class="shadow-fill" /></g>
+
+    <g id="dragon-group">
+        <g id="tail" class="outline">
+            <path class="red-fill" d="M 450, 600 C 600, 600 680, 720 620, 740 C 580, 750 520, 680 430, 660 Z" />
+            <polygon class="cream-fill" points="540,650 570,620 590,660" />
+            <polygon class="cream-fill" points="600,690 640,670 630,710" />
+        </g>
+        <g id="wings">
+            <g id="left-wing" class="outline">
+                <path class="cream-fill" d="M 330, 520 C 220, 460 150, 480 140, 530 C 180, 560 210, 550 220, 520 C 240, 570 270, 580 300, 550 Z" />
+                <path class="red-fill" d="M 330, 520 C 220, 460 150, 480 140, 530 C 190, 450 270, 460 340, 520 Z" />
+            </g>
+            <g id="right-wing" class="outline">
+                <path class="cream-fill" d="M 470, 520 C 580, 460 650, 480 660, 530 C 620, 560 590, 550 580, 520 C 560, 570 530, 580 500, 550 Z" />
+                <path class="red-fill" d="M 470, 520 C 580, 460 650, 480 660, 530 C 610, 450 530, 460 460, 520 Z" />
+            </g>
+        </g>
+        <g id="horns" class="outline">
+            <path class="red-fill" d="M 280, 240 C 240, 150 190, 130 190, 130 C 190, 130 200, 200 240, 260 Z" />
+            <path class="cream-fill" d="M 265, 230 C 235, 160 210, 145 210, 145 C 210, 145 215, 195 245, 240 Z" />
+            <path class="red-fill" d="M 520, 240 C 560, 150 610, 130 610, 130 C 610, 130 600, 200 560, 260 Z" />
+            <path class="cream-fill" d="M 535, 230 C 565, 160 590, 145 590, 145 C 590, 145 585, 195 555, 240 Z" />
+        </g>
+        <g id="body" class="outline">
+            <path class="red-fill" d="M 310, 620 C 280, 620 270, 670 290, 690 C 310, 710 360, 700 360, 670 Z" />
+            <path class="cream-fill" stroke-width="10" d="M 295, 680 L 305, 690 M 315, 685 L 325, 695 M 335, 680 L 345, 690" />
+            <path class="red-fill" d="M 490, 620 C 520, 620 530, 670 510, 690 C 490, 710 440, 700 440, 670 Z" />
+            <path class="cream-fill" stroke-width="10" d="M 505, 680 L 495, 690 M 485, 685 L 475, 695 M 465, 680 L 455, 690" />
+            <path class="red-fill" d="M 330, 480 C 280, 580 320, 670 370, 670 L 430, 670 C 480, 670 520, 580 470, 480 Z" />
+            <path class="cream-fill" d="M 355, 500 C 330, 570 350, 650 380, 650 L 420, 650 C 450, 650 470, 570 445, 500 Z" />
+        </g>
+        <g id="head">
+            <path class="outline red-fill" d="M 400, 160 C 570, 160 630, 240 630, 370 C 630, 480 520, 510 400, 510 C 280, 510 170, 480 170, 370 C 170, 240 230, 160 400, 160 Z" />
+            <g id="forehead-spikes" class="outline cream-fill">
+                <polygon points="400,150 415,175 400,195 385,175" />
+                <polygon points="400,205 415,230 400,250 385,230" />
+                <polygon points="400,260 415,285 400,305 385,285" />
+            </g>
+            <ellipse cx="240" cy="410" rx="30" ry="15" fill="#FF8521" opacity="0.4" />
+            <ellipse cx="560" cy="410" rx="30" ry="15" fill="#FF8521" opacity="0.4" />
+            <g id="eyes">
+                <g id="left-eye"><circle cx="280" cy="350" r="45" class="dark-fill" stroke="none" /><circle cx="295" cy="330" r="18" class="white-fill" stroke="none" /><circle cx="260" cy="365" r="8" class="white-fill" stroke="none" /></g>
+                <g id="right-eye"><circle cx="520" cy="350" r="45" class="dark-fill" stroke="none" /><circle cx="505" cy="330" r="18" class="white-fill" stroke="none" /><circle cx="540" cy="365" r="8" class="white-fill" stroke="none" /></g>
+            </g>
+            <g id="nose" class="dark-fill" stroke="none">
+                <ellipse cx="385" cy="390" rx="3" ry="5" />
+                <ellipse cx="415" cy="390" rx="3" ry="5" />
+            </g>
+            <g id="mouth-open">
+                <ellipse cx="400" cy="415" rx="18" ry="25" class="outline dark-fill" />
+                <ellipse cx="400" cy="425" rx="10" ry="12" class="red-fill" stroke="none" />
+            </g>
+        </g>
+        <g id="arms" class="outline">
+            <path id="arm-left" class="red-fill" d="M 320, 490 C 270, 520 280, 570 310, 580 C 340, 590 360, 550 345, 520 Z" />
+            <path id="arm-right" class="red-fill" d="M 480, 490 C 530, 520 520, 570 490, 580 C 460, 590 440, 550 455, 520 Z" />
+        </g>
+        <g id="fireball-container">
+            <g id="fireball" class="outline">
+                <path class="fire-outer" d="M 400, 470 C 430, 495 430, 545 400, 545 C 370, 545 370, 495 400, 470 Z" />
+                <path class="fire-inner" stroke="none" d="M 400, 490 C 415, 510 415, 535 400, 535 C 385, 535 385, 510 400, 490 Z" />
+            </g>
+        </g>
+    </g>
+</g></g></g></g><g opacity="0"><animate attributeName="opacity" dur="3s" fill="freeze" calcMode="spline" values="0;0;1;1;0;0" keyTimes="0.0000;0.0443;0.0444;0.2000;0.2001;1.0000" keySplines="0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/><g><animateTransform attributeName="transform" type="translate" dur="3s" fill="freeze" calcMode="spline" values="400 737.44;400 737.44;400 718.6;400 718.6" keyTimes="0.0000;0.0444;0.2000;1.0000" keySplines="0 0 1 1;0 0 0.58 1;0 0 1 1"/><g><animateTransform attributeName="transform" type="scale" dur="3s" fill="freeze" calcMode="spline" values="0.2 0.2;0.2 0.2;1 1;1.06 1.06;0.01 0.01;0.01 0.01" keyTimes="0.0000;0.0444;0.1000;0.1556;0.2000;1.0000" keySplines="0 0 1 1;0.12 0.85 0.25 1;0.42 0 0.58 1;0.42 0 1 1;0 0 1 1"/><circle cx="0" cy="-7.54" r="45.22" fill="#2b2533"/><circle cx="-37.68" cy="11.3" r="35.8" fill="#2b2533"/><circle cx="37.68" cy="11.3" r="37.68" fill="#2b2533"/><circle cx="-16.96" cy="26.38" r="32.03" fill="#2b2533"/><circle cx="18.84" cy="28.26" r="32.03" fill="#2b2533"/><circle cx="0" cy="-7.54" r="37.68" fill="#eceaf2"/><circle cx="-37.68" cy="11.3" r="28.26" fill="#eceaf2"/><circle cx="37.68" cy="11.3" r="30.14" fill="#eceaf2"/><circle cx="-16.96" cy="26.38" r="24.49" fill="#eceaf2"/><circle cx="18.84" cy="28.26" r="24.49" fill="#eceaf2"/></g></g></g></svg>

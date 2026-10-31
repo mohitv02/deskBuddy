@@ -4,6 +4,7 @@ import { ipc, type ChatMessage, type ChatStatus, type ChatUser, type Conversatio
 import { addDays, isoDate } from "../../lib/dates";
 import { parseQuickAdd } from "../../lib/quickAdd";
 import { ReactionPicker, reactionLabel } from "./ReactionPicker";
+import { TeamsPanel } from "./TeamsPanel";
 
 const PAGE = 50;
 const SELF_ID = 1;
@@ -27,7 +28,25 @@ function dayLabel(ms: number, now = new Date()): string {
 
 const timeOf = (ms: number) => new Date(ms).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
 
-const peerLabel = (c: Conversation) => (c.kind === "self" ? c.title || "Notes to self" : c.peerName || c.peerIp || "?");
+const peerLabel = (c: Conversation) =>
+  c.kind === "self"
+    ? c.title || "Notes to self"
+    : c.room === "team" || c.room === "link"
+      ? c.title || "?"
+      : c.peerName || c.peerDevice?.slice(0, 8) || c.peerIp || "?";
+
+const roomIcon = (c: Conversation, online: Set<string>) =>
+  c.kind === "self"
+    ? "📝 "
+    : c.room === "team"
+      ? "👥 "
+      : c.room === "link"
+        ? "🤝 "
+        : c.room === "ip"
+          ? "🗄 "
+          : online.has(c.peerDevice ?? "")
+            ? "🟢 "
+            : "⚪ ";
 
 /** Merge fresh rows into a page, keeping id order. */
 function merge(all: ChatMessage[], fresh: ChatMessage[]): ChatMessage[] {
@@ -45,12 +64,20 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
   const [choices, setChoices] = useState<ChatUser[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [threadEditing, setThreadEditing] = useState(false);
+  const [teams, setTeams] = useState(false);
 
   useEffect(() => {
-    onEditingChange(threadEditing || newChat);
-  }, [threadEditing, newChat, onEditingChange]);
+    onEditingChange(threadEditing || newChat || teams);
+  }, [threadEditing, newChat, teams, onEditingChange]);
 
-  const refresh = useCallback(() => void ipc.chatConversations().then(setConversations).catch((e) => setError(String(e))), []);
+  const refresh = useCallback(
+    () =>
+      void ipc
+        .chatConversations()
+        .then(setConversations)
+        .catch((e) => setError(String(e))),
+    [],
+  );
 
   useEffect(() => {
     refresh();
@@ -60,7 +87,8 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
   }, [refresh]);
 
   const current = conversations.find((c) => c.id === currentId) ?? conversations[0];
-  const online = new Set(status?.users.filter((u) => u.online).map((u) => u.ip));
+  const online = new Set(status?.users.filter((u) => u.online).map((u) => u.device));
+  const requests = status?.links.filter((l) => l.state === "pending" && !l.outgoing).length ?? 0;
 
   const open = (who: string) => {
     setError(null);
@@ -70,6 +98,7 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
         if (r.kind === "choose") return setChoices(r.users);
         setChoices(null);
         setNewChat(false);
+        setTeams(false);
         setTarget("");
         setCurrentId(r.conversation.id);
         refresh();
@@ -87,7 +116,12 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
           </button>
         </>
       );
-    if (status.state === "online") return <>● Online as {status.me ? `${status.me.name} (${status.me.ip})` : "…"}</>;
+    if (status.state === "online")
+      return (
+        <span title={status.me?.device}>
+          ● Online as {status.me ? `${status.me.name} · ${status.me.device.slice(0, 8)}` : "…"} · end-to-end encrypted
+        </span>
+      );
     if (status.state === "connecting") return <>Connecting…</>;
     return <span title={status.error ?? ""}>○ Offline{status.error ? `: ${status.error}` : ""} · messages wait until reconnected</span>;
   })();
@@ -103,15 +137,15 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
         >
           {conversations.map((c) => (
             <option key={c.id} value={c.id}>
-              {c.kind === "self" ? "📝 " : online.has(c.peerIp ?? "") ? "🟢 " : "⚪ "}
+              {roomIcon(c, online)}
               {peerLabel(c)}
-              {c.kind === "remote" && c.peerName ? ` · ${c.peerIp}` : ""}
+              {c.room === "ip" && c.peerIp ? ` · ${c.peerIp} (old)` : ""}
             </option>
           ))}
         </select>
         <button
           className={newChat ? "mini on" : "mini"}
-          title="New chat (IP address or name)"
+          title="New direct chat"
           aria-label="New chat"
           onClick={() => {
             setNewChat((v) => !v);
@@ -119,6 +153,14 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
           }}
         >
           ＋
+        </button>
+        <button
+          className={teams ? "mini on" : "mini"}
+          title={requests ? `Teams · ${requests} request${requests === 1 ? "" : "s"} waiting` : "Teams"}
+          aria-label="Teams"
+          onClick={() => setTeams((v) => !v)}
+        >
+          👥{requests > 0 && <span className="count"> {requests}</span>}
         </button>
       </div>
       <div className={status?.state === "online" ? "chat-status online" : "chat-status"}>{statusLine}</div>
@@ -145,15 +187,16 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
                 setNewChat(false);
               }
             }}
-            placeholder="IP address or name, e.g. 192.168.1.20 or Asha"
-            aria-label="IP address or name"
+            placeholder="Name, e.g. Asha"
+            aria-label="Name"
           />
           <datalist id="chat-users">
             {status?.users
-              .filter((u) => u.ip !== status.me?.ip)
+              .filter((u) => u.device !== status.me?.device)
               .map((u) => (
-                <option key={u.ip} value={u.name || u.ip}>
-                  {u.ip}
+                <option key={u.device} value={u.name}>
+                  {u.device.slice(0, 8)}
+                  {u.local ? "" : " · other team"}
                   {u.online ? " · online" : ""}
                 </option>
               ))}
@@ -165,8 +208,8 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
             <div className="chat-choices">
               <span>Several people match:</span>
               {choices.map((u) => (
-                <button type="button" key={u.ip} className="chip-btn" onClick={() => open(u.ip)}>
-                  {u.online ? "🟢" : "⚪"} {u.name} · {u.ip}
+                <button type="button" key={u.device} className="chip-btn" onClick={() => open(u.device)}>
+                  {u.online ? "🟢" : "⚪"} {u.name} · {u.device.slice(0, 8)}
                 </button>
               ))}
             </div>
@@ -179,11 +222,23 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
         </div>
       )}
 
-      {current && (
+      {teams && status && (
+        <TeamsPanel
+          status={status}
+          onError={setError}
+          onOpen={(id) => {
+            setTeams(false);
+            setCurrentId(id);
+            refresh();
+          }}
+        />
+      )}
+      {!teams && current && (
         <Thread
           key={current.id}
           conversation={current}
-          peerOnline={online.has(current.peerIp ?? "")}
+          members={status?.teams.find((t) => `team:${t.id}` === current.remoteId)?.members.length ?? null}
+          peerOnline={online.has(current.peerDevice ?? "")}
           onEditingChange={setThreadEditing}
           onError={setError}
           onConversationChanged={refresh}
@@ -195,12 +250,14 @@ export function ChatView({ onEditingChange }: { onEditingChange: (open: boolean)
 
 function Thread({
   conversation,
+  members,
   peerOnline,
   onEditingChange,
   onError,
   onConversationChanged,
 }: {
   conversation: Conversation;
+  members: number | null;
   peerOnline: boolean;
   onEditingChange: (open: boolean) => void;
   onError: (e: string | null) => void;
@@ -208,6 +265,7 @@ function Thread({
 }) {
   const conv = conversation.id;
   const remote = conversation.kind === "remote";
+  const group = conversation.room === "team" || conversation.room === "link";
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [hasMore, setHasMore] = useState(false);
   const [mode, setMode] = useState<Mode>({ kind: "all" });
@@ -379,9 +437,11 @@ function Thread({
       ? "No pinned messages"
       : mode.kind === "search"
         ? "No matches"
-        : remote
-          ? `Say hi to ${name}. Messages reach them when they're online.`
-          : "Notes to self: jot anything down. Turn a message into a todo with ☐.";
+        : group
+          ? `Say hi to ${name}. Only its members can read what you write here.`
+          : remote
+            ? `Say hi to ${name}. Messages reach them when they're online.`
+            : "Notes to self: jot anything down. Turn a message into a todo with ☐.";
 
   return (
     <>
@@ -409,12 +469,18 @@ function Thread({
             <button className={mode.kind === "pinned" ? "chip-btn on" : "chip-btn"} onClick={() => setMode({ kind: "pinned" })}>
               📌 Pinned
             </button>
-            {remote && (
-              <span className="chat-peer" title={conversation.peerIp ?? ""}>
-                {peerOnline ? "🟢 online" : "⚪ offline"} · {conversation.peerIp}
+            {conversation.room === "dm" && (
+              <span className="chat-peer" title={conversation.peerDevice ?? ""}>
+                {peerOnline ? "🟢 online" : "⚪ offline"} · {conversation.peerDevice?.slice(0, 8)}
               </span>
             )}
-            {remote && (
+            {conversation.room === "team" && members !== null && (
+              <span className="chat-peer">
+                {members} member{members === 1 ? "" : "s"}
+              </span>
+            )}
+            {conversation.room === "ip" && <span className="chat-peer">{conversation.peerIp} · old server</span>}
+            {remote && conversation.room !== "ip" && (
               <button
                 className="mini chat-reaction"
                 title="How your pet reacts when they message you"
@@ -475,7 +541,10 @@ function Thread({
                     </div>
                   </div>
                 ) : (
-                  <div className="chat-body">{m.body}</div>
+                  <>
+                    {theirs && group && <div className="chat-sender">{m.senderName || m.senderIp?.slice(0, 8)}</div>}
+                    <div className="chat-body">{m.body}</div>
+                  </>
                 )}
                 <div className="chat-meta">
                   {m.pinned && <span title="Pinned">📌</span>}
@@ -526,25 +595,31 @@ function Thread({
         })}
       </div>
 
-      <form
-        className="chat-composer"
-        onSubmit={(e) => {
-          e.preventDefault();
-          send();
-        }}
-      >
-        <textarea
-          value={draft}
-          rows={Math.min(6, draft.split("\n").length)}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={composerKey}
-          placeholder={remote ? `Message ${name}…  (Shift+Enter: new line)` : "Message to self…  (Shift+Enter: new line; passwords go in the Vault)"}
-          aria-label="Message"
-        />
-        <button type="submit" className="add-btn" title="Send (Enter)" aria-label="Send" disabled={!draft.trim()}>
-          ➤
-        </button>
-      </form>
+      {conversation.readOnly ? (
+        <div className="chat-readonly">{conversation.readOnly}</div>
+      ) : (
+        <form
+          className="chat-composer"
+          onSubmit={(e) => {
+            e.preventDefault();
+            send();
+          }}
+        >
+          <textarea
+            value={draft}
+            rows={Math.min(6, draft.split("\n").length)}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={composerKey}
+            placeholder={
+              remote ? `Message ${name}…  (Shift+Enter: new line)` : "Message to self…  (Shift+Enter: new line; passwords go in the Vault)"
+            }
+            aria-label="Message"
+          />
+          <button type="submit" className="add-btn" title="Send (Enter)" aria-label="Send" disabled={!draft.trim()}>
+            ➤
+          </button>
+        </form>
+      )}
 
       {pickingReaction && (
         <ReactionPicker

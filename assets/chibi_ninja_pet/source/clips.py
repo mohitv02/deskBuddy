@@ -1,4 +1,5 @@
-"""All 39 clips."""
+"""All 47 clips."""
+import math
 from anim import A
 CLIPS = []
 def clip(name, cat, N, loop, desc):
@@ -445,4 +446,154 @@ c.pop('spark0', 54, 66, (346, 330), 80)
 c.face([(0, dict()), (8, dict(eyes='sharp', brows='angry', mouth='flat')), (18, dict(mouth='shout')), (26, dict(mouth='flat')), (56, dict(eyes='wink', brows='det', mouth='grin')),
         (74, dict(eyes='open', mouth='none'))])
 
-assert len(CLIPS) == 39, len(CLIPS)
+# ================================================================ THROWN (window flung by the app; side clips face right)
+def wiggle(c, node, prop, amp, period, t0, t1, center=None):
+    """sine wiggle from t0 to t1 that fades in and out, starting and ending on center"""
+    center = (0, 0) if center is None and prop in ('p', 'p2') else (0 if center is None else center)
+    keys = [(t0, center, 'sine')]
+    k = 1
+    while t0 + k * period / 2 < t1 - period / 4:
+        t = t0 + k * period / 2 - period / 4
+        f = math.sin(math.pi * (t - t0) / (t1 - t0)) * (1 if k % 2 else -1)
+        v = tuple(cc + a * f for cc, a in zip(center, amp)) if isinstance(center, tuple) else center + amp * f
+        keys.append((t, v, 'sine')); k += 1
+    keys.append((t1, center, 'hold'))
+    c.k(node, prop, keys)
+def orbit(c, t0, t1, period=24, cx=256, cy=180, rx=92, ry=20):
+    """three dizzy stars circling over the head, bigger when in front"""
+    step = period / 12
+    times = [t0 + k * step for k in range(int((t1 - t0) / step) + 1) if t0 + k * step < t1] + [t1]
+    for j in range(3):
+        ang = lambda t: 2 * math.pi * ((t - t0) / period + j / 3)
+        c.pop(f'star{j}', t0, t1, peak=100, inn=6, outt=6,
+              pos_keys=[(t, (cx + rx * math.cos(ang(t)), cy + ry * math.sin(ang(t))), 'lin') for t in times])
+        c.k(f'star{j}', 's2', [(t, (92 + 22 * math.sin(ang(t)),) * 2, 'lin') for t in times])
+        c.k(f'star{j}', 'r', [(t0, 0, 'lin'), (t1, 9 * (t1 - t0), 'hold')])
+def dizzy_eyes(c, t0, t1, turns=3):
+    for side in 'LR':
+        c.k('spiral' + side, 'r', [(t0, 0, 'lin'), (t1, -360 * turns, 'hold')])
+STREAM_DOWN = P(scarf1_R=96, scarf2_R=-4, scarf3_R=-4, htailA1_R=80, htailA2_R=6, htailB1_R=96, htailB2_R=4)
+def still(c, node, **kw):
+    for prop, v in kw.items(): c.k(node, prop, [(0, v, 'hold')])
+
+c = clip('thrown_tumble', 'thrown', 24, True, 'Thrown sideways: curled into a ball, rolling head over heels with spinning spiral eyes.')
+ball = NP(root=(0, -96), roots=(88, 88), armL=-40, armR=40, legL=-30, legR=30, headp=(0, 10))
+c.seq([(0, ball, 'hold'), (24, ball, 'hold')])
+c.keys.pop(('spin', 'r'), None)
+c.k('spin', 'r', [(0, 0, 'lin'), (24, 360, 'lin')])
+c.osc('root', 'p2', (0, 52), 24, -0.25, (0, 52))   # roll on the head when upside down, on the feet when upright
+c.breeze(12, 10)
+c.face([(0, dict(eyes='spiral', brows='worried', mouth='wavy'))])
+dizzy_eyes(c, 0, 24, 2)
+c.hands([(0, {'L': 'fist', 'R': 'fist'})])
+still(c, 'speed2', o=100, s=(80, 70), p=(26, 330))
+c.osc('speed2', 's2', (14, 0), 6, 0, (100, 100))
+still(c, 'shadow', s=(84, 84))
+
+c = clip('thrown_flail', 'thrown', 24, True, 'Thrown sideways: flies along leaning back, arms and legs flailing, big panicked eyes, sweat drop.')
+fly = NP(root=(0, -50), spin=-18, head=-8, headp=(-4, 0), eyes=(9, 0))
+c.seq([(0, fly, 'hold'), (24, fly, 'hold')])
+c.seq([(0, P(scarf1_R=176, scarf2_R=-4, scarf3_R=-6, htailA1_R=-64, htailB1_R=-44), 'hold'), (24, P(scarf1_R=176, scarf2_R=-4, scarf3_R=-6, htailA1_R=-64, htailB1_R=-44), 'hold')])
+c.breeze(8, 8)
+c.osc('armL', 'r', 34, 8, 0.0, center=106); c.osc('armR', 'r', -34, 8, 0.3, center=-100)
+c.osc('legL', 'r2', 28, 8, 0.0); c.osc('legR', 'r2', -28, 8, 0.25)
+c.osc('spin', 'r2', 4, 12, 0)
+c.face([(0, dict(eyes='big', brows='worried', mouth='shout'))])
+c.hands([(0, {'L': 'open', 'R': 'open'})])
+still(c, 'sweat', o=100); c.osc('sweat', 's', (10, 10), 12, 0, (100, 100))
+still(c, 'speed2', o=100, s=(90, 80), p=(18, 300))
+c.osc('speed2', 's2', (14, 0), 6, 0, (100, 100))
+still(c, 'shadow', s=(60, 60))
+
+c = clip('thrown_up_whee', 'thrown', 30, True, 'Thrown up: arms out in a V, legs swinging, happy eyes and an open-mouthed "whee!", sparkles.')
+REACH = dict(armL_s=(100, 280), armR_s=(100, 280), handL_s=(100, 35.7), handR_s=(100, 35.7))   # arms stretched past the big head
+whee = NP(root=(0, -36), armL=142, armR=-142, legL=-14, legR=14, headp=(0, -3), roots=(97, 104), **REACH)
+c.seq([(0, whee, 'hold'), (30, whee, 'hold')])
+c.seq([(0, STREAM_DOWN, 'hold'), (30, STREAM_DOWN, 'hold')])
+c.breeze(10, 6)
+c.osc('spin', 'r2', 6, 30, 0); c.osc('head', 'r2', 4, 30, 0.1)
+c.osc('armL', 'r2', 10, 15, 0); c.osc('armR', 'r2', -10, 15, 0)
+c.osc('legL', 'r2', 14, 10, 0); c.osc('legR', 'r2', -14, 10, 0.5)
+c.face([(0, dict(eyes='happy', brows='calm', mouth='shout', blush=True))])
+c.hands([(0, {'L': 'open', 'R': 'open'})])
+c.pop('spark0', 2, 16, (150, 210), 80); c.pop('spark1', 12, 26, (362, 170), 70); c.pop('spark2', 20, 29, (380, 300), 55)
+still(c, 'speed2', o=100, s=(80, 90), p=(256, 404), r=90)
+c.osc('speed2', 's2', (14, 0), 6, 0, (100, 100))
+still(c, 'shadow', o=0)
+
+c = clip('thrown_panic', 'thrown', 24, True, 'Thrown up or down: flails its arms over its head, legs kicking, blank shocked eyes, "!" and a sweat drop.')
+pan = NP(root=(0, -40), armL=140, armR=-140, roots=(98, 104))
+c.seq([(0, pan, 'hold'), (24, pan, 'hold')])
+c.seq([(0, STREAM_DOWN, 'hold'), (24, STREAM_DOWN, 'hold')])
+c.breeze(8, 8)
+c.osc('armL', 'r', 26, 6, 0.0, center=118); c.osc('armR', 'r', -26, 6, 0.5, center=-118)
+c.osc('legL', 'r2', 26, 8, 0.0); c.osc('legR', 'r2', -26, 8, 0.5)
+c.osc('spin', 'r2', 4, 12, 0)
+c.face([(0, dict(eyes='dot', brows='up', mouth='shout')), (12, dict(eyes='big'))])
+c.hands([(0, {'L': 'open', 'R': 'open'})])
+still(c, 'exclaim', o=100, p=(352, 168)); c.osc('exclaim', 's', (12, 12), 12, 0, (100, 100))
+still(c, 'sweat', o=100); c.osc('sweat', 's', (10, 10), 12, 0.25, (100, 100))
+still(c, 'shadow', o=0)
+
+c = clip('thrown_down_dive', 'thrown', 20, True, 'Thrown down: head-first ninja dive, arms out in front, sharp eyes and a battle cry, speed lines above.')
+dive = NP(root=(0, -160), spin=180, armL=166, armR=-166, legL=6, legR=-6, **REACH)
+c.seq([(0, dive, 'hold'), (20, dive, 'hold')])
+c.seq([(0, STREAM_DOWN, 'hold'), (20, STREAM_DOWN, 'hold')])
+c.breeze(10, 7)
+c.osc('spin', 'r2', 5, 20, 0); c.osc('legL', 'r2', 10, 10, 0); c.osc('legR', 'r2', -10, 10, 0.5)
+c.face([(0, dict(eyes='sharp', brows='angry', mouth='shout'))])
+c.hands([(0, {'L': 'open', 'R': 'open'})])
+still(c, 'speed2', o=100, s=(80, 90), p=(256, 132), r=-90)
+c.osc('speed2', 's2', (14, 0), 5, 0, (100, 100))
+still(c, 'shadow', o=0)
+
+# ================================================================ LANDINGS after a throw
+c = clip('land_dizzy', 'landing', 120, False, 'Crash-lands with a squash, wobbles around with spiral eyes and stars circling its head, then shakes it off.')
+c.breeze(30, 5)
+arms = dict(armL=40, armR=-40)
+c.seq([(0, NP(root=(0, -60), armL=120, armR=-120), 'in'), (5, NP(roots=(122, 76), armL=70, armR=-70, legL=18, legR=-18), 'snap'),
+       (12, NP(roots=(94, 108), root=(0, -14), **arms), 'io'), (18, NP(roots=(104, 97), **arms), 'io'), (24, NP(**arms), 'hold'), (86, NP(**arms), 'io'),
+       (91, NP(head=-12), 'io'), (95, NP(head=12), 'io'), (99, NP(head=-8), 'io'), (103, NP(head=4), 'io'), (110, NP(), 'hold'), (120, NP(), 'hold')])
+wiggle(c, 'spin', 'r2', 9, 24, 18, 88); wiggle(c, 'root', 'p2', (8, 0), 24, 24, 88); wiggle(c, 'head', 'r2', 7, 16, 18, 88)
+c.face([(0, dict(eyes='big', brows='up', mouth='o')), (5, dict(eyes='squint', brows='worried', mouth='shout')), (14, dict(eyes='spiral', mouth='wavy')),
+        (90, dict(eyes='squint', brows='det', mouth='flat')), (106, dict(eyes='open', mouth='none'))])
+dizzy_eyes(c, 14, 90, 4)
+orbit(c, 16, 90)
+c.hands([(0, {'L': 'open', 'R': 'open'}), (24, {'L': 'fist', 'R': 'fist'})])
+c.k('shadow', 's', [(0, (60, 60), 'in'), (5, (124, 124), 'io'), (18, (100, 100), 'hold')])
+c.puff('dust0', 5, 24, (196, 460), 95); c.puff('dust1', 6, 25, (316, 460), 95)
+c.pop('sweat', 92, 114, peak=100, pos_keys=[(92, (0, 0), 'io'), (114, (0, 12), 'hold')])
+
+c = clip('land_splat', 'landing', 100, False, 'Splats flat as a pancake, quivers, pops back up with a boing, shakes itself off.')
+c.breeze(25, 6)
+flat = NP(roots=(150, 44), armL=96, armR=-96, legL=48, legR=-48)
+c.seq([(0, NP(root=(0, -80), roots=(90, 112), armL=150, armR=-150), 'in'), (4, flat, 'hold'), (36, flat, 'in'),
+       (40, NP(roots=(160, 38), armL=96, armR=-96, legL=48, legR=-48), 'snap'), (46, NP(root=(0, -44), roots=(84, 124), armL=150, armR=-150), 'out'),
+       (54, NP(roots=(110, 90), armL=60, armR=-60), 'io'), (60, NP(roots=(97, 104)), 'io'), (66, NP(), 'hold'), (100, NP(), 'hold')])
+wiggle(c, 'spin', 'p2', (2.5, 0), 4, 6, 34)
+wiggle(c, 'spin', 'r2', 11, 5, 66, 86); wiggle(c, 'head', 'r2', -8, 5, 67, 87)
+c.face([(0, dict(eyes='big', brows='up', mouth='shout')), (4, dict(eyes='squint', brows='worried', mouth='wavy')), (46, dict(eyes='dot', brows='up', mouth='o')),
+        (64, dict(eyes='squint', brows='det', mouth='flat')), (88, dict(eyes='open', mouth='pout')), (96, dict(mouth='none'))])
+c.hands([(0, {'L': 'open', 'R': 'open'}), (60, {'L': 'fist', 'R': 'fist'})])
+c.k('shadow', 's', [(0, (60, 60), 'in'), (4, (150, 120), 'hold'), (40, (150, 120), 'io'), (46, (70, 70), 'in'), (54, (106, 106), 'io'), (66, (100, 100), 'hold')])
+c.puff('dust0', 4, 22, (170, 458), 105); c.puff('dust1', 4, 22, (342, 458), 105)
+c.puff('smoke0', 66, 84, (200, 430), 45); c.puff('smoke1', 70, 88, (316, 420), 45)
+c.pop('sweat', 48, 92, peak=100, pos_keys=[(48, (0, 0), 'io'), (92, (0, 14), 'hold')])
+
+c = clip('land_dust_off', 'landing', 110, False, 'Lands with a stumble, pats the dust off its gi with a grumpy -_- face, then turns away: "hmph".')
+c.breeze(27, 5)
+patL = NP(armL=-30, spin=-2); patR = NP(armR=30, spin=2); mid = NP(armL=10, armR=-10)
+hmph = NP(head=-12, headp=(-4, 0), eyes=(-10, 0), armL=-58, armR=58, spin=-3)
+c.seq([(0, NP(root=(0, -40), armL=110, armR=-110), 'in'), (4, NP(roots=(112, 88), armL=60, armR=-60, legL=14, legR=-14, spin=6), 'snap'),
+       (10, NP(spin=-5, legL=-8), 'io'), (16, NP(), 'io'), (22, patL, 'snap'), (27, mid, 'io'), (32, patR, 'snap'), (37, mid, 'io'), (42, patL, 'snap'), (47, mid, 'io'),
+       (52, patR, 'snap'), (58, NP(), 'io'), (66, hmph, 'snap'), (96, hmph, 'io'), (106, NP(), 'hold'), (110, NP(), 'hold')])
+c.face([(0, dict(eyes='big', brows='up', mouth='o')), (4, dict(eyes='squint', brows='worried', mouth='shout')), (14, dict(eyes='meh', brows='angry', mouth='pout')),
+        (62, dict(eyes='squint')), (66, dict(eyes='meh')), (100, dict(eyes='open', brows='det', mouth='none'))])
+c.hands([(0, {'L': 'open', 'R': 'open'}), (12, {'L': 'open', 'R': 'open'}), (58, {'L': 'fist', 'R': 'fist'})])
+c.k('shadow', 's', [(0, (70, 70), 'in'), (4, (112, 112), 'io'), (16, (100, 100), 'hold')])
+c.puff('dust0', 4, 18, (300, 462), 70)
+c.puff('dust1', 22, 34, (238, 404), 40); c.puff('smoke2', 32, 44, (276, 404), 30); c.puff('smoke3', 42, 54, (232, 410), 30)
+c.pop('anger', 68, 96, peak=100, scale=[(0, (0, 0), 'hold'), (68, (0, 0), 'snap'), (72, (120, 120), 'io'), (78, (95, 95), 'io'), (84, (115, 115), 'io'),
+                                        (90, (100, 100), 'in'), (96, (0, 0), 'hold')])
+
+assert len(CLIPS) == 47, len(CLIPS)

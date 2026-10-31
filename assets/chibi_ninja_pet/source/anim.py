@@ -6,9 +6,9 @@ from rig import build_scene
 _SCENE = build_scene(clones=True)
 NODES = {n.name: n for n in _SCENE.walk()}
 
-EYES = ['open', 'sleepy', 'happy', 'sharp', 'squint', 'wink', 'heart', 'big', 'dot']
+EYES = ['open', 'sleepy', 'happy', 'sharp', 'squint', 'wink', 'heart', 'big', 'dot', 'spiral', 'meh']
 BROWS = ['det', 'angry', 'sad', 'worried', 'up', 'calm']
-MOUTHS = ['smile', 'grin', 'frown', 'o', 'shout', 'yawn', 'pout', 'flat']
+MOUTHS = ['smile', 'grin', 'frown', 'o', 'shout', 'yawn', 'pout', 'flat', 'wavy']
 HANDS = ['fist', 'open', 'peace', 'point']
 
 def _zero(prop):

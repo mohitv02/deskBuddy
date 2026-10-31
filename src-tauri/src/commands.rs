@@ -7,7 +7,7 @@ use zeroize::Zeroizing;
 
 use crate::db::{self, conversations, messages, todos, vault, Db};
 use crate::vault_store::{self, VaultStore};
-use crate::{backup, chat, crypto, legacy, paths};
+use crate::{backup, chat, crypto, host, legacy, paths};
 use crate::settings::{Settings, SettingsStore};
 use crate::system::{alarm, autolock, autostart, clipboard, dialog, fullscreen, hotkey, window};
 
@@ -36,7 +36,8 @@ pub struct SettingsPatch {
     panel_pinned: Option<bool>,
     chat_server: Option<String>,
     chat_name: Option<String>,
-    chat_ip: Option<String>,
+    chat_enabled: Option<bool>,
+    chat_host_env: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -104,19 +105,15 @@ pub fn update_settings(app: AppHandle, store: State<'_, SettingsStore>, patch: S
     if let Some(on) = patch.panel_pinned {
         store.update(|s| s.panel_pinned = on);
     }
-    if patch.chat_server.is_some() || patch.chat_name.is_some() || patch.chat_ip.is_some() {
+    if patch.chat_server.is_some() || patch.chat_name.is_some() || patch.chat_enabled.is_some() {
         let server = patch.chat_server.map(|v| v.trim().to_string());
         if let Some(v) = &server {
-            chat::ws_url(v)?;
+            chat::server_list(v)?;
         }
         let name = patch.chat_name.map(|v| v.trim().to_string());
         if name.as_ref().is_some_and(|v| v.chars().count() > chat::MAX_NAME_CHARS) {
             return Err(format!("name can be at most {} characters", chat::MAX_NAME_CHARS));
         }
-        let ip = match patch.chat_ip.map(|v| v.trim().to_string()) {
-            Some(v) if !v.is_empty() => Some(chat::parse_ip(&v).ok_or_else(|| format!("{v} is not an IP address"))?),
-            other => other,
-        };
         store.update(|s| {
             if let Some(v) = server {
                 s.chat_server = v;
@@ -124,11 +121,14 @@ pub fn update_settings(app: AppHandle, store: State<'_, SettingsStore>, patch: S
             if let Some(v) = name {
                 s.chat_name = v;
             }
-            if let Some(v) = ip {
-                s.chat_ip = v;
+            if let Some(v) = patch.chat_enabled {
+                s.chat_enabled = v;
             }
         });
         app.state::<chat::ChatClient>().reconfigure();
+    }
+    if let Some(path) = patch.chat_host_env {
+        store.update(|s| s.chat_host_env = path.trim().to_string());
     }
     if let Some(pet) = patch.pet {
         if !crate::mascot::is_known(&pet) {
@@ -259,8 +259,8 @@ pub fn reorder_todos(db: State<'_, Db>, ids: Vec<i64>) -> CmdResult<()> {
 }
 
 #[tauri::command]
-pub fn chat_status(client: State<'_, chat::ChatClient>) -> chat::Status {
-    client.status()
+pub fn chat_status(db: State<'_, Db>, client: State<'_, chat::ChatClient>) -> chat::Status {
+    client.status(&db)
 }
 
 #[tauri::command]
@@ -268,16 +268,115 @@ pub fn chat_conversations(db: State<'_, Db>) -> CmdResult<Vec<conversations::Con
     db.with(|c| conversations::list(c)).map_err(err)
 }
 
-/// Start (or reopen) a chat with an IP address or a name.
+/// This device's id (its public key), for others to check.
+#[tauri::command]
+pub fn chat_identity(db: State<'_, Db>, client: State<'_, chat::ChatClient>) -> CmdResult<String> {
+    Ok(client.identity(&db)?.device())
+}
+
+/// Start (or reopen) a direct chat with someone, by name or device id.
 #[tauri::command]
 pub fn chat_open(db: State<'_, Db>, client: State<'_, chat::ChatClient>, target: String) -> CmdResult<chat::OpenResult> {
     match client.resolve(&target)? {
-        Ok(user) => {
-            let conversation = db.with(|c| conversations::open_remote(c, &user.ip, &user.name)).map_err(err)?;
-            Ok(chat::OpenResult::Opened { conversation })
-        }
+        Ok(user) => Ok(chat::OpenResult::Opened { conversation: client.open_dm(&db, &user)? }),
         Err(users) => Ok(chat::OpenResult::Choose { users }),
     }
+}
+
+#[tauri::command]
+pub fn team_create(db: State<'_, Db>, client: State<'_, chat::ChatClient>, name: String) -> CmdResult<String> {
+    client.team_create(&db, &name)
+}
+
+/// Join a team from its invite. With no server set yet, use the invite's.
+#[tauri::command]
+pub fn team_join(store: State<'_, SettingsStore>, db: State<'_, Db>, client: State<'_, chat::ChatClient>, code: String) -> CmdResult<String> {
+    let (name, servers) = client.team_join(&db, &code)?;
+    let settings = store.get();
+    if settings.chat_server.trim().is_empty() && !servers.is_empty() {
+        store.update(|s| {
+            s.chat_server = servers.join(", ");
+            s.chat_enabled = true;
+        });
+        client.reconfigure();
+    }
+    Ok(name)
+}
+
+#[tauri::command]
+pub fn team_invite(db: State<'_, Db>, client: State<'_, chat::ChatClient>, team: String) -> CmdResult<String> {
+    client.team_invite(&db, &team)
+}
+
+#[tauri::command]
+pub fn team_address(db: State<'_, Db>, client: State<'_, chat::ChatClient>, team: String) -> CmdResult<String> {
+    client.team_address(&db, &team)
+}
+
+#[tauri::command]
+pub fn team_leave(db: State<'_, Db>, client: State<'_, chat::ChatClient>, team: String) -> CmdResult<()> {
+    client.team_leave(&db, &team)
+}
+
+/// New team key; returns the new invite.
+#[tauri::command]
+pub fn team_rotate(db: State<'_, Db>, client: State<'_, chat::ChatClient>, team: String) -> CmdResult<String> {
+    client.team_rotate(&db, &team)
+}
+
+#[tauri::command]
+pub fn link_request(
+    db: State<'_, Db>,
+    client: State<'_, chat::ChatClient>,
+    team: String,
+    address: String,
+    kind: String,
+    hours: Option<u32>,
+    retention_days: Option<u32>,
+) -> CmdResult<()> {
+    client.link_request(&db, &team, &address, &kind, hours, retention_days)
+}
+
+#[tauri::command]
+pub fn link_respond(db: State<'_, Db>, client: State<'_, chat::ChatClient>, link: String, accept: bool) -> CmdResult<()> {
+    client.link_respond(&db, &link, accept)
+}
+
+#[tauri::command]
+pub fn archive_release(db: State<'_, Db>, client: State<'_, chat::ChatClient>, link: String) -> CmdResult<()> {
+    client.archive_release(&db, &link)
+}
+
+#[tauri::command]
+pub fn archive_lock(client: State<'_, chat::ChatClient>, link: String) -> CmdResult<()> {
+    client.archive_lock(&link)
+}
+
+#[derive(Serialize)]
+pub struct FoundServer {
+    name: String,
+    address: String,
+}
+
+/// Chat servers announcing themselves on the LAN.
+#[tauri::command]
+pub async fn chat_discover() -> CmdResult<Vec<FoundServer>> {
+    let found = tauri::async_runtime::spawn_blocking(|| chat::discover(std::time::Duration::from_millis(1500))).await.map_err(err)?;
+    Ok(found.into_iter().map(|(name, address)| FoundServer { name, address }).collect())
+}
+
+#[tauri::command]
+pub async fn chat_host_status(store: State<'_, SettingsStore>) -> CmdResult<host::HostStatus> {
+    let path = store.get().chat_host_env;
+    Ok(host::status(&path).await)
+}
+
+/// Write the database URI into the hosted server's .env.
+#[tauri::command]
+pub fn chat_host_save(store: State<'_, SettingsStore>, env_path: String, uri: String, database: String) -> CmdResult<()> {
+    host::save(env_path.trim(), &uri, &database)?;
+    store.update(|s| s.chat_host_env = env_path.trim().to_string());
+    Ok(())
 }
 
 #[tauri::command]
@@ -296,16 +395,23 @@ pub fn chat_search(db: State<'_, Db>, conversation: i64, text: String) -> CmdRes
 }
 
 /// Notes to self are stored; chat messages are stored as pending and handed
-/// to the chat connection (sent now if online, else on reconnect).
+/// to the chat connection (encrypted and sent now if online, else on reconnect).
 #[tauri::command]
 pub fn chat_send(db: State<'_, Db>, client: State<'_, chat::ChatClient>, conversation: i64, body: String) -> CmdResult<messages::Message> {
     let conv = db.with(|c| conversations::get(c, conversation)).map_err(err)?;
-    let remote = conv.is_remote();
-    let Some(peer) = conv.peer_ip.filter(|_| remote) else {
+    if !conv.is_remote() {
         return db.with(|c| messages::create(c, conversation, &body)).map_err(err);
-    };
+    }
+    if !conv.read_only.is_empty() {
+        return Err(conv.read_only);
+    }
+    let remote = conv.remote_id.ok_or("this chat has no server id")?;
     let message = db.with(|c| messages::create_outgoing(c, conversation, &body, &chat::new_client_msg_id())).map_err(err)?;
-    client.send(&peer, &message);
+    if let Err(e) = client.send(&db, &remote, &message) {
+        let failed = db.with(|c| messages::set_state(c, message.id, "failed")).map_err(err)?;
+        eprintln!("deskbuddy: chat: {e}");
+        return Ok(failed);
+    }
     Ok(message)
 }
 
@@ -324,8 +430,8 @@ pub fn chat_retry(db: State<'_, Db>, client: State<'_, chat::ChatClient>, id: i6
             Ok((m.clone(), conversations::get(c, m.conversation_id)?))
         })
         .map_err(err)?;
-    if let Some(peer) = &conv.peer_ip {
-        client.send(peer, &message);
+    if let Some(remote) = conv.remote_id.filter(|_| conv.room != "ip") {
+        client.send(&db, &remote, &message)?;
     }
     Ok(message)
 }

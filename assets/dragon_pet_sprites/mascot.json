@@ -31,6 +31,32 @@
     "snooze": "idle_yawn.svg",
     "dragged": "int_dragged.svg",
     "dropped": "move_fall_land.svg@0.45",
+    "thrown": [
+      "throw_tumble.svg"
+    ],
+    "thrownLanded": [
+      "land_dizzy.svg",
+      "land_grumpy.svg",
+      "move_fall_land.svg@0.45"
+    ],
+    "thrownUp": [
+      "throw_whee.svg",
+      "throw_panic.svg"
+    ],
+    "thrownUpLanded": [
+      "move_fall_land.svg@0.45",
+      "land_splat.svg",
+      "land_dizzy.svg"
+    ],
+    "thrownDown": [
+      "throw_dive.svg",
+      "throw_panic.svg"
+    ],
+    "thrownDownLanded": [
+      "land_splat.svg",
+      "land_dizzy.svg",
+      "land_grumpy.svg"
+    ],
     "fallAsleep": "sleep_fall_asleep.svg",
     "sleep": "sleep_loop.svg",
     "wakeUp": "sleep_wake_up.svg",
@@ -56,5 +82,6 @@
   "effectOrigin": [
     256,
     200
-  ]
+  ],
+  "throwEffect": false
 }

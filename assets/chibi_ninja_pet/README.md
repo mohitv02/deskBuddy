@@ -1,6 +1,6 @@
 # Chibi Ninja desktop pet: animation clips
 
-A chibi redesign of your black-and-red ninja, built as a rig of flat vector parts and animated into **39 clips**.
+A chibi redesign of your black-and-red ninja, built as a rig of flat vector parts and animated into **47 clips**.
 Every clip comes in two formats with identical motion:
 
 - `lottie/<clip>.json`: Lottie / bodymovin 5.7 (one shape layer, nested groups, cubic-bezier easing)
@@ -13,15 +13,15 @@ All clips are 512 × 512, 30 fps, with a fully transparent background. The feet 
 | path | what it is |
 |---|---|
 | `index.json` | every clip: `name`, `category`, `frames`, `seconds`, `loop`, plus `description` and file paths |
-| `lottie/` | 39 Lottie JSON files |
-| `svg/` | 39 animated SVG files |
+| `lottie/` | 47 Lottie JSON files |
+| `svg/` | 47 animated SVG files |
 | `preview.html` | plays every clip on a checkerboard, with a frame-scrub player (Lottie/SVG toggle) and a cursor-follow demo. Works offline: double-click it (uses `vendor/lottie.min.js`) |
 | `verification/` | key frames of every clip rendered from both formats (top row Lottie, bottom row SVG) plus `report.json` with pixel diffs |
 | `source/` | the Python generator: edit a pose or timing and rebuild both formats |
 
 ## How the clips behave
 
-- **Loops** (`loop: true`) start and end on the same frame, so they repeat seamlessly. `idle_*` loops start and end in the neutral standing stance, so you can drop back to `idle_breathe` after any of them. `sleep_loop` and `int_dragged` are *state* loops: they loop in their own pose (dozing, dangling).
+- **Loops** (`loop: true`) start and end on the same frame, so they repeat seamlessly. `idle_*` loops start and end in the neutral standing stance, so you can drop back to `idle_breathe` after any of them. `sleep_loop`, `int_dragged` and the `thrown_*` clips are *state* loops: they loop in their own pose (dozing, dangling, flying). The `land_*` one-shots start from the impact and end in the neutral stance.
 - **One-shots** (`loop: false`) play once and hold their last frame. All of them except these end in the neutral stance:
   - `sleep_fall_asleep` ends in the `sleep_loop` pose.
   - `fun_peek` ends invisible, after vanishing in smoke.
@@ -54,7 +54,7 @@ All clips are 512 × 512, 30 fps, with a fully transparent background. The feet 
 
 ### Rig parts (group names in both formats)
 
-head · hoodN · eyes (variants: `eyes_open`, `eyes_sleepy` ∪, `eyes_happy` ^, `eyes_sharp`, `eyes_squint` > <, `eyes_wink`, `eyes_heart`, `eyes_big`, `eyes_dot`) · brows (`det`, `angry`, `sad`, `worried`, `up`, `calm`) · mouth on the mask (`smile`, `grin`, `frown`, `o`, `shout`, `yawn`, `pout`, `flat`) · cheeks, blush · maskup (pull-up mask) · scarffront · bandN, knot, htailA1→htailA2, htailB1→htailB2 · torso (belt, beltknot, scarf wrap, rumble) · scarf1→scarf2→scarf3 · armL/armR → handL/handR (variants `fist`, `open`, `peace`, `point`) · legL, legR, lap (crossed legs for sitting) · props: shurikenHand, swordHand (wooden practice sword), shuriken · effects: smoke0-3, bigsmoke, dust0-1, spark0-2, heart0-2, z0-2, exclaim, question, sweat, tear, anger, snot, speed, speed2, swoosh, swoosh2, thought (rice ball), scroll, pebble, aura (flames).
+head · hoodN · eyes (variants: `eyes_open`, `eyes_sleepy` ∪, `eyes_happy` ^, `eyes_sharp`, `eyes_squint` > <, `eyes_wink`, `eyes_heart`, `eyes_big`, `eyes_dot`, `eyes_spiral` @ @ with spinning `spiralL`/`spiralR`, `eyes_meh` - _ -) · brows (`det`, `angry`, `sad`, `worried`, `up`, `calm`) · mouth on the mask (`smile`, `grin`, `frown`, `o`, `shout`, `yawn`, `pout`, `flat`, `wavy`) · cheeks, blush · maskup (pull-up mask) · scarffront · bandN, knot, htailA1→htailA2, htailB1→htailB2 · torso (belt, beltknot, scarf wrap, rumble) · scarf1→scarf2→scarf3 · armL/armR → handL/handR (variants `fist`, `open`, `peace`, `point`) · legL, legR, lap (crossed legs for sitting) · props: shurikenHand, swordHand (wooden practice sword), shuriken · effects: smoke0-3, bigsmoke, dust0-1, spark0-2, heart0-2, star0-2 (yellow dizzy stars), z0-2, exclaim, question, sweat, tear, anger, snot, speed, speed2, swoosh, swoosh2, thought (rice ball), scroll, pebble, aura (flames).
 
 ## Clips
 
@@ -99,6 +99,14 @@ head · hoodN · eyes (variants: `eyes_open`, `eyes_sleepy` ∪, `eyes_happy` ^,
 | `fun_notify` | fun | 120 | 4.00 | no | Unrolls a small scroll with a "!" on it, held up toward the viewer. |
 | `fun_shadow_clone` | fun | 110 | 3.67 | no | Two translucent copies pop out beside it, wave, then disappear in smoke. |
 | `fun_throw_shuriken` | fun | 84 | 2.80 | no | Throws a shuriken off-screen; it boomerangs back to be caught. |
+| `thrown_tumble` | thrown | 24 | 0.80 | yes | Thrown sideways: curled into a ball, rolling head over heels with spinning spiral eyes. |
+| `thrown_flail` | thrown | 24 | 0.80 | yes | Thrown sideways: flies along leaning back, arms and legs flailing, big panicked eyes, sweat drop. |
+| `thrown_up_whee` | thrown | 30 | 1.00 | yes | Thrown up: arms out in a V, legs swinging, happy eyes and an open-mouthed "whee!", sparkles. |
+| `thrown_panic` | thrown | 24 | 0.80 | yes | Thrown up or down: flails its arms over its head, legs kicking, blank shocked eyes, "!" and a sweat drop. |
+| `thrown_down_dive` | thrown | 20 | 0.67 | yes | Thrown down: head-first ninja dive, arms out in front, sharp eyes and a battle cry, speed lines above. |
+| `land_dizzy` | landing | 120 | 4.00 | no | Crash-lands with a squash, wobbles around with spiral eyes and stars circling its head, then shakes it off. |
+| `land_splat` | landing | 100 | 3.33 | no | Splats flat as a pancake, quivers, pops back up with a boing, shakes itself off. |
+| `land_dust_off` | landing | 110 | 3.67 | no | Lands with a stumble, pats the dust off its gi with a grumpy -_- face, then turns away: "hmph". |
 
 ## Rebuilding
 

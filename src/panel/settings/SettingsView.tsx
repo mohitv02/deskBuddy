@@ -3,6 +3,7 @@ import { listen } from "@tauri-apps/api/event";
 import { ipc, type ChatStatus, type PetList, type Settings, type SettingsInfo } from "../../lib/ipc";
 import { accelerator, formatAccelerator } from "../../lib/hotkey";
 import { PetPicker } from "./PetPicker";
+import { HostSection } from "./HostSection";
 
 const AUTO_LOCK = [
   [1, "1 minute"],
@@ -40,9 +41,24 @@ export function SettingsView() {
   const [pets, setPets] = useState<PetList | null>(null);
   const [page, setPage] = useState<"main" | "pets">("main");
   const [chat, setChat] = useState<ChatStatus | null>(null);
+  const [device, setDevice] = useState<string | null>(null);
+  const [found, setFound] = useState<{ name: string; address: string }[] | null>(null);
+  const [finding, setFinding] = useState(false);
+
+  const discover = async () => {
+    setFinding(true);
+    try {
+      setFound(await ipc.chatDiscover());
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setFinding(false);
+    }
+  };
 
   useEffect(() => {
     void ipc.chatStatus().then(setChat);
+    void ipc.chatIdentity().then(setDevice).catch(() => setDevice(null));
     const sub = listen<ChatStatus>("chat-status", (e) => setChat(e.payload));
     return () => void sub.then((off) => off());
   }, []);
@@ -231,12 +247,41 @@ export function SettingsView() {
 
       <section>
         <h2>Chat</h2>
+        <div className="setting">
+          <span>
+            {!chat || chat.state === "off"
+              ? "Not connected"
+              : chat.state === "online"
+                ? `● Connected to ${chat.server.replace(/^ws:\/\//, "").replace(/\/ws$/, "")}`
+                : chat.state === "connecting"
+                  ? `Connecting to ${chat.server.replace(/^ws:\/\//, "").replace(/\/ws$/, "")}…`
+                  : "○ Offline · retrying"}
+            <small>
+              {chat?.error ? `${chat.error} · ` : ""}
+              {device ? `Your device id ${device.slice(0, 8)}…: it's how others know it's you.` : ""}
+            </small>
+          </span>
+          {s.chatEnabled && chat?.state !== "off" ? (
+            <button className="mini" onClick={() => void save({ chatEnabled: false })}>
+              Disconnect
+            </button>
+          ) : (
+            <button
+              className="mini primary"
+              disabled={!s.chatServer.trim() && s.chatKnownServers.length === 0}
+              onClick={() => void save({ chatEnabled: true })}
+            >
+              Connect
+            </button>
+          )}
+        </div>
         <label className="setting">
           <span>
             Chat server
-            <small>host or host:port of the DeskBuddy chat server (port 8787 if omitted). Empty: chat with others is off.</small>
+            <small>host or host:port (port 8787 if omitted). Several, comma-separated, are tried in turn.</small>
           </span>
           <input
+            key={s.chatServer}
             className="setting-text"
             defaultValue={s.chatServer}
             placeholder="e.g. 192.168.1.10"
@@ -244,6 +289,28 @@ export function SettingsView() {
             onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
           />
         </label>
+        <p className="setting-note">
+          <button className="link" disabled={finding} onClick={() => void discover()}>
+            {finding ? "Looking for servers…" : "Find servers on this network"}
+          </button>
+          {found && found.length === 0 && " · none answered"}
+          {found?.map((f) => (
+            <button
+              key={f.address}
+              className="chip-btn"
+              title={f.name}
+              onClick={() => {
+                const list = s.chatServer.split(",").map((x) => x.trim()).filter(Boolean);
+                if (!list.includes(f.address)) void save({ chatServer: [...list, f.address].join(", "), chatEnabled: true });
+              }}
+            >
+              ＋ {f.address}
+            </button>
+          ))}
+        </p>
+        {chat && chat.servers.length > 1 && (
+          <p className="setting-note">This server's cluster: {chat.servers.join(", ")}. If one is down, the others are used.</p>
+        )}
         <label className="setting">
           <span>
             Your name
@@ -258,37 +325,13 @@ export function SettingsView() {
             onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
           />
         </label>
-        <label className="setting">
-          <span>
-            Your IP address
-            <small>
-              {chat?.state === "online" && chat.me ? `Server sees you as ${chat.me.ip}. ` : ""}Empty: detected automatically. Set it if you have
-              several networks.
-            </small>
-          </span>
-          <input
-            className="setting-text"
-            defaultValue={s.chatIp}
-            placeholder="Automatic"
-            onBlur={(e) => e.target.value.trim() !== s.chatIp && void save({ chatIp: e.target.value })}
-            onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
-          />
-        </label>
-        <p className="setting-note">
-          {!chat || chat.state === "off"
-            ? "Not connected."
-            : chat.state === "online"
-              ? `● Connected to ${chat.server}`
-              : chat.state === "connecting"
-                ? `Connecting to ${chat.server}…`
-                : `○ Offline${chat.error ? `: ${chat.error}` : ""}. Retrying.`}
-        </p>
+        <HostSection envPath={s.chatHostEnv} onError={setError} />
       </section>
 
       <section className="about">
         <h2>About</h2>
         <p>
-          DeskBuddy {info.version} · no telemetry; the only network connection is the chat server above, if set.
+          DeskBuddy {info.version} · no telemetry; the only network connections are the chat server above (if connected) and, when you ask, a search for servers on this network.
           <br />
           Data: <code>{info.dataDir}</code>
         </p>

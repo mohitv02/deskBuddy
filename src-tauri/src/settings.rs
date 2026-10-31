@@ -34,14 +34,20 @@ pub struct Settings {
     /// Pinned panels stay open until closed with ×; unpinned ones hide when
     /// they lose focus.
     pub panel_pinned: bool,
-    /// LAN chat server (`host`, `host:port` or `ws://…`); empty = chat off,
-    /// and DeskBuddy makes no network connections.
+    /// Chat server(s): `host`, `host:port` or `ws://…`, comma-separated.
+    /// Empty (and nothing learned below) = chat off, and DeskBuddy makes no
+    /// network connections.
     pub chat_server: String,
     /// Name others see; empty = the login name.
     pub chat_name: String,
-    /// This machine's address as others know it; empty = whatever address the
-    /// server sees us connect from.
-    pub chat_ip: String,
+    /// Connect / Disconnect in Settings.
+    pub chat_enabled: bool,
+    /// Other servers of the same cluster, learned from the server, tried
+    /// when the ones above don't answer.
+    pub chat_known_servers: Vec<String>,
+    /// The `.env` of a chat server running on this machine, for the
+    /// "Host a server" section.
+    pub chat_host_env: String,
     /// Local date (YYYY-MM-DD) the 17:00 reminder last rang, so it rings once a day.
     pub evening_reminder_day: String,
 }
@@ -62,7 +68,9 @@ impl Default for Settings {
             panel_pinned: false,
             chat_server: String::new(),
             chat_name: String::new(),
-            chat_ip: String::new(),
+            chat_enabled: true,
+            chat_known_servers: Vec::new(),
+            chat_host_env: String::new(),
             evening_reminder_day: String::new(),
         }
     }

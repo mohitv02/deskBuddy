@@ -14,12 +14,16 @@ export interface Settings {
   sleepAfterSeconds: number;
   /** Pinned: the panel stays open until closed with ×. */
   panelPinned: boolean;
-  /** LAN chat server ("host", "host:port" or "ws://…"); "" = chat off. */
+  /** Chat server(s): "host", "host:port" or "ws://…", comma-separated. */
   chatServer: string;
   /** Name others see; "" = login name. */
   chatName: string;
-  /** This machine's IP as others know it; "" = automatic. */
-  chatIp: string;
+  /** Connect / Disconnect. */
+  chatEnabled: boolean;
+  /** Other servers of the same cluster, learned from the server. */
+  chatKnownServers: string[];
+  /** The .env of a chat server hosted on this machine. */
+  chatHostEnv: string;
 }
 
 export interface SettingsInfo {
@@ -181,8 +185,10 @@ export interface ChatMessage {
   pinned: boolean;
   createdAt: number;
   editedAt: number | null;
-  /** Sender's IP in a LAN chat; null when sent from here. */
+  /** Sender's device id (an IP in old chats); null when sent from here. */
   senderIp: string | null;
+  /** Sender's name when it arrived, for group chats. */
+  senderName: string;
   /** Delivery of messages sent from here. */
   state: "pending" | "sent" | "failed";
   clientMsgId: string | null;
@@ -200,22 +206,75 @@ export interface Conversation {
   lastBody: string | null;
   /** Pet reaction to their messages: "" default, "none", or a pet state. */
   reaction: string;
+  /** "dm", "team", "link", or "ip" (a read-only chat from the old server). */
+  room: "ip" | "dm" | "team" | "link";
+  peerDevice: string | null;
+  /** Why nothing can be sent here; "" when sending works. */
+  readOnly: string;
 }
 
 export interface ChatUser {
-  ip: string;
+  /** Device id: the device's public key. */
+  device: string;
   name: string;
+  dhPub: string;
   online: boolean;
   lastSeen: number;
+  /** False for people on another team's server. */
+  local: boolean;
+}
+
+export interface TeamView {
+  id: string;
+  name: string;
+  keyVersion: number;
+  /** Rotated out or left: history only. */
+  removed: boolean;
+  members: string[];
+}
+
+export interface LinkView {
+  id: string;
+  kind: "group" | "temp" | "personal";
+  state: "pending" | "active" | "declined" | "archived" | "closed";
+  myTeam: string;
+  myTeamName: string;
+  otherTeam: string;
+  otherTeamName: string;
+  /** We sent the request. */
+  outgoing: boolean;
+  hours: number | null;
+  expiresAt: number | null;
+  retentionDays: number | null;
+  purgeAt: number | null;
+  /** Compare with the other team to rule out swapped keys. */
+  safetyNumber: string | null;
+  weReleased: boolean;
+  theyReleased: boolean;
+  conversation: number | null;
+  otherMembers: string[];
 }
 
 export interface ChatStatus {
   state: "off" | "connecting" | "online" | "offline";
   server: string;
-  /** Our IP and name as the server sees them, while online. */
-  me: ChatUser | null;
+  me: { device: string; name: string } | null;
   error: string | null;
   users: ChatUser[];
+  teams: TeamView[];
+  links: LinkView[];
+  home: string | null;
+  servers: string[];
+}
+
+export interface HostStatus {
+  envExists: boolean;
+  /** MONGODB_URI with the password hidden. */
+  uri: string | null;
+  database: string | null;
+  missingFile: string | null;
+  server: { ok: boolean; db?: { state: string; error: string | null; database: string }; home?: string | null } | null;
+  serverError: string | null;
 }
 
 export type ChatOpenResult = { kind: "opened"; conversation: Conversation } | { kind: "choose"; users: ChatUser[] };
@@ -249,8 +308,27 @@ export const ipc = {
   reorderTodos: (ids: number[]) => invoke<void>("reorder_todos", { ids }),
 
   chatStatus: () => invoke<ChatStatus>("chat_status"),
+  chatIdentity: () => invoke<string>("chat_identity"),
+  /** Create a team; returns its (secret) invite code. */
+  teamCreate: (name: string) => invoke<string>("team_create", { name }),
+  /** Join from an invite code; returns the team name. */
+  teamJoin: (code: string) => invoke<string>("team_join", { code }),
+  teamInvite: (team: string) => invoke<string>("team_invite", { team }),
+  /** The team's public address, for another team's request. */
+  teamAddress: (team: string) => invoke<string>("team_address", { team }),
+  teamLeave: (team: string) => invoke<void>("team_leave", { team }),
+  /** New team key; returns the new invite. */
+  teamRotate: (team: string) => invoke<string>("team_rotate", { team }),
+  linkRequest: (team: string, address: string, kind: string, hours: number | null, retentionDays: number | null) =>
+    invoke<void>("link_request", { team, address, kind, hours, retentionDays }),
+  linkRespond: (link: string, accept: boolean) => invoke<void>("link_respond", { link, accept }),
+  archiveRelease: (link: string) => invoke<void>("archive_release", { link }),
+  archiveLock: (link: string) => invoke<void>("archive_lock", { link }),
+  chatDiscover: () => invoke<{ name: string; address: string }[]>("chat_discover"),
+  chatHostStatus: () => invoke<HostStatus>("chat_host_status"),
+  chatHostSave: (envPath: string, uri: string, database: string) => invoke<void>("chat_host_save", { envPath, uri, database }),
   chatConversations: () => invoke<Conversation[]>("chat_conversations"),
-  /** Start or reopen a chat with an IP address or a name. */
+  /** Start or reopen a direct chat with someone, by name or device id. */
   chatOpen: (target: string) => invoke<ChatOpenResult>("chat_open", { target }),
   /** A page of messages, oldest first, older than `before` (newest page without it). */
   chatList: (conversation: number, before: number | null, limit: number) =>

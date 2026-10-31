@@ -1,0 +1,153 @@
+<svg data-clip="throw_panic" data-frames="24" data-fps="30" data-loop="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><g transform="rotate(90 113.6 285)"><line x1="113.6" y1="259.4" x2="147.73" y2="259.4" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="113.6" y1="259.4" x2="147.73" y2="259.4" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/><line x1="125.55" y1="276.47" x2="171.63" y2="276.47" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="125.55" y1="276.47" x2="171.63" y2="276.47" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/><line x1="117.01" y1="293.53" x2="147.73" y2="293.53" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="117.01" y1="293.53" x2="147.73" y2="293.53" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/><line x1="128.96" y1="310.6" x2="169.92" y2="310.6" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="128.96" y1="310.6" x2="169.92" y2="310.6" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/></g><g transform="rotate(90 398.4 285)"><line x1="398.4" y1="259.4" x2="432.53" y2="259.4" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="398.4" y1="259.4" x2="432.53" y2="259.4" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/><line x1="410.35" y1="276.47" x2="456.43" y2="276.47" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="410.35" y1="276.47" x2="456.43" y2="276.47" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/><line x1="401.81" y1="293.53" x2="432.53" y2="293.53" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="401.81" y1="293.53" x2="432.53" y2="293.53" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/><line x1="413.76" y1="310.6" x2="454.72" y2="310.6" stroke="#2b2533" stroke-width="7.68" stroke-linecap="round"/><line x1="413.76" y1="310.6" x2="454.72" y2="310.6" stroke="#ffffff" stroke-width="2.99" stroke-linecap="round"/></g><g><animateTransform attributeName="transform" type="translate" dur="0.8s" repeatCount="indefinite" calcMode="spline" values="0 0;3.2 0;-3.2 0;3.2 0;-3.2 0;3.2 0;-3.2 0;3.2 0;-3.2 0;3.2 0;-3.2 0;3.2 0;0 0" keyTimes="0.0000;0.0833;0.1667;0.2500;0.3333;0.4167;0.5000;0.5833;0.6667;0.7500;0.8333;0.9167;1.0000" keySplines="0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/><g transform="translate(256 333)"><g><animateTransform attributeName="transform" type="rotate" dur="0.8s" repeatCount="indefinite" calcMode="spline" values="0;6;-6;6;-6;6;-6;6;0" keyTimes="0.0000;0.1250;0.2500;0.3750;0.5000;0.6250;0.7500;0.8750;1.0000" keySplines="0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/><g transform="translate(-256 -333)">
+
+<g transform="translate(51.2 110) scale(0.512)">
+<g>
+<g>
+
+</g>
+</g>
+<g>
+<g><animateTransform attributeName="transform" type="translate" dur="2s" values="400 450;400 420;400 450;400 450" keyTimes="0;0.083;0.2;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-400 -450)">
+<g transform="translate(400 702)">
+<g><animateTransform attributeName="transform" type="scale" dur="2s" values="1 1;0.95 1.06;1 1;1 1" keyTimes="0;0.083;0.2;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-400 -702)">
+<g>
+<g>
+<path d="M 452,600 C 600,600 680,720 620,740 C 580,750 520,680 432,660 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+<path d="M 540,650 L 570,620 L 590,660 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+<path d="M 600,690 L 640,670 L 630,710 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+</g>
+</g>
+<g transform="translate(332 522)">
+<g><animateTransform attributeName="transform" type="rotate" dur="2s" values="0;32;32;0;0" keyTimes="0;0.083;0.733;0.933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g><animateTransform attributeName="transform" type="scale" dur="2s" values="1 1;1.15 1.15;1.15 1.15;1 1;1 1" keyTimes="0;0.083;0.733;0.933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-332 -522)">
+<g>
+<path d="M 332,522 C 222,462 152,482 142,532 C 182,562 212,552 222,522 C 242,572 272,582 302,552 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+<path d="M 332,522 C 222,462 152,482 142,532 C 192,452 272,462 342,522 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+</g>
+</g></g></g></g>
+<g transform="translate(468 522)">
+<g><animateTransform attributeName="transform" type="rotate" dur="2s" values="0;-32;-32;0;0" keyTimes="0;0.083;0.733;0.933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g><animateTransform attributeName="transform" type="scale" dur="2s" values="1 1;1.15 1.15;1.15 1.15;1 1;1 1" keyTimes="0;0.083;0.733;0.933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-468 -522)">
+<g>
+<path d="M 468,522 C 578,462 648,482 658,532 C 618,562 588,552 578,522 C 558,572 528,582 498,552 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+<path d="M 468,522 C 578,462 648,482 658,532 C 608,452 528,462 458,522 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+</g>
+</g></g></g></g>
+</g></g></g>
+<g>
+<g>
+<path d="M 312,620 C 282,620 272,670 292,690 C 312,710 362,700 362,670 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+<path d="M 298,680 L 306,689 M 316,685 L 324,694 M 334,681 L 342,690" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+</g>
+</g>
+<g>
+<g>
+<path d="M 488,620 C 518,620 528,670 508,690 C 488,710 438,700 438,670 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+<path d="M 502,680 L 494,689 M 484,685 L 476,694 M 466,681 L 458,690" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+</g>
+</g>
+<g transform="translate(400 702)">
+<g><animateTransform attributeName="transform" type="scale" dur="2s" values="1 1;0.95 1.06;1 1;1 1" keyTimes="0;0.083;0.2;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-400 -702)">
+<g>
+<path d="M 330,480 C 280,580 320,670 370,670 L 430,670 C 480,670 520,580 470,480 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+<path d="M 355,500 C 330,570 350,650 380,650 L 420,650 C 450,650 470,570 445,500 Z" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+</g>
+<g>
+<g transform="translate(262 248)">
+<g><animateTransform attributeName="transform" type="rotate" dur="2s" values="0;12;12;0;0" keyTimes="0;0.083;0.733;0.933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-262 -248)">
+<g>
+<path d="M 280,240 C 240,150 190,130 190,130 C 190,130 200,200 240,260 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+<path d="M 265,230 C 235,160 210,145 210,145 C 210,145 215,195 245,240 Z" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+</g>
+</g></g></g>
+<g transform="translate(538 248)">
+<g><animateTransform attributeName="transform" type="rotate" dur="2s" values="0;-12;-12;0;0" keyTimes="0;0.083;0.733;0.933;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-538 -248)">
+<g>
+<path d="M 520,240 C 560,150 610,130 610,130 C 610,130 600,200 560,260 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+<path d="M 535,230 C 565,160 590,145 590,145 C 590,145 585,195 555,240 Z" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+</g>
+</g></g></g>
+<g>
+<path d="M 400,160 C 570,160 630,240 630,370 C 630,480 520,510 400,510 C 280,510 170,480 170,370 C 170,240 230,160 400,160 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+<path d="M 400,150 L 415,175 L 400,195 L 385,175 Z" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+<path d="M 400,205 L 415,230 L 400,250 L 385,230 Z" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+<path d="M 400,260 L 415,285 L 400,305 L 385,285 Z" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFE0AC"/>
+</g>
+<g>
+<g>
+<ellipse cx="240" cy="412" rx="30" ry="15" stroke="none" fill="#FF8521" opacity="0.4"/>
+</g>
+</g>
+<g>
+<g>
+<ellipse cx="560" cy="412" rx="30" ry="15" stroke="none" fill="#FF8521" opacity="0.4"/>
+</g>
+</g>
+<g transform="translate(280 350)">
+<g><animateTransform attributeName="transform" type="scale" dur="2s" values="1 1;1.3 1.3;1.3 1.3;1 1;1 1" keyTimes="0;0.083;0.733;0.9;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-280 -350)">
+<g>
+<ellipse cx="280" cy="350" rx="45" ry="45" stroke="none" fill="#180838"/>
+<ellipse cx="295" cy="330" rx="18" ry="18" stroke="none" fill="#FFFFFF"/>
+<ellipse cx="260" cy="365" rx="8" ry="8" stroke="none" fill="#FFFFFF"/>
+</g>
+</g></g></g>
+<g transform="translate(520 350)">
+<g><animateTransform attributeName="transform" type="scale" dur="2s" values="1 1;1.3 1.3;1.3 1.3;1 1;1 1" keyTimes="0;0.083;0.733;0.9;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(-520 -350)">
+<g>
+<ellipse cx="520" cy="350" rx="45" ry="45" stroke="none" fill="#180838"/>
+<ellipse cx="505" cy="330" rx="18" ry="18" stroke="none" fill="#FFFFFF"/>
+<ellipse cx="540" cy="365" rx="8" ry="8" stroke="none" fill="#FFFFFF"/>
+</g>
+</g></g></g>
+<g>
+<ellipse cx="385" cy="390" rx="3.5" ry="5" stroke="none" fill="#180838"/>
+<ellipse cx="415" cy="390" rx="3.5" ry="5" stroke="none" fill="#180838"/>
+</g>
+<g>
+<g opacity="1"><animate attributeName="opacity" dur="2s" values="1;1;0;0;1;1" keyTimes="0;0.033;0.05;0.817;0.833;1" calcMode="spline" keySplines="0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1" fill="freeze"/>
+<path d="M 378,408 Q 400,434 422,408" stroke="#180838" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+</g>
+<g opacity="0"><animate attributeName="opacity" dur="2s" values="0;0;1;1;0;0" keyTimes="0;0.033;0.05;0.817;0.833;1" calcMode="spline" keySplines="0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1" fill="freeze"/>
+<ellipse cx="400" cy="420" rx="12" ry="15" stroke="#2B0E63" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" fill="#180838"/>
+</g>
+</g>
+</g>
+<g>
+<path d="M 400,472 C 428,496 428,542 400,542 C 372,542 372,496 400,472 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF8521"/>
+<path d="M 400,492 C 414,511 414,533 400,533 C 386,533 386,511 400,492 Z" stroke="none" fill="#FFDE3D"/>
+</g>
+<g>
+<g>
+<path d="M 322,490 C 272,520 282,570 312,580 C 342,590 362,550 347,520 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+</g>
+</g>
+<g>
+<g>
+<path d="M 478,490 C 528,520 518,570 488,580 C 458,590 438,550 453,520 Z" stroke="#2B0E63" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" fill="#FF3355"/>
+</g>
+</g>
+</g></g></g>
+</g></g>
+</g>
+<g transform="translate(400 100)">
+<g><animateTransform attributeName="transform" type="rotate" dur="2s" values="0;0;2.472;4.702;6.472;7.608;8;7.608;6.472;4.702;2.472;0;-2.472;-4.702;-6.472;-7.608;-8;-7.608;-6.472;-4.702;-2.472;0;2.472;4.702;6.472;7.608;8;7.608;6.472;4.702;2.472;0;-2.472;-4.702;-6.472;-7.608;-8;-7.608;-6.472;-4.702;-2.472;0;2.472;4.702;6.472;7.608;8;7.608;7.608" keyTimes="0;0.067;0.083;0.1;0.117;0.133;0.15;0.167;0.183;0.2;0.217;0.233;0.25;0.267;0.283;0.3;0.317;0.333;0.35;0.367;0.383;0.4;0.417;0.433;0.45;0.467;0.483;0.5;0.517;0.533;0.55;0.567;0.583;0.6;0.617;0.633;0.65;0.667;0.683;0.7;0.717;0.733;0.75;0.767;0.783;0.8;0.817;0.833;1" calcMode="spline" keySplines="0.42 0 0.58 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1" fill="freeze"/>
+<g><animateTransform attributeName="transform" type="scale" dur="2s" values="0 0;0 0;0 0;0.473 0.473;0.856 0.856;1.133 1.133;1.25 1.25;1.218 1.218;1.125 1.125;1.032 1.032;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;0.918 0.918;0.668 0.668;0.332 0.332;0.082 0.082;0 0;0 0;0 0" keyTimes="0;0.05;0.067;0.083;0.1;0.117;0.133;0.15;0.167;0.183;0.2;0.217;0.233;0.25;0.267;0.283;0.3;0.317;0.333;0.35;0.367;0.383;0.4;0.417;0.433;0.45;0.467;0.483;0.5;0.517;0.533;0.55;0.567;0.583;0.6;0.617;0.633;0.65;0.667;0.683;0.7;0.717;0.733;0.75;0.767;0.783;0.8;0.817;0.833;0.85;1" calcMode="spline" keySplines="0.42 0 0.58 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1" fill="freeze"/>
+<g transform="translate(-400 -100)">
+<g opacity="0"><animate attributeName="opacity" dur="2s" values="0;0;1;1;0;0" keyTimes="0;0.05;0.067;0.833;0.85;1" calcMode="spline" keySplines="0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1" fill="freeze"/>
+<g transform="translate(400 100)">
+<path d="M -9,-44 L 9,-44 L 6,8 L -6,8 Z" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFD84D"/>
+<ellipse cx="0" cy="26" rx="10" ry="10" stroke="#2B0E63" stroke-width="8" stroke-linejoin="round" stroke-linecap="round" fill="#FFD84D"/>
+</g>
+</g>
+</g></g></g></g>
+</g>
+</g></g></g></g><g><animateTransform attributeName="transform" type="translate" dur="0.8s" repeatCount="indefinite" calcMode="spline" values="0 0;0 6.4;0 0" keyTimes="0.0000;0.5000;1.0000" keySplines="0.37 0 0.63 1;0.37 0 0.63 1"/><path d="M359.36 219.93Q371.09 237 368.96 243.4A9.6 9.6 0 1 1 349.76 243.4Q347.63 237 359.36 219.93Z" fill="#dff1ff" stroke="#2b2533" stroke-width="3.73"/></g></svg>

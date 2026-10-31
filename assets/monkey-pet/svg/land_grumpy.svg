@@ -1,0 +1,177 @@
+<svg data-clip="land_grumpy" data-frames="60" data-fps="30" data-loop="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><g><animateTransform attributeName="transform" type="translate" dur="2s" fill="freeze" calcMode="spline" values="0 -33.8;0 0;0 0" keyTimes="0.0000;0.0667;1.0000" keySplines="0.42 0 1 1;0 0 1 1"/><g transform="translate(256 474)"><g><animateTransform attributeName="transform" type="scale" dur="2s" fill="freeze" calcMode="spline" values="0.92 1.1;1.18 0.84;0.97 1.04;1 1;1 1" keyTimes="0.0000;0.0667;0.1667;0.2500;1.0000" keySplines="0.42 0 1 1;0.12 0.85 0.25 1;0.42 0 0.58 1;0 0 1 1"/><g transform="translate(-256 -474)">
+
+<desc>Chibi monkey desktop pet - mood_angry (60 frames @ 30fps, loop)</desc>
+<g class="n-branch">
+</g>
+<g class="n-pivot" transform="translate(256 470)">
+<g class="n-char"><animateTransform attributeName="transform" type="scale" values="0.8 0.8;0.8 0.8;0.85 0.75;0.8 0.8;0.8 0.8;0.85 0.75;0.8 0.8;0.8 0.8;0.85 0.75;0.8 0.8;0.8 0.8;0.85 0.75;0.8 0.8" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.15;0.2;0.25;0.4;0.45;0.5;0.65;0.7;0.75;0.9;0.95;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/>
+<g class="n-roll" transform="translate(0 -186) translate(0 200)">
+<g class="n-body" transform="translate(0 -40) translate(0 40)">
+<g class="n-tail1" transform="translate(0 -56) rotate(10) translate(0 56)">
+<g class="d-tail-ol1">
+<path d="M0 -56C18.67 -58.67 37.33 -58.67 56 -56" fill="none" stroke="#4a2b18" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail2" transform="translate(56 -56) rotate(-40) translate(-56 56)">
+<g class="d-tail-ol2">
+<path d="M56 -56C73.33 -53.33 90.67 -53.33 108 -56" fill="none" stroke="#4a2b18" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail3" transform="translate(108 -56) rotate(-50) translate(-108 56)">
+<g class="d-tail-ol3">
+<path d="M108 -56L134 -56C158 -56 170 -76 162 -94C154 -110 130 -110 124 -94C120 -82 130 -74 140 -78" fill="none" stroke="#4a2b18" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+<g class="d-tail-fur1">
+<path d="M0 -56C18.67 -58.67 37.33 -58.67 56 -56" fill="none" stroke="#8b5a2b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail2" transform="translate(56 -56) rotate(-40) translate(-56 56)">
+<g class="d-tail-fur2">
+<path d="M56 -56C73.33 -53.33 90.67 -53.33 108 -56" fill="none" stroke="#8b5a2b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-tail3" transform="translate(108 -56) rotate(-50) translate(-108 56)">
+<g class="d-tail-fur3">
+<path d="M108 -56L134 -56C158 -56 170 -76 162 -94C154 -110 130 -110 124 -94C120 -82 130 -74 140 -78" fill="none" stroke="#8b5a2b" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+<g class="d-body">
+<path d="M0 -198C46 -198 66 -150 66 -104C66 -56 42 -34 0 -34C-42 -34 -66 -56 -66 -104C-66 -150 -46 -198 0 -198Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M0 -134C20.99 -134 38 -116.09 38 -94C38 -71.91 20.99 -54 0 -54C-20.99 -54 -38 -71.91 -38 -94C-38 -116.09 -20.99 -134 0 -134Z" fill="#f2c894"/>
+</g>
+</g>
+<g class="n-legL"><animateTransform attributeName="transform" type="translate" values="-26 -48;-26 -60;-26 -48;-26 -48;-26 -60;-26 -48;-26 -48" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.1;0.2;0.5;0.6;0.7;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g><animateTransform attributeName="transform" type="rotate" values="38;58;38;38;58;38;38" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.1;0.2;0.5;0.6;0.7;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(26 48)">
+<g class="d-legL">
+<path d="M-26 -48L-40 -18" fill="none" stroke="#4a2b18" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-26 -48L-40 -18" fill="none" stroke="#8b5a2b" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-22 -12C-22 -24 -34 -28 -46 -27C-60 -26 -68 -18 -67 -10C-66 -3 -58 0 -45 0C-30 0 -22 -4 -22 -12Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+<g class="n-legR"><animateTransform attributeName="transform" type="translate" values="26 -48;26 -48;26 -60;26 -48;26 -48;26 -60;26 -48;26 -48" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.35;0.45;0.75;0.85;0.95;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g><animateTransform attributeName="transform" type="rotate" values="-38;-38;-58;-38;-38;-58;-38;-38" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.25;0.35;0.45;0.75;0.85;0.95;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(-26 48)">
+<g class="d-legR">
+<path d="M26 -48L40 -18" fill="none" stroke="#4a2b18" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M26 -48L40 -18" fill="none" stroke="#8b5a2b" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 -12C22 -24 34 -28 46 -27C60 -26 68 -18 67 -10C66 -3 58 0 45 0C30 0 22 -4 22 -12Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+<g class="n-body" transform="translate(0 -40) translate(0 40)">
+<g class="n-tail1" transform="translate(0 -56) rotate(10) translate(0 56)">
+<g class="n-tail2" transform="translate(56 -56) rotate(-40) translate(-56 56)">
+<g class="n-tail3" transform="translate(108 -56) rotate(-50) translate(-108 56)">
+</g>
+</g>
+<g class="n-tail2" transform="translate(56 -56) rotate(-40) translate(-56 56)">
+<g class="n-tail3" transform="translate(108 -56) rotate(-50) translate(-108 56)">
+</g>
+</g>
+</g>
+<g class="n-head" transform="translate(0 -182)"><g><animateTransform attributeName="transform" type="rotate" values="0;-4;4;-4;4;0" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.2;0.45;0.7;0.95;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(0 182)">
+<g class="n-earL" transform="translate(-112 -288) translate(112 288)">
+<g class="d-earL">
+<path d="M-140 -330C-117.91 -330 -100 -312.09 -100 -290C-100 -267.91 -117.91 -250 -140 -250C-162.09 -250 -180 -267.91 -180 -290C-180 -312.09 -162.09 -330 -140 -330Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-141 -314C-128.3 -314 -118 -303.25 -118 -290C-118 -276.75 -128.3 -266 -141 -266C-153.7 -266 -164 -276.75 -164 -290C-164 -303.25 -153.7 -314 -141 -314Z" fill="#f4a7a0"/>
+</g>
+</g>
+<g class="n-earR" transform="translate(112 -288) translate(-112 288)">
+<g class="d-earR">
+<path d="M140 -330C162.09 -330 180 -312.09 180 -290C180 -267.91 162.09 -250 140 -250C117.91 -250 100 -267.91 100 -290C100 -312.09 117.91 -330 140 -330Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M141 -314C153.7 -314 164 -303.25 164 -290C164 -276.75 153.7 -266 141 -266C128.3 -266 118 -276.75 118 -290C118 -303.25 128.3 -314 141 -314Z" fill="#f4a7a0"/>
+</g>
+</g>
+<g class="d-tuft">
+<path d="M-20 -392C-26 -412 -12 -428 -2 -416C4 -434 28 -430 22 -408C30 -408 33 -398 25 -392L-20 -392Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="d-head">
+<path d="M0 -400C67.38 -400 122 -351.65 122 -292C122 -232.35 67.38 -184 0 -184C-67.38 -184 -122 -232.35 -122 -292C-122 -351.65 -67.38 -400 0 -400Z" fill="#8b5a2b" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="n-face" transform="translate(0 -270) translate(0 270)">
+<g class="d-patch">
+<path d="M0 -312C18 -342 74 -340 79 -296C84 -252 48 -208 0 -205C-48 -208 -84 -252 -79 -296C-74 -340 -18 -342 0 -312Z" fill="#f2c894"/>
+</g>
+<g class="n-cheekL" transform="translate(-64 -240) scale(1.3 1.3) translate(64 240)">
+<g class="d-cheekL">
+<path d="M-64 -249C-56.27 -249 -50 -244.97 -50 -240C-50 -235.03 -56.27 -231 -64 -231C-71.73 -231 -78 -235.03 -78 -240C-78 -244.97 -71.73 -249 -64 -249Z" fill="#f7a3a3"/>
+</g>
+</g>
+<g class="n-cheekR" transform="translate(64 -240) scale(1.3 1.3) translate(-64 240)">
+<g class="d-cheekR">
+<path d="M64 -249C71.73 -249 78 -244.97 78 -240C78 -235.03 71.73 -231 64 -231C56.27 -231 50 -235.03 50 -240C50 -244.97 56.27 -249 64 -249Z" fill="#f7a3a3"/>
+</g>
+</g>
+<g class="d-nose">
+<path d="M-6 -254.2C-4.23 -254.2 -2.8 -252.77 -2.8 -251C-2.8 -249.23 -4.23 -247.8 -6 -247.8C-7.77 -247.8 -9.2 -249.23 -9.2 -251C-9.2 -252.77 -7.77 -254.2 -6 -254.2Z" fill="#2f1b10"/>
+<path d="M6 -254.2C7.77 -254.2 9.2 -252.77 9.2 -251C9.2 -249.23 7.77 -247.8 6 -247.8C4.23 -247.8 2.8 -249.23 2.8 -251C2.8 -252.77 4.23 -254.2 6 -254.2Z" fill="#2f1b10"/>
+</g>
+<g class="n-mouth" transform="translate(0 -230) translate(0 230)">
+<g class="d-mouth-smile" opacity="0"><animate attributeName="opacity" values="0;0" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;1" calcMode="discrete"/>
+<path d="M-9 -236C-3 -229.33 3 -229.33 9 -236" fill="none" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g class="d-mouth-grit" opacity="1"><animate attributeName="opacity" values="1;1" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;1" calcMode="discrete"/>
+<path d="M-11 -239L11 -239C13.21 -239 15 -237.21 15 -235L15 -226C15 -223.79 13.21 -222 11 -222L-11 -222C-13.21 -222 -15 -223.79 -15 -226L-15 -235C-15 -237.21 -13.21 -239 -11 -239Z" fill="#ffffff" stroke="#4a2b18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-14 -230.5L14 -230.5M-5 -238L-5 -223M5 -238L5 -223" fill="none" stroke="#4a2b18" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<g class="n-eyes" transform="translate(0 -280)"><g><animateTransform attributeName="transform" type="scale" values="1 1;1 0.85;1 0.85;1 1" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.06667;0.93333;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(0 280)">
+<g class="n-eyeL" transform="translate(-36 -280) translate(36 280)">
+<g class="d-eyeL-open">
+<path d="M-36 -303C-26.06 -303 -18 -292.7 -18 -280C-18 -267.3 -26.06 -257 -36 -257C-45.94 -257 -54 -267.3 -54 -280C-54 -292.7 -45.94 -303 -36 -303Z" fill="#2f1b10"/>
+<path d="M-30 -296.2C-26.02 -296.2 -22.8 -292.98 -22.8 -289C-22.8 -285.02 -26.02 -281.8 -30 -281.8C-33.98 -281.8 -37.2 -285.02 -37.2 -289C-37.2 -292.98 -33.98 -296.2 -30 -296.2Z" fill="#ffffff"/>
+<path d="M-42 -275.4C-40.12 -275.4 -38.6 -273.88 -38.6 -272C-38.6 -270.12 -40.12 -268.6 -42 -268.6C-43.88 -268.6 -45.4 -270.12 -45.4 -272C-45.4 -273.88 -43.88 -275.4 -42 -275.4Z" fill="#ffffff"/>
+</g>
+</g>
+<g class="n-eyeR" transform="translate(36 -280) translate(-36 280)">
+<g class="d-eyeR-open">
+<path d="M36 -303C45.94 -303 54 -292.7 54 -280C54 -267.3 45.94 -257 36 -257C26.06 -257 18 -267.3 18 -280C18 -292.7 26.06 -303 36 -303Z" fill="#2f1b10"/>
+<path d="M42 -296.2C45.98 -296.2 49.2 -292.98 49.2 -289C49.2 -285.02 45.98 -281.8 42 -281.8C38.02 -281.8 34.8 -285.02 34.8 -289C34.8 -292.98 38.02 -296.2 42 -296.2Z" fill="#ffffff"/>
+<path d="M30 -275.4C31.88 -275.4 33.4 -273.88 33.4 -272C33.4 -270.12 31.88 -268.6 30 -268.6C28.12 -268.6 26.6 -270.12 26.6 -272C26.6 -273.88 28.12 -275.4 30 -275.4Z" fill="#ffffff"/>
+</g>
+</g>
+</g></g></g>
+<g class="n-brows" transform="translate(0 -314) translate(0 314)">
+<g class="d-brows-angry" opacity="1"><animate attributeName="opacity" values="1;1" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;1" calcMode="discrete"/>
+<path d="M-54 -324L-26 -311M54 -324L26 -311" fill="none" stroke="#4a2b18" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g></g></g>
+<g class="n-armL" transform="translate(-48 -150)"><g><animateTransform attributeName="transform" type="rotate" values="0;-15;-15;0" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.1;0.9;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(48 150)">
+<g class="d-armL">
+<path d="M-48 -150L-64 -98" fill="none" stroke="#4a2b18" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-48 -150L-64 -98" fill="none" stroke="#8b5a2b" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-50 -100C-50 -108 -56 -112 -61 -109C-64 -106 -63 -100 -59 -97L-50 -100Z" fill="#f2c894" stroke="#4a2b18" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-68 -105C-60.27 -105 -54 -98.28 -54 -90C-54 -81.72 -60.27 -75 -68 -75C-75.73 -75 -82 -81.72 -82 -90C-82 -98.28 -75.73 -105 -68 -105Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+<g class="n-armR" transform="translate(48 -150)"><g><animateTransform attributeName="transform" type="rotate" values="0;15;15;0" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.1;0.9;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g transform="translate(-48 150)">
+<g class="d-armR">
+<path d="M48 -150L64 -98" fill="none" stroke="#4a2b18" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M48 -150L64 -98" fill="none" stroke="#8b5a2b" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50 -100C50 -108 56 -112 61 -109C64 -106 63 -100 59 -97L50 -100Z" fill="#f2c894" stroke="#4a2b18" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M68 -105C75.73 -105 82 -98.28 82 -90C82 -81.72 75.73 -75 68 -75C60.27 -75 54 -81.72 54 -90C54 -98.28 60.27 -105 68 -105Z" fill="#f2c894" stroke="#4a2b18" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g></g></g>
+</g>
+</g>
+</g>
+<g class="n-puffL"><animateTransform attributeName="transform" type="translate" values="-62 -330;-82 -372;-94 -404;-62 -330;-82 -372;-94 -404;-94 -404" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.23333;0.46667;0.5;0.73333;0.96667;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/><g><animateTransform attributeName="transform" type="scale" values="0.4 0.4;1 1;1.25 1.25;0.4 0.4;1 1;1.25 1.25;1.25 1.25" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.23333;0.46667;0.5;0.73333;0.96667;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/>
+<g class="d-puffL" opacity="0"><animate attributeName="opacity" values="0;1;0;0;1;0;0" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.23333;0.46667;0.5;0.73333;0.96667;1" calcMode="spline" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1"/>
+<path d="M-8 -7C-3.03 -7 1 -2.97 1 2C1 6.97 -3.03 11 -8 11C-12.97 11 -17 6.97 -17 2C-17 -2.97 -12.97 -7 -8 -7Z" fill="#f6f1ea" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 -14C9.52 -14 14 -9.52 14 -4C14 1.52 9.52 6 4 6C-1.52 6 -6 1.52 -6 -4C-6 -9.52 -1.52 -14 4 -14Z" fill="#f6f1ea" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 -1C13.87 -1 17 2.13 17 6C17 9.87 13.87 13 10 13C6.13 13 3 9.87 3 6C3 2.13 6.13 -1 10 -1Z" fill="#f6f1ea" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-8 -7C-3.03 -7 1 -2.97 1 2C1 6.97 -3.03 11 -8 11C-12.97 11 -17 6.97 -17 2C-17 -2.97 -12.97 -7 -8 -7Z" fill="#f6f1ea"/>
+<path d="M4 -14C9.52 -14 14 -9.52 14 -4C14 1.52 9.52 6 4 6C-1.52 6 -6 1.52 -6 -4C-6 -9.52 -1.52 -14 4 -14Z" fill="#f6f1ea"/>
+<path d="M10 -1C13.87 -1 17 2.13 17 6C17 9.87 13.87 13 10 13C6.13 13 3 9.87 3 6C3 2.13 6.13 -1 10 -1Z" fill="#f6f1ea"/>
+</g>
+</g></g>
+<g class="n-puffR"><animateTransform attributeName="transform" type="translate" values="82.1194 -372.3183;94 -404;62 -330;82 -372;94 -404;62 -330;82 -372;82.1194 -372.3183" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.21667;0.25;0.48333;0.71667;0.75;0.98333;1" calcMode="spline" keySplines="0.397 0.105 0.574 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.345 0 0.678 0.347"/><g><animateTransform attributeName="transform" type="scale" values="1.0025 1.0025;1.25 1.25;0.4 0.4;1 1;1.25 1.25;0.4 0.4;1 1;1.0025 1.0025" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.21667;0.25;0.48333;0.71667;0.75;0.98333;1" calcMode="spline" keySplines="0.397 0.105 0.574 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.345 0 0.678 0.347"/>
+<g class="d-puffR" opacity="0.9901"><animate attributeName="opacity" values="0.9901;0;0;1;0;0;1;0.9901" dur="2.0000s" begin="0s" repeatCount="indefinite" fill="freeze" keyTimes="0;0.21667;0.25;0.48333;0.71667;0.75;0.98333;1" calcMode="spline" keySplines="0.397 0.105 0.574 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1;0.345 0 0.678 0.347"/>
+<path d="M-8 -7C-3.03 -7 1 -2.97 1 2C1 6.97 -3.03 11 -8 11C-12.97 11 -17 6.97 -17 2C-17 -2.97 -12.97 -7 -8 -7Z" fill="#f6f1ea" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 -14C9.52 -14 14 -9.52 14 -4C14 1.52 9.52 6 4 6C-1.52 6 -6 1.52 -6 -4C-6 -9.52 -1.52 -14 4 -14Z" fill="#f6f1ea" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 -1C13.87 -1 17 2.13 17 6C17 9.87 13.87 13 10 13C6.13 13 3 9.87 3 6C3 2.13 6.13 -1 10 -1Z" fill="#f6f1ea" stroke="#4a2b18" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M-8 -7C-3.03 -7 1 -2.97 1 2C1 6.97 -3.03 11 -8 11C-12.97 11 -17 6.97 -17 2C-17 -2.97 -12.97 -7 -8 -7Z" fill="#f6f1ea"/>
+<path d="M4 -14C9.52 -14 14 -9.52 14 -4C14 1.52 9.52 6 4 6C-1.52 6 -6 1.52 -6 -4C-6 -9.52 -1.52 -14 4 -14Z" fill="#f6f1ea"/>
+<path d="M10 -1C13.87 -1 17 2.13 17 6C17 9.87 13.87 13 10 13C6.13 13 3 9.87 3 6C3 2.13 6.13 -1 10 -1Z" fill="#f6f1ea"/>
+</g>
+</g></g>
+</g>
+</g></g></g></g><g opacity="0"><animate attributeName="opacity" dur="2s" fill="freeze" calcMode="spline" values="0;0;1;1;0;0" keyTimes="0.0000;0.0665;0.0667;0.3000;0.3002;1.0000" keySplines="0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1;0 0 1 1"/><g><animateTransform attributeName="transform" type="translate" dur="2s" fill="freeze" calcMode="spline" values="256 467.24;256 467.24;256 457.1;256 457.1" keyTimes="0.0000;0.0667;0.3000;1.0000" keySplines="0 0 1 1;0 0 0.58 1;0 0 1 1"/><g><animateTransform attributeName="transform" type="scale" dur="2s" fill="freeze" calcMode="spline" values="0.2 0.2;0.2 0.2;1 1;1.06 1.06;0.01 0.01;0.01 0.01" keyTimes="0.0000;0.0667;0.1500;0.2333;0.3000;1.0000" keySplines="0 0 1 1;0.12 0.85 0.25 1;0.42 0 0.58 1;0.42 0 1 1;0 0 1 1"/><circle cx="0" cy="-4.06" r="24.34" fill="#2b2533"/><circle cx="-20.28" cy="6.08" r="19.27" fill="#2b2533"/><circle cx="20.28" cy="6.08" r="20.28" fill="#2b2533"/><circle cx="-9.13" cy="14.2" r="17.24" fill="#2b2533"/><circle cx="10.14" cy="15.21" r="17.24" fill="#2b2533"/><circle cx="0" cy="-4.06" r="20.28" fill="#eceaf2"/><circle cx="-20.28" cy="6.08" r="15.21" fill="#eceaf2"/><circle cx="20.28" cy="6.08" r="16.22" fill="#eceaf2"/><circle cx="-9.13" cy="14.2" r="13.18" fill="#eceaf2"/><circle cx="10.14" cy="15.21" r="13.18" fill="#eceaf2"/></g></g></g></svg>

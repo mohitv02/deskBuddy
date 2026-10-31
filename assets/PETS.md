@@ -23,10 +23,44 @@ landing (used for `dropped`, since the window itself does the falling). Run
 | `overdue`, `hungry` | instead of an idle moment, half the time, while a todo is overdue / around 12:00–13:30 and 19:00–20:30 | skipped |
 | `alarm`, `alarmClosed`, `snooze` | an alarm rings (loops) / is stopped / is snoozed | idle / hover / idle |
 | `dragged` / `falling` / `dropped` | while you drag the pet / let go higher than where the drag started: the window drops back down (up to 200 px, with gravity) / back on the ground | hover / dragged / skipped |
-| `thrown` / `thrownLanded` | flick it sideways as you let go: the window slides that way, slowing down, with this clip looping (drawn facing right; mirrored for a throw to the left) / once it stops: drawn facing right, mirrored to face back the way it came; the pet's `alarmEffect` is shown from `effectOrigin` about 1.4 s in, for about 1.1 s (Ember: shake off, then fire) | falling / skipped (plain `dropped`) |
+| `thrown` / `thrownLanded` | flick it sideways as you let go (release speed over 1000 px/s, within 22.5° of level): the window slides that way, slowing down, with this clip looping (drawn facing right; mirrored for a throw to the left) / once it stops: drawn facing right, mirrored to face back the way it came; unless the pack sets `"throwEffect": false`, the pet's `alarmEffect` is shown from `effectOrigin` about 1.4 s in, for about 1.1 s (Ember: shake off, then fire) | falling / skipped (plain `dropped`) |
+| `thrownUp` / `thrownUpLanded` | flick it up, straight or diagonally: the window flies up (up to 300 px, harder = higher) in an arc, drifting sideways on a diagonal, and falls back to where a drop would land / once down. Mirrored like `thrown` on a diagonal | falling / `dropped` |
+| `thrownDown` / `thrownDownLanded` | flick it down, straight or diagonally: the window slams down (up to 240 px, never off the screen) / on impact | falling / `dropped` |
 | `fallAsleep` → `sleep` → `wakeUp` | **Settings → Sleep after** (default 20 s) with no hover, click or todo change; wakes on a 1.5 s hover, a click or a todo change | no sleeping |
 | `lookUp`, `lookUpRight`, … (8) | the pointer is near the pet (within 4× its size) but not on it: the eyes follow it | idle |
 | `idleVariants` | one plays every 9 to 23 s while idle | — |
+
+## Throw reactions (every pet)
+
+Flick a pet as you let go and it reacts to the direction; each row is a random pick. The Chibi Ninja
+has hand-drawn clips (in its table below). Every other pet gets 7 clips that
+`scripts/make-throw-clips.py` builds from its own art (re-run by `prepare-pets.py`): one of its
+clips wrapped in extra motion, with stars, dust, speed lines and a sweat drop drawn on top.
+
+| Throw | In the air | Landing |
+|---|---|---|
+| ← → sideways | `throw_tumble` (rolls head over heels, faces the way it flies) + the pet's own sideways clip, if any | `land_dizzy`, `land_grumpy`, its usual drop landing; Ember instead keeps `tumble` → `thrown_fire` (turns round and breathes fire) |
+| ↑ ↖ ↗ up | `throw_whee` (sways and stretches with joy, sparkles), `throw_panic` (shakes, sweat drop) | its usual drop landing, `land_splat`, `land_dizzy` |
+| ↓ ↙ ↘ down | `throw_dive` (upside down, head first), `throw_panic` | `land_splat`, `land_dizzy`, `land_grumpy` |
+
+* `land_splat`: squashed flat as a pancake with dust puffs, quivers, pops up with a boing, shakes it off.
+* `land_dizzy`: crash-lands with a squash, wobbles in circles under three circling stars, shakes its head.
+* `land_grumpy`: a bump on landing, then the pet's annoyed clip once.
+
+| Pet | Tumbles as | Whee as | Panics / dives as | Grumpy as | Own sideways clip |
+|---|---|---|---|---|---|
+| Axolotl | `int_poked` (puffed-up ball) | `mood_happy` | `mood_surprised` | `int_poked` | `move_swim` |
+| Chibi Cat | `mood_surprised` | `mood_happy` | `mood_surprised` | `int_poked` | — |
+| Baby Dragon | `mood_surprised` | `mood_happy` | `mood_surprised` | `int_poked` | — |
+| Ember | (keeps `tumble`) | `happy_hop` | `fall` | `shake_off` | `tumble` |
+| Fox | `mood_surprised` | `mood_happy` | `mood_surprised` | `int_poked` | `move_pounce` |
+| Ghost | `mood_scared` | `mood_happy` | `mood_scared` | `int_poked` | — |
+| Mochi | `surprised` | `happy` | `surprised` | `poked` | `tumble` |
+| Monkey | `mood_surprised` | `mood_happy` | `mood_surprised` | `mood_angry` | `fun_spin` (cartwheel) |
+| Otter | `mood_surprised` | `mood_happy` | `mood_surprised` | `int_poked` | `move_swim` |
+| Penguin | `mood_surprised` | `mood_happy` | `mood_surprised` | `int_poked` | `move_belly_slide` |
+| Red Panda | `mood_surprised` | `mood_smile_wink` | `mood_surprised` | `mood_angry` | — |
+| Classic Dragon | `fly` | `fly` | `sad` | `flame` | — |
 
 ## The pets
 
@@ -92,7 +126,7 @@ Squash-and-stretch breathing, waddle, hop, spin, peeks from the edge, curls into
 | Idle moments | `idle_ear_twitch`, `idle_look_left_right`, `idle_stretch`, `idle_groom`, `idle_yawn`, `fun_peek` |
 
 ### Chibi Ninja (`chibi_ninja_pet`)
-Ready stance, tiptoe walk, run, flip jump, smoke-puff teleport, superhero landing, shadow clones, shuriken tricks, meditation. **Emotions (the widest range):** happy (peace sign), sad (kicks a pebble), surprised, hungry (rice ball), love (hides behind the scarf), angry (fiery aura), determined (tightens headband), embarrassed (pulls the mask up), smile-wink. **All 39 clips are used.**
+Ready stance, tiptoe walk, run, flip jump, smoke-puff teleport, superhero landing, shadow clones, shuriken tricks, meditation. **Emotions (the widest range):** happy (peace sign), sad (kicks a pebble), surprised, hungry (rice ball), love (hides behind the scarf), angry (fiery aura), determined (tightens headband), embarrassed (pulls the mask up), smile-wink; dizzy (spiral eyes, stars), splatted, grumpy (-_-). Reacts to throws in every direction, picking a random flight and landing each time. **All 47 clips are used.**
 
 | Event | Clips |
 |---|---|
@@ -113,6 +147,12 @@ Ready stance, tiptoe walk, run, flip jump, smoke-puff teleport, superhero landin
 | Alarm snoozed | `idle_yawn`, `mood_sad` |
 | Dragged | `int_dragged` |
 | Dropped | `move_fall_land` |
+| Thrown sideways | `thrown_tumble`, `thrown_flail` |
+| Lands, sideways | `land_dizzy`, `land_dust_off`, `move_fall_land`, `fun_throw_shuriken` (no overlay effect: `throwEffect` is off) |
+| Thrown up | `thrown_up_whee`, `thrown_panic` |
+| Lands, from up high | `move_fall_land`, `land_splat`, `land_dizzy` |
+| Thrown down | `thrown_down_dive`, `thrown_panic` |
+| Lands, slammed | `land_splat`, `land_dizzy`, `mood_angry` |
 | Dozes off | `sleep_fall_asleep` |
 | Sleeping | `sleep_loop` |
 | Wakes up | `sleep_wake_up` |
@@ -250,7 +290,7 @@ Round orange kitten, drawn as one spritesheet (320×320 frames, `spritesheet.png
 | Alarm stopped | `happy` |
 | Alarm snoozed | `yawn` |
 | Dragged / falling / dropped | `dragged` / `fall` / `land` |
-| Thrown | `tumble` |
+| Thrown | see [Throw reactions](#throw-reactions-every-pet) (plus its own `tumble` sideways) |
 | Dozes off / sleeping / wakes up | `fall_asleep` / `sleep` / `wake_up` |
 | Pointer nearby | `look_n`, `look_ne`, `look_e`, `look_se`, `look_s`, `look_sw`, `look_w`, `look_nw` |
 | Idle moments | `idle_blink`, `ear_twitch`, `tail_swing`, `look_around`, `yawn`, `stretch`, `groom`, `peek` |
@@ -276,7 +316,7 @@ Chibi penguin with a navy back, heart-shaped white face and red knitted scarf. W
 | Alarm stopped | `mood_smile_wink` |
 | Alarm snoozed | `idle_yawn` |
 | Dragged / dropped | `int_dragged` / `move_fall_land` (from the landing) |
-| Thrown | `move_belly_slide` |
+| Thrown | see [Throw reactions](#throw-reactions-every-pet) (plus `move_belly_slide` sideways) |
 | Dozes off / sleeping / wakes up | `sleep_fall_asleep` / `sleep_loop` / `sleep_wake_up` |
 | Watching you | `int_look_*` (8 directions) |
 | Idle moments | `idle_look_left_right`, `idle_stretch`, `idle_groom`, `idle_flap`, `idle_yawn`, `fun_peek`, `fun_snowball` |

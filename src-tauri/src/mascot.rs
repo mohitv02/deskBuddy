@@ -74,7 +74,7 @@ pub const EFFECTS: [&str; 5] = ["sparks", "flames", "webs", "shuriken", "none"];
 
 /// States a state-set mascot can define. Only `idle` is required; missing
 /// ones fall back (see svgstates.ts).
-pub const STATES: [&str; 31] = [
+pub const STATES: [&str; 35] = [
     "idle", "hover", "alarm", "alarmClosed", "clicks", "doubleClick", "done", "snooze", "intro", "fallAsleep", "sleep", "wakeUp",
     // todo moods
     "allDone", "added", "started", "deleted", "overdue", "hungry",
@@ -82,6 +82,8 @@ pub const STATES: [&str; 31] = [
     "dragged", "falling", "dropped",
     // flung sideways: tumbling along, then back on its feet (clips face right)
     "thrown", "thrownLanded",
+    // flung up (flies up, falls back) or down (slams into the ground), then lands
+    "thrownUp", "thrownUpLanded", "thrownDown", "thrownDownLanded",
     // watching the pointer
     "lookUp", "lookUpRight", "lookRight", "lookDownRight", "lookDown", "lookDownLeft", "lookLeft", "lookUpLeft",
 ];
@@ -142,6 +144,11 @@ pub struct StatesManifest {
     /// Effect start point in the idle SVG's viewBox coordinates.
     #[serde(default)]
     pub effect_origin: Option<[f32; 2]>,
+    /// Show `alarmEffect` after a sideways throw, timed to a "thrownLanded"
+    /// clip that lets you have it (default true). Off for packs whose
+    /// landings are a random mix (dizzy, grumpy, ...).
+    #[serde(default)]
+    pub throw_effect: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -343,9 +350,11 @@ fn states_dir(pet: &str) -> Option<PathBuf> {
     }
 }
 
-/// Whether the current pet has a clip for `state` (state sets only).
-pub fn has_state(pet: &str, state: &str) -> bool {
-    states_dir(pet).and_then(|dir| states_manifest(&dir)).is_some_and(|m| m.is_ok_and(|m| m.states.contains_key(state)))
+/// Whether the current pet hits back with its effect after a sideways throw.
+pub fn throw_effect(pet: &str) -> bool {
+    states_dir(pet)
+        .and_then(|dir| states_manifest(&dir))
+        .is_some_and(|m| m.is_ok_and(|m| m.states.contains_key("thrownLanded") && m.throw_effect != Some(false)))
 }
 
 /// Alarm effect for the current pet: (effect name, origin in px inside a

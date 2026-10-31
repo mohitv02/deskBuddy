@@ -234,3 +234,10 @@ if __name__ == "__main__":
         print(f"{pack}: tagged {tag_svg_pack(pack)} clips")
     print(f"ember_dragon_sprites: built {build_ember()} clips")
     print(f"mochi_pet: built {build_mochi()} clips")
+    # After the rebuilds above, which clear the Ember and Mochi folders.
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("make_throw_clips", Path(__file__).with_name("make-throw-clips.py"))
+    throws = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(throws)
+    throws.main()

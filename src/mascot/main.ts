@@ -29,8 +29,8 @@ interface Renderer {
   /** Picked up / let go up high and dropping / back on the ground. */
   dragStart?(): void;
   falling?(): void;
-  /** Flung sideways: 1 = to the right, -1 = to the left. */
-  thrown?(dir: number): void;
+  /** Flung "side", "up" or "down"; dir: 1 = to the right, -1 = to the left, 0 = straight. */
+  thrown?(dir: number, kind: "side" | "up" | "down"): void;
   landed?(): void;
   setSleepAfter?(seconds: number): void;
   /** Direction of the pointer near the mascot ("" = not near). */
@@ -144,7 +144,9 @@ async function init() {
   });
   await listen("mascot-drag", () => renderer.dragStart?.());
   await listen("mascot-falling", () => renderer.falling?.());
-  await listen<number>("mascot-thrown", (e) => (renderer.thrown ? renderer.thrown(e.payload) : renderer.falling?.()));
+  await listen<{ kind: "side" | "up" | "down"; dir: number }>("mascot-thrown", (e) =>
+    renderer.thrown ? renderer.thrown(e.payload.dir, e.payload.kind) : renderer.falling?.(),
+  );
   await listen("mascot-landed", () => renderer.landed?.());
   await listen<number>("mascot-sleep-after", (e) => renderer.setSleepAfter?.(e.payload));
   await listen<string>("mascot-look", (e) => renderer.look?.(e.payload));
