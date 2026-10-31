@@ -1,0 +1,418 @@
+{
+  "fps": 30,
+  "width": 512,
+  "height": 512,
+  "default": "float_idle",
+  "clips": [
+    {
+      "name": "float_idle",
+      "category": "floating",
+      "base_pose": "float",
+      "start_pose": "float",
+      "end_pose": "float",
+      "frames": 120,
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "float_crack_shell",
+      "category": "floating",
+      "base_pose": "float",
+      "start_pose": "float",
+      "end_pose": "float",
+      "frames": 150,
+      "seconds": 5,
+      "loop": true
+    },
+    {
+      "name": "float_roll",
+      "category": "floating",
+      "base_pose": "float",
+      "start_pose": "float",
+      "end_pose": "float",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true
+    },
+    {
+      "name": "float_wave",
+      "category": "floating",
+      "base_pose": "float",
+      "start_pose": "float",
+      "end_pose": "float",
+      "frames": 90,
+      "seconds": 3,
+      "loop": true
+    },
+    {
+      "name": "sit_to_float",
+      "category": "floating",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "float",
+      "frames": 80,
+      "seconds": 2.667,
+      "loop": false
+    },
+    {
+      "name": "float_to_sit",
+      "category": "floating",
+      "base_pose": "float",
+      "start_pose": "float",
+      "end_pose": "sit",
+      "frames": 80,
+      "seconds": 2.667,
+      "loop": false
+    },
+    {
+      "name": "idle_breathe",
+      "category": "idle",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 120,
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "idle_look_left_right",
+      "category": "idle",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 120,
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "idle_yawn",
+      "category": "idle",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 90,
+      "seconds": 3,
+      "loop": true
+    },
+    {
+      "name": "idle_stretch",
+      "category": "idle",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": true
+    },
+    {
+      "name": "idle_groom",
+      "category": "idle",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": true
+    },
+    {
+      "name": "idle_juggle_pebble",
+      "category": "idle",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 150,
+      "seconds": 5,
+      "loop": true
+    },
+    {
+      "name": "sleep_fall_asleep",
+      "category": "sleep",
+      "base_pose": "float",
+      "start_pose": "float",
+      "end_pose": "sleep",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": false
+    },
+    {
+      "name": "sleep_loop",
+      "category": "sleep",
+      "base_pose": "float",
+      "start_pose": "sleep",
+      "end_pose": "sleep",
+      "frames": 120,
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "sleep_wake_up",
+      "category": "sleep",
+      "base_pose": "float",
+      "start_pose": "sleep",
+      "end_pose": "float",
+      "frames": 110,
+      "seconds": 3.667,
+      "loop": false
+    },
+    {
+      "name": "move_walk",
+      "category": "movement",
+      "base_pose": "sit",
+      "start_pose": "walk",
+      "end_pose": "walk",
+      "frames": 30,
+      "seconds": 1,
+      "loop": true
+    },
+    {
+      "name": "move_hop",
+      "category": "movement",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 48,
+      "seconds": 1.6,
+      "loop": true
+    },
+    {
+      "name": "move_swim",
+      "category": "movement",
+      "base_pose": "float",
+      "start_pose": "swim",
+      "end_pose": "swim",
+      "frames": 40,
+      "seconds": 1.333,
+      "loop": true
+    },
+    {
+      "name": "move_fall_land",
+      "category": "movement",
+      "base_pose": "float",
+      "start_pose": "off_canvas_above",
+      "end_pose": "float",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": false
+    },
+    {
+      "name": "int_dragged",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "dragged",
+      "end_pose": "dragged",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_petted",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true
+    },
+    {
+      "name": "int_poked",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 84,
+      "seconds": 2.8,
+      "loop": true
+    },
+    {
+      "name": "int_tickled",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_up",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_up",
+      "end_pose": "look_up",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_up_right",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_up_right",
+      "end_pose": "look_up_right",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_right",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_right",
+      "end_pose": "look_right",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_down_right",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_down_right",
+      "end_pose": "look_down_right",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_down",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_down",
+      "end_pose": "look_down",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_down_left",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_down_left",
+      "end_pose": "look_down_left",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_left",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_left",
+      "end_pose": "look_left",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "int_look_up_left",
+      "category": "interaction",
+      "base_pose": "sit",
+      "start_pose": "look_up_left",
+      "end_pose": "look_up_left",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "mood_happy",
+      "category": "moods",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 64,
+      "seconds": 2.133,
+      "loop": true
+    },
+    {
+      "name": "mood_sad",
+      "category": "moods",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": true
+    },
+    {
+      "name": "mood_surprised",
+      "category": "moods",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 64,
+      "seconds": 2.133,
+      "loop": true
+    },
+    {
+      "name": "mood_hungry",
+      "category": "moods",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true
+    },
+    {
+      "name": "mood_love",
+      "category": "moods",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true
+    },
+    {
+      "name": "mood_smile_wink",
+      "category": "moods",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 64,
+      "seconds": 2.133,
+      "loop": true
+    },
+    {
+      "name": "fun_spin",
+      "category": "fun",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 64,
+      "seconds": 2.133,
+      "loop": true
+    },
+    {
+      "name": "fun_peek",
+      "category": "fun",
+      "base_pose": "float",
+      "start_pose": "peekHidden",
+      "end_pose": "peekHidden",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": true
+    },
+    {
+      "name": "fun_notify",
+      "category": "fun",
+      "base_pose": "float",
+      "start_pose": "notify",
+      "end_pose": "notify",
+      "frames": 60,
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "fun_pebble_gift",
+      "category": "fun",
+      "base_pose": "sit",
+      "start_pose": "sit",
+      "end_pose": "sit",
+      "frames": 120,
+      "seconds": 4,
+      "loop": true
+    }
+  ]
+}

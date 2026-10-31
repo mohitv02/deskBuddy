@@ -249,7 +249,7 @@ fn sprite_dir() -> PathBuf {
 }
 
 /// Bundled packs: (setting id, folder under the pets root).
-pub const PACKS: [(&str, &str); 10] = [
+pub const PACKS: [(&str, &str); 13] = [
     ("axolotl", "axolotl_pet"),
     ("cat", "chibi_cat_reactions"),
     ("ninja", "chibi_ninja_pet"),
@@ -260,6 +260,9 @@ pub const PACKS: [(&str, &str); 10] = [
     ("dragon", "dragon"),
     ("mochi", "mochi_pet"),
     ("penguin", "penguin-pet"),
+    ("fox", "fox-desktop-pet"),
+    ("otter", "otter-pet"),
+    ("red-panda", "red_panda_pet"),
 ];
 
 static PETS_ROOT: OnceLock<PathBuf> = OnceLock::new();

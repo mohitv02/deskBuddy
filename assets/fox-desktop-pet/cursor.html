@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Fox Cursor Demo</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Figtree:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap"><style>
+/* Layout: control bar, then a large stage that compares SVG and Lottie side by side, then the clip shelf by category */
+:root{
+  --bg:#eef1ec; --panel:#ffffff; --ink:#1f2a22; --muted:#5d6b60; --line:#d6ddd4;
+  --accent:#2f6b45; --fur:#e9802f; --chk1:#ffffff; --chk2:#e4e8e1; --chip:#e2e9e1;
+  --display:"Fredoka","Baloo 2",ui-rounded,"Segoe UI",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141915; --panel:#1d241f; --ink:#e7ece5; --muted:#9aa89c; --line:#2f3a32;
+  --accent:#7cc493; --fur:#f39a4d; --chk1:#2a322c; --chk2:#222925; --chip:#26302a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141915; --panel:#1d241f; --ink:#e7ece5; --muted:#9aa89c; --line:#2f3a32;
+  --accent:#7cc493; --fur:#f39a4d; --chk1:#2a322c; --chk2:#222925; --chip:#26302a; color-scheme:dark}
+body.dark-checker{--chk1:#3a3f3b; --chk2:#2c312d}
+body.light-checker{--chk1:#ffffff; --chk2:#e4e8e1}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);margin:0;display:flex;flex-direction:column;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px;gap:12px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;max-width:1100px;width:100%;margin:0 auto}
+h1{font-family:var(--display);font-weight:600;font-size:1.5rem;margin:0}
+h1 span{color:var(--fur)}
+p{margin:0;color:var(--muted);font-size:14px;max-width:70ch}
+a{color:var(--accent);font-weight:600}
+#field{flex:1;min-height:420px;border-radius:20px;border:1px solid var(--line);position:relative;overflow:hidden;max-width:1100px;width:100%;margin:0 auto;
+  background-color:var(--chk1);background-image:conic-gradient(var(--chk2) 25%,transparent 0 50%,var(--chk2) 0 75%,transparent 0);background-size:28px 28px;
+  touch-action:none}
+#pet{position:absolute;left:50%;top:50%;width:min(300px,60vw);aspect-ratio:1;transform:translate(-50%,-50%);cursor:pointer}
+#pet img{position:absolute;inset:0;width:100%;height:100%}
+#state{position:absolute;left:12px;bottom:10px;font:500 12px var(--mono);color:var(--muted);background:var(--panel);padding:4px 9px;border-radius:8px;border:1px solid var(--line)}
+</style></head><body>
+<header><h1>Fox <span>Cursor Demo</span></h1>
+<p>Move the pointer around the fox and it follows with the eight look clips. Hover over it to settle, click it to pet it, and leave the pointer still for 8 seconds to watch it fall asleep. <a href="preview.html">All clips</a></p></header>
+<div id="field"><div id="pet" role="img" aria-label="Animated fox"></div><span id="state">idle_breathe</span></div>
+<script>
+const CLIPS = [{"name":"idle_breathe","category":"idle","frames":120,"seconds":4.0,"loop":true,"fps":30,"lottie":"lottie/idle_breathe.json","svg":"svg/idle_breathe.svg","note":"Default loop."},{"name":"idle_ear_twitch","category":"idle","frames":96,"seconds":3.2,"loop":true,"fps":30,"lottie":"lottie/idle_ear_twitch.json","svg":"svg/idle_ear_twitch.svg"},{"name":"idle_head_tilt","category":"idle","frames":100,"seconds":3.333,"loop":true,"fps":30,"lottie":"lottie/idle_head_tilt.json","svg":"svg/idle_head_tilt.svg"},{"name":"idle_look_left_right","category":"idle","frames":120,"seconds":4.0,"loop":true,"fps":30,"lottie":"lottie/idle_look_left_right.json","svg":"svg/idle_look_left_right.svg"},{"name":"idle_yawn","category":"idle","frames":100,"seconds":3.333,"loop":true,"fps":30,"lottie":"lottie/idle_yawn.json","svg":"svg/idle_yawn.svg"},{"name":"idle_stretch","category":"idle","frames":120,"seconds":4.0,"loop":true,"fps":30,"lottie":"lottie/idle_stretch.json","svg":"svg/idle_stretch.svg"},{"name":"idle_groom","category":"idle","frames":150,"seconds":5.0,"loop":true,"fps":30,"lottie":"lottie/idle_groom.json","svg":"svg/idle_groom.svg"},{"name":"sleep_fall_asleep","category":"sleep","frames":150,"seconds":5.0,"loop":false,"fps":30,"lottie":"lottie/sleep_fall_asleep.json","svg":"svg/sleep_fall_asleep.svg"},{"name":"sleep_loop","category":"sleep","frames":120,"seconds":4.0,"loop":true,"fps":30,"lottie":"lottie/sleep_loop.json","svg":"svg/sleep_loop.svg","note":"State loop: starts and ends curled up."},{"name":"sleep_wake_up","category":"sleep","frames":160,"seconds":5.333,"loop":false,"fps":30,"lottie":"lottie/sleep_wake_up.json","svg":"svg/sleep_wake_up.svg"},{"name":"move_walk","category":"movement","frames":32,"seconds":1.067,"loop":true,"fps":30,"lottie":"lottie/move_walk.json","svg":"svg/move_walk.svg","note":"State loop facing left; mirror (scaleX -1) to walk right. Tail floats behind."},{"name":"move_hop","category":"movement","frames":48,"seconds":1.6,"loop":true,"fps":30,"lottie":"lottie/move_hop.json","svg":"svg/move_hop.svg"},{"name":"move_pounce","category":"movement","frames":170,"seconds":5.667,"loop":true,"fps":30,"lottie":"lottie/move_pounce.json","svg":"svg/move_pounce.svg"},{"name":"move_fall_land","category":"movement","frames":130,"seconds":4.333,"loop":false,"fps":30,"lottie":"lottie/move_fall_land.json","svg":"svg/move_fall_land.svg","note":"Ends back in the sitting pose so it chains into idle."},{"name":"int_dragged","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_dragged.json","svg":"svg/int_dragged.svg","note":"State loop: held by the scruff for as long as the drag lasts."},{"name":"int_petted","category":"interaction","frames":100,"seconds":3.333,"loop":true,"fps":30,"lottie":"lottie/int_petted.json","svg":"svg/int_petted.svg"},{"name":"int_poked","category":"interaction","frames":84,"seconds":2.8,"loop":true,"fps":30,"lottie":"lottie/int_poked.json","svg":"svg/int_poked.svg"},{"name":"int_tickled","category":"interaction","frames":130,"seconds":4.333,"loop":true,"fps":30,"lottie":"lottie/int_tickled.json","svg":"svg/int_tickled.svg"},{"name":"int_look_up","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_up.json","svg":"svg/int_look_up.svg","note":"Held pose for cursor following (loops in place)."},{"name":"int_look_up_right","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_up_right.json","svg":"svg/int_look_up_right.svg","note":"Held pose for cursor following (loops in place)."},{"name":"int_look_right","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_right.json","svg":"svg/int_look_right.svg","note":"Held pose for cursor following (loops in place)."},{"name":"int_look_down_right","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_down_right.json","svg":"svg/int_look_down_right.svg","note":"Held pose for cursor following (loops in place)."},{"name":"int_look_down","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_down.json","svg":"svg/int_look_down.svg","note":"Held pose for cursor following (loops in place)."},{"name":"int_look_down_left","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_down_left.json","svg":"svg/int_look_down_left.svg","note":"Held pose for cursor following (loops in place)."},{"name":"int_look_left","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_left.json","svg":"svg/int_look_left.svg","note":"Held pose for cursor following (loops in place)."},{"name":"int_look_up_left","category":"interaction","frames":60,"seconds":2.0,"loop":true,"fps":30,"lottie":"lottie/int_look_up_left.json","svg":"svg/int_look_up_left.svg","note":"Held pose for cursor following (loops in place)."},{"name":"mood_happy","category":"mood","frames":96,"seconds":3.2,"loop":true,"fps":30,"lottie":"lottie/mood_happy.json","svg":"svg/mood_happy.svg"},{"name":"mood_sad","category":"mood","frames":120,"seconds":4.0,"loop":true,"fps":30,"lottie":"lottie/mood_sad.json","svg":"svg/mood_sad.svg"},{"name":"mood_surprised","category":"mood","frames":76,"seconds":2.533,"loop":true,"fps":30,"lottie":"lottie/mood_surprised.json","svg":"svg/mood_surprised.svg"},{"name":"mood_hungry","category":"mood","frames":130,"seconds":4.333,"loop":true,"fps":30,"lottie":"lottie/mood_hungry.json","svg":"svg/mood_hungry.svg"},{"name":"mood_love","category":"mood","frames":136,"seconds":4.533,"loop":true,"fps":30,"lottie":"lottie/mood_love.json","svg":"svg/mood_love.svg"},{"name":"mood_mischief","category":"mood","frames":110,"seconds":3.667,"loop":true,"fps":30,"lottie":"lottie/mood_mischief.json","svg":"svg/mood_mischief.svg"},{"name":"mood_smile_wink","category":"mood","frames":80,"seconds":2.667,"loop":true,"fps":30,"lottie":"lottie/mood_smile_wink.json","svg":"svg/mood_smile_wink.svg"},{"name":"fun_spin","category":"fun","frames":140,"seconds":4.667,"loop":true,"fps":30,"lottie":"lottie/fun_spin.json","svg":"svg/fun_spin.svg"},{"name":"fun_peek","category":"fun","frames":110,"seconds":3.667,"loop":true,"fps":30,"lottie":"lottie/fun_peek.json","svg":"svg/fun_peek.svg","note":"Starts and ends hidden below the bottom edge."},{"name":"fun_notify","category":"fun","frames":100,"seconds":3.333,"loop":true,"fps":30,"lottie":"lottie/fun_notify.json","svg":"svg/fun_notify.svg"},{"name":"fun_leaf_catch","category":"fun","frames":160,"seconds":5.333,"loop":true,"fps":30,"lottie":"lottie/fun_leaf_catch.json","svg":"svg/fun_leaf_catch.svg"}];
+const by = Object.fromEntries(CLIPS.map(c => [c.name, c]));
+const pet = document.getElementById('pet'), field = document.getElementById('field'), label = document.getElementById('state');
+const imgs = {};
+const DIRS = ['right','down_right','down','down_left','left','up_left','up','up_right'];
+for (const n of ['idle_breathe','int_petted','sleep_fall_asleep','sleep_loop','sleep_wake_up', ...DIRS.map(d => 'int_look_' + d)]) {
+  const im = new Image(); im.src = by[n].svg; im.alt = ''; im.hidden = true; pet.appendChild(im); imgs[n] = im;
+}
+let cur = null, busyUntil = 0, mode = 'awake', lastMove = performance.now(), timer = null;
+function show(n, restart){
+  if (cur === n && !restart) return;
+  if (restart) imgs[n].src = by[n].svg + '?r=' + Date.now();
+  for (const k in imgs) imgs[k].hidden = k !== n;
+  cur = n; label.textContent = n;
+}
+function playOnce(n, then){
+  show(n, true); clearTimeout(timer);
+  busyUntil = performance.now() + by[n].seconds * 1000;
+  timer = setTimeout(then, by[n].seconds * 1000);
+}
+function wake(){
+  if (mode === 'asleep') { mode = 'waking'; playOnce('sleep_wake_up', () => { mode = 'awake'; show('idle_breathe'); }); }
+}
+function onMove(x, y){
+  lastMove = performance.now();
+  if (mode === 'asleep' || mode === 'falling') { wake(); return; }
+  if (performance.now() < busyUntil) return;
+  const r = pet.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * 0.45;
+  const dx = x - cx, dy = y - cy;
+  if (Math.hypot(dx, dy) < r.width * 0.32) { show('idle_breathe'); return; }
+  const a = (Math.atan2(dy, dx) * 180 / Math.PI + 360 + 22.5) % 360;
+  show('int_look_' + DIRS[Math.floor(a / 45)]);
+}
+field.addEventListener('pointermove', e => onMove(e.clientX, e.clientY));
+field.addEventListener('pointerleave', () => { if (mode === 'awake' && performance.now() >= busyUntil) show('idle_breathe'); });
+pet.addEventListener('click', () => {
+  lastMove = performance.now();
+  if (mode !== 'awake') { wake(); return; }
+  playOnce('int_petted', () => show('idle_breathe'));
+});
+setInterval(() => {
+  if (mode === 'awake' && performance.now() >= busyUntil && performance.now() - lastMove > 8000) {
+    mode = 'falling';
+    playOnce('sleep_fall_asleep', () => { if (mode === 'falling') { mode = 'asleep'; show('sleep_loop'); } });
+  }
+}, 500);
+show('idle_breathe');
+</script></body></html>

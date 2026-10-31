@@ -284,3 +284,12 @@ Chibi penguin with a navy back, heart-shaped white face and red knitted scarf. W
 ### Classic Dragon (`dragon`)
 The original four-pose pack: happy (idle), fly (hover, done, alarm stopped), flame (alarm, clicks),
 sad (snooze). CSS-animated, so its clips swap instantly instead of crossfading.
+
+### Fox (`fox-desktop-pet`)
+Chibi fox. Pounces, hops, walks, catches falling leaves, peeks in from the edge, twitches its ears, tilts its head. **Emotions:** happy, sad, surprised, hungry, love, mischief, smile-wink. Mapping in `assets/fox-desktop-pet/mascot.json`.
+
+### Otter (`otter-pet`)
+Chibi sea otter that floats on its back holding a lavender pebble. Cracks clams, waves, rolls, swims, juggles the pebble. Idle and sleep happen floating. Mapping in `assets/otter-pet/mascot.json`.
+
+### Red Panda (`red_panda_pet`)
+Chibi red panda. Munches bamboo, climbs, hugs its tail, drapes over a branch to sleep. **Emotions:** happy, sad, angry, surprised, hungry, love, smile-wink. Mapping in `assets/red_panda_pet/mascot.json`.

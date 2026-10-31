@@ -1,0 +1,10 @@
+{
+  "name": "otter-pet-generator",
+  "private": true,
+  "dependencies": {
+    "lottie-web": "5.12.2",
+    "pngjs": "^7.0.0",
+    "pixelmatch": "^5.3.0",
+    "playwright": "*"
+  }
+}

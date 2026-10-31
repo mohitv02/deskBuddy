@@ -1,0 +1,241 @@
+<title>Otter Pet Clips</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a pond-side contact sheet. Header + format switch, filter chips, card grid of stages, then the cursor-follow stage. */
+:root {
+  --bg: #eef4f6; --surface: #ffffff; --ink: #22313a; --muted: #5c6d77; --line: #d5e1e6;
+  --accent: #6e5fb0; --accent-soft: #e9e5f7; --water: #a9dcf3;
+  --check-a: #e3ebef; --check-b: #f7fafb;
+  --once: #a8571f; --once-soft: #fbe9dc;
+  --f-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11191e; --surface: #18232a; --ink: #e4edf1; --muted: #98a9b2; --line: #2a3943;
+  --accent: #b2a7ec; --accent-soft: #2c2847; --water: #3d6f88;
+  --check-a: #26333b; --check-b: #1d2830; --once: #f0a46d; --once-soft: #3a2a1f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11191e; --surface: #18232a; --ink: #e4edf1; --muted: #98a9b2; --line: #2a3943;
+  --accent: #b2a7ec; --accent-soft: #2c2847; --water: #3d6f88;
+  --check-a: #26333b; --check-b: #1d2830; --once: #f0a46d; --once-soft: #3a2a1f; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 56px }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 24px }
+h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(30px, 5vw, 44px); line-height: 1; margin: 0; letter-spacing: -0.01em; text-wrap: balance }
+h2 { font-family: var(--f-display); font-weight: 700; font-size: 26px; line-height: 1.1; margin: 0; text-wrap: balance }
+.lede { margin: 8px 0 0; color: var(--muted); max-width: 62ch }
+.spec { font-family: var(--f-mono); font-size: 12px; color: var(--muted); letter-spacing: 0.02em }
+.seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px }
+.seg button { font: 600 13px/1 var(--f-body); color: var(--muted); background: none; border: 0; border-radius: 999px; padding: 9px 16px; cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--surface) }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.chip { font: 500 13px/1 var(--f-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 8px 13px; cursor: pointer }
+.chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--ink) }
+.chip .n { font-family: var(--f-mono); font-size: 11px; color: var(--muted); margin-left: 4px }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: grid; min-width: 0 }
+.stage { position: relative; aspect-ratio: 1; max-width: 100%;
+  background: repeating-conic-gradient(var(--check-a) 0 25%, var(--check-b) 0 50%) 0 0 / 20px 20px }
+.stage img, .stage .lot { position: absolute; inset: 0; width: 100%; height: 100% }
+.meta { display: grid; gap: 4px; padding: 10px 12px 12px; min-width: 0 }
+.meta .row { display: flex; align-items: center; justify-content: space-between; gap: 8px }
+.meta .nm { font-family: var(--f-mono); font-size: 12px; font-weight: 500; white-space: nowrap; overflow-x: auto; scrollbar-width: none }
+.meta .sub { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums }
+.tag { font: 600 10.5px/1 var(--f-body); letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 7px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); white-space: nowrap }
+.tag.once { background: var(--once-soft); color: var(--once) }
+.replay { position: absolute; top: 8px; right: 8px; font: 600 12px/1 var(--f-body); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; cursor: pointer; opacity: 0.92 }
+.default { position: absolute; top: 8px; left: 8px }
+section.demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 24px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px }
+@media (max-width: 760px) { section.demo { grid-template-columns: minmax(0, 1fr); padding: 16px } }
+.pen { position: relative; aspect-ratio: 1; max-width: 100%; border-radius: 12px; overflow: hidden; cursor: crosshair; touch-action: none;
+  background: repeating-conic-gradient(var(--check-a) 0 25%, var(--check-b) 0 50%) 0 0 / 24px 24px }
+.pet { position: absolute; left: 50%; top: 50%; width: 62%; aspect-ratio: 1; transform: translate(-50%, -50%); cursor: grab; transition: transform 0.35s cubic-bezier(.42,0,.58,1) }
+.pet.dragging { transition: none; cursor: grabbing }
+.pet img { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; user-select: none }
+.readout { display: grid; gap: 14px; min-width: 0 }
+.readout p { margin: 0; max-width: 58ch }
+.now { font-family: var(--f-mono); font-size: 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px }
+.now b { color: var(--accent); font-weight: 500 }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 14px; margin: 0 }
+.keys dt { font-family: var(--f-mono); font-size: 12px; color: var(--muted); padding-top: 2px; letter-spacing: 0.04em; text-transform: uppercase }
+.keys dd { margin: 0 }
+.note { font-size: 13px; color: var(--muted) }
+@media (prefers-reduced-motion: reduce) { .pet { transition: none } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Otter Pet Clips</h1>
+      <p class="lede">Every reaction for the floating otter and her lavender pebble, played live on a transparent backdrop. Switch formats to compare the SMIL SVG and Lottie exports.</p>
+      <div class="spec" id="spec">512 × 512 · 30 fps · transparent</div>
+    </div>
+    <div class="seg" role="group" aria-label="Format">
+      <button id="fmt-svg" aria-pressed="true">SVG (SMIL)</button>
+      <button id="fmt-lottie" aria-pressed="false">Lottie</button>
+    </div>
+  </header>
+
+  <div class="chips" id="chips" role="group" aria-label="Category"></div>
+  <div class="grid" id="grid"></div>
+
+  <section class="demo" aria-labelledby="demo-h">
+    <div class="pen" id="pen">
+      <div class="pet" id="pet"></div>
+    </div>
+    <div class="readout">
+      <h2 id="demo-h">Cursor follow</h2>
+      <p>Move your pointer around the pen. The otter picks one of the eight <code>int_look_*</code> clips from the angle between its face and the cursor, and falls back to <code>idle_breathe</code> when the pointer is close or outside.</p>
+      <div class="now" id="now">playing <b>idle_breathe</b></div>
+      <dl class="keys">
+        <dt>Point</dt><dd>Look in one of 8 directions</dd>
+        <dt>Click</dt><dd>Poke: <code>int_poked</code></dd>
+        <dt>Drag</dt><dd>Pick it up: <code>int_dragged</code>, drops back with <code>mood_surprised</code></dd>
+        <dt>Hover 2s</dt><dd>Pet it: <code>int_petted</code></dd>
+      </dl>
+      <p class="note">The demo uses the SVG files. In a desktop app, the window moves while the pet stays centred in its 512 px canvas.</p>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+<script>
+/*__DATA__*/
+</script>
+<script>
+(function () {
+  const CATS = ['all', 'floating', 'idle', 'sleep', 'movement', 'interaction', 'moods', 'fun'];
+  const LABEL = { all: 'All', floating: 'Floating', idle: 'Idle', sleep: 'Sleep', movement: 'Movement', interaction: 'Interaction', moods: 'Moods', fun: 'Fun' };
+  const blobUrl = (name) => URL.createObjectURL(new Blob([SVGS[name]], { type: 'image/svg+xml' }));
+  let fmt = 'svg', cat = 'all';
+  try { const s = localStorage.getItem('otter-fmt'); if (s === 'lottie' || s === 'svg') fmt = s; } catch (e) {}
+  const hasLottie = () => typeof window.lottie !== 'undefined';
+  document.getElementById('spec').textContent = `${CLIPS.length} clips · 512 × 512 · 30 fps · transparent`;
+
+  // ---- chips ----
+  const chips = document.getElementById('chips');
+  CATS.forEach((c) => {
+    const b = document.createElement('button'); b.className = 'chip'; b.id = 'cat-' + c;
+    const n = c === 'all' ? CLIPS.length : CLIPS.filter((x) => x.category === c).length;
+    b.innerHTML = `${LABEL[c]}<span class="n">${n}</span>`;
+    b.setAttribute('aria-pressed', c === cat); b.onclick = () => { cat = c; render(); };
+    chips.appendChild(b);
+  });
+
+  // ---- cards ----
+  const grid = document.getElementById('grid');
+  const cards = CLIPS.map((clip) => {
+    const card = document.createElement('article'); card.className = 'card';
+    card.innerHTML = `<div class="stage"></div><div class="meta"><div class="nm">${clip.name}</div>
+      <div class="row"><div class="sub">${clip.frames} f · ${clip.seconds.toFixed(2)} s · ${clip.base_pose}</div>
+      <span class="tag ${clip.loop ? '' : 'once'}">${clip.loop ? 'loop' : 'once'}</span></div></div>`;
+    const stage = card.querySelector('.stage');
+    if (clip.name === DEFAULT) { const d = document.createElement('span'); d.className = 'tag default'; d.textContent = 'default'; stage.appendChild(d); }
+    const st = { clip, card, stage, el: null, anim: null, url: null, timer: null, visible: false };
+    if (!clip.loop) {
+      const r = document.createElement('button'); r.className = 'replay'; r.textContent = 'Replay';
+      r.setAttribute('aria-label', 'Replay ' + clip.name); r.onclick = () => mount(st, true); stage.appendChild(r);
+    }
+    grid.appendChild(card);
+    return st;
+  });
+
+  function unmount(st) {
+    clearTimeout(st.timer);
+    if (st.anim) { st.anim.destroy(); st.anim = null; }
+    if (st.el) { st.el.remove(); st.el = null; }
+    if (st.url) { URL.revokeObjectURL(st.url); st.url = null; }
+  }
+  function mount(st) {
+    unmount(st);
+    const { clip, stage } = st;
+    if (fmt === 'lottie' && hasLottie()) {
+      const box = document.createElement('div'); box.className = 'lot'; stage.prepend(box); st.el = box;
+      st.anim = lottie.loadAnimation({ container: box, renderer: 'svg', loop: clip.loop, autoplay: true, animationData: JSON.parse(JSON.stringify(LOTTIES[clip.name])) });
+      if (!clip.loop) st.anim.addEventListener('complete', () => { st.timer = setTimeout(() => st.anim && st.anim.goToAndPlay(0, true), 1500); });
+    } else {
+      const img = document.createElement('img'); img.alt = clip.name + ' animation'; st.url = blobUrl(clip.name); img.src = st.url;
+      stage.prepend(img); st.el = img;
+      if (!clip.loop) st.timer = setTimeout(() => st.visible && mount(st), (clip.seconds + 1.5) * 1000);
+    }
+  }
+  // only animate cards on screen
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    const st = cards.find((c) => c.card === e.target); st.visible = e.isIntersecting;
+    if (e.isIntersecting && !st.card.hidden) mount(st); else unmount(st);
+  }), { rootMargin: '200px' });
+  cards.forEach((c) => io.observe(c.card));
+
+  function render() {
+    CATS.forEach((c) => document.getElementById('cat-' + c).setAttribute('aria-pressed', c === cat));
+    document.getElementById('fmt-svg').setAttribute('aria-pressed', fmt === 'svg');
+    document.getElementById('fmt-lottie').setAttribute('aria-pressed', fmt === 'lottie');
+    cards.forEach((st) => {
+      const show = cat === 'all' || st.clip.category === cat;
+      st.card.hidden = !show;
+      if (!show) unmount(st); else if (st.visible) mount(st);
+    });
+  }
+  function setFmt(f) {
+    if (f === 'lottie' && !hasLottie()) { alertNoLottie(); return; }
+    fmt = f; try { localStorage.setItem('otter-fmt', f); } catch (e) {} render();
+  }
+  function alertNoLottie() { document.getElementById('fmt-lottie').textContent = 'Lottie (player offline)'; }
+  document.getElementById('fmt-svg').onclick = () => setFmt('svg');
+  document.getElementById('fmt-lottie').onclick = () => setFmt('lottie');
+  if (fmt === 'lottie' && !hasLottie()) fmt = 'svg';
+  render();
+
+  // ---- cursor-follow demo ----
+  const pen = document.getElementById('pen'), pet = document.getElementById('pet'), now = document.getElementById('now');
+  const img = document.createElement('img'); img.alt = 'Otter pet'; pet.appendChild(img);
+  const LEN = Object.fromEntries(CLIPS.map((c) => [c.name, c.seconds * 1000]));
+  let current = null, url = null, busyUntil = 0, dragging = false, hoverTimer = null, drag = null;
+  function play(name, restart) {
+    if (name === current && !restart) return;
+    current = name; if (url) URL.revokeObjectURL(url); url = blobUrl(name); img.src = url;
+    now.innerHTML = 'playing <b>' + name + '</b>';
+  }
+  function playFor(name, ms, after) { play(name, true); busyUntil = performance.now() + ms; clearTimeout(playFor.t); playFor.t = setTimeout(() => { busyUntil = 0; after ? after() : play('idle_breathe'); }, ms); }
+  play('idle_breathe');
+  const DIRS = ['right', 'down_right', 'down', 'down_left', 'left', 'up_left', 'up', 'up_right'];
+  function faceCenter() { const r = pet.getBoundingClientRect(); return [r.left + r.width * 0.5, r.top + r.height * 0.43, r.width]; }
+  pen.addEventListener('pointermove', (e) => {
+    if (dragging) {
+      pet.style.transform = `translate(calc(-50% + ${e.clientX - drag[0]}px), calc(-50% + ${e.clientY - drag[1]}px))`;
+      return;
+    }
+    if (performance.now() < busyUntil) return;
+    const [cx, cy, w] = faceCenter(); const dx = e.clientX - cx, dy = e.clientY - cy;
+    if (Math.hypot(dx, dy) < w * 0.16) { play('idle_breathe'); return; }
+    const a = Math.atan2(dy, dx); const i = ((Math.round(a / (Math.PI / 4)) % 8) + 8) % 8;
+    play('int_look_' + DIRS[i]);
+  });
+  pen.addEventListener('pointerleave', () => { if (!dragging && performance.now() >= busyUntil) play('idle_breathe'); clearTimeout(hoverTimer); });
+  pet.addEventListener('pointerenter', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => { if (!dragging) playFor('int_petted', LEN.int_petted); }, 2000); });
+  pet.addEventListener('pointerleave', () => clearTimeout(hoverTimer));
+  pet.addEventListener('pointerdown', (e) => {
+    clearTimeout(hoverTimer);
+    drag = [e.clientX, e.clientY, false]; pet.setPointerCapture(e.pointerId);
+  });
+  pet.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    if (!dragging && Math.hypot(e.clientX - drag[0], e.clientY - drag[1]) > 6) { dragging = true; pet.classList.add('dragging'); busyUntil = Infinity; clearTimeout(playFor.t); play('int_dragged', true); }
+  });
+  pet.addEventListener('pointerup', () => {
+    if (dragging) {
+      dragging = false; pet.classList.remove('dragging'); pet.style.transform = '';
+      playFor('mood_surprised', LEN.mood_surprised);
+    } else if (drag) {
+      playFor('int_poked', LEN.int_poked);
+    }
+    drag = null;
+  });
+})();
+</script>

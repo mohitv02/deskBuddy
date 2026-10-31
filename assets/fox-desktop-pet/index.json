@@ -1,0 +1,395 @@
+{
+  "character": "Fox desktop pet",
+  "canvas": [
+    512,
+    512
+  ],
+  "fps": 30,
+  "default": "idle_breathe",
+  "clips": [
+    {
+      "name": "idle_breathe",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/idle_breathe.json",
+      "svg": "svg/idle_breathe.svg",
+      "note": "Default loop."
+    },
+    {
+      "name": "idle_ear_twitch",
+      "category": "idle",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/idle_ear_twitch.json",
+      "svg": "svg/idle_ear_twitch.svg"
+    },
+    {
+      "name": "idle_head_tilt",
+      "category": "idle",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/idle_head_tilt.json",
+      "svg": "svg/idle_head_tilt.svg"
+    },
+    {
+      "name": "idle_look_left_right",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/idle_look_left_right.json",
+      "svg": "svg/idle_look_left_right.svg"
+    },
+    {
+      "name": "idle_yawn",
+      "category": "idle",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/idle_yawn.json",
+      "svg": "svg/idle_yawn.svg"
+    },
+    {
+      "name": "idle_stretch",
+      "category": "idle",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/idle_stretch.json",
+      "svg": "svg/idle_stretch.svg"
+    },
+    {
+      "name": "idle_groom",
+      "category": "idle",
+      "frames": 150,
+      "seconds": 5.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/idle_groom.json",
+      "svg": "svg/idle_groom.svg"
+    },
+    {
+      "name": "sleep_fall_asleep",
+      "category": "sleep",
+      "frames": 150,
+      "seconds": 5.0,
+      "loop": false,
+      "fps": 30,
+      "lottie": "lottie/sleep_fall_asleep.json",
+      "svg": "svg/sleep_fall_asleep.svg"
+    },
+    {
+      "name": "sleep_loop",
+      "category": "sleep",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/sleep_loop.json",
+      "svg": "svg/sleep_loop.svg",
+      "note": "State loop: starts and ends curled up."
+    },
+    {
+      "name": "sleep_wake_up",
+      "category": "sleep",
+      "frames": 160,
+      "seconds": 5.333,
+      "loop": false,
+      "fps": 30,
+      "lottie": "lottie/sleep_wake_up.json",
+      "svg": "svg/sleep_wake_up.svg"
+    },
+    {
+      "name": "move_walk",
+      "category": "movement",
+      "frames": 32,
+      "seconds": 1.067,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/move_walk.json",
+      "svg": "svg/move_walk.svg",
+      "note": "State loop facing left; mirror (scaleX -1) to walk right. Tail floats behind."
+    },
+    {
+      "name": "move_hop",
+      "category": "movement",
+      "frames": 48,
+      "seconds": 1.6,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/move_hop.json",
+      "svg": "svg/move_hop.svg"
+    },
+    {
+      "name": "move_pounce",
+      "category": "movement",
+      "frames": 170,
+      "seconds": 5.667,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/move_pounce.json",
+      "svg": "svg/move_pounce.svg"
+    },
+    {
+      "name": "move_fall_land",
+      "category": "movement",
+      "frames": 130,
+      "seconds": 4.333,
+      "loop": false,
+      "fps": 30,
+      "lottie": "lottie/move_fall_land.json",
+      "svg": "svg/move_fall_land.svg",
+      "note": "Ends back in the sitting pose so it chains into idle."
+    },
+    {
+      "name": "int_dragged",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_dragged.json",
+      "svg": "svg/int_dragged.svg",
+      "note": "State loop: held by the scruff for as long as the drag lasts."
+    },
+    {
+      "name": "int_petted",
+      "category": "interaction",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_petted.json",
+      "svg": "svg/int_petted.svg"
+    },
+    {
+      "name": "int_poked",
+      "category": "interaction",
+      "frames": 84,
+      "seconds": 2.8,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_poked.json",
+      "svg": "svg/int_poked.svg"
+    },
+    {
+      "name": "int_tickled",
+      "category": "interaction",
+      "frames": 130,
+      "seconds": 4.333,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_tickled.json",
+      "svg": "svg/int_tickled.svg"
+    },
+    {
+      "name": "int_look_up",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_up.json",
+      "svg": "svg/int_look_up.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "int_look_up_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_up_right.json",
+      "svg": "svg/int_look_up_right.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "int_look_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_right.json",
+      "svg": "svg/int_look_right.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "int_look_down_right",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_down_right.json",
+      "svg": "svg/int_look_down_right.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "int_look_down",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_down.json",
+      "svg": "svg/int_look_down.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "int_look_down_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_down_left.json",
+      "svg": "svg/int_look_down_left.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "int_look_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_left.json",
+      "svg": "svg/int_look_left.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "int_look_up_left",
+      "category": "interaction",
+      "frames": 60,
+      "seconds": 2.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/int_look_up_left.json",
+      "svg": "svg/int_look_up_left.svg",
+      "note": "Held pose for cursor following (loops in place)."
+    },
+    {
+      "name": "mood_happy",
+      "category": "mood",
+      "frames": 96,
+      "seconds": 3.2,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/mood_happy.json",
+      "svg": "svg/mood_happy.svg"
+    },
+    {
+      "name": "mood_sad",
+      "category": "mood",
+      "frames": 120,
+      "seconds": 4.0,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/mood_sad.json",
+      "svg": "svg/mood_sad.svg"
+    },
+    {
+      "name": "mood_surprised",
+      "category": "mood",
+      "frames": 76,
+      "seconds": 2.533,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/mood_surprised.json",
+      "svg": "svg/mood_surprised.svg"
+    },
+    {
+      "name": "mood_hungry",
+      "category": "mood",
+      "frames": 130,
+      "seconds": 4.333,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/mood_hungry.json",
+      "svg": "svg/mood_hungry.svg"
+    },
+    {
+      "name": "mood_love",
+      "category": "mood",
+      "frames": 136,
+      "seconds": 4.533,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/mood_love.json",
+      "svg": "svg/mood_love.svg"
+    },
+    {
+      "name": "mood_mischief",
+      "category": "mood",
+      "frames": 110,
+      "seconds": 3.667,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/mood_mischief.json",
+      "svg": "svg/mood_mischief.svg"
+    },
+    {
+      "name": "mood_smile_wink",
+      "category": "mood",
+      "frames": 80,
+      "seconds": 2.667,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/mood_smile_wink.json",
+      "svg": "svg/mood_smile_wink.svg"
+    },
+    {
+      "name": "fun_spin",
+      "category": "fun",
+      "frames": 140,
+      "seconds": 4.667,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/fun_spin.json",
+      "svg": "svg/fun_spin.svg"
+    },
+    {
+      "name": "fun_peek",
+      "category": "fun",
+      "frames": 110,
+      "seconds": 3.667,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/fun_peek.json",
+      "svg": "svg/fun_peek.svg",
+      "note": "Starts and ends hidden below the bottom edge."
+    },
+    {
+      "name": "fun_notify",
+      "category": "fun",
+      "frames": 100,
+      "seconds": 3.333,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/fun_notify.json",
+      "svg": "svg/fun_notify.svg"
+    },
+    {
+      "name": "fun_leaf_catch",
+      "category": "fun",
+      "frames": 160,
+      "seconds": 5.333,
+      "loop": true,
+      "fps": 30,
+      "lottie": "lottie/fun_leaf_catch.json",
+      "svg": "svg/fun_leaf_catch.svg"
+    }
+  ]
+}

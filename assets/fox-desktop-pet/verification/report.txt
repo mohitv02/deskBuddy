@@ -1,0 +1,41 @@
+Lottie (lottie-web 5.12.2, svg renderer) vs SMIL SVG (Chromium), rendered at identical frames.
+A pixel counts as different when any RGBA channel differs by more than 48/255 (anti-aliasing noise sits below that).
+Frames checked per clip: 10 evenly spaced + every frame where a face/tail/fur variant switches.
+
+idle_breathe             PASS  frames checked: 10   worst frame 79   differing px: 38 / 262144
+idle_ear_twitch          PASS  frames checked: 10   worst frame 95   differing px: 38 / 262144
+idle_head_tilt           PASS  frames checked: 14   worst frame 77   differing px: 22 / 262144
+idle_look_left_right     PASS  frames checked: 10   worst frame 66   differing px: 53 / 262144
+idle_yawn                PASS  frames checked: 17   worst frame 66   differing px: 23 / 262144
+idle_stretch             PASS  frames checked: 16   worst frame 13   differing px: 39 / 262144
+idle_groom               PASS  frames checked: 14   worst frame 36   differing px: 79 / 262144
+sleep_fall_asleep        PASS  frames checked: 16   worst frame 66   differing px: 35 / 262144
+sleep_loop               PASS  frames checked: 10   worst frame 26   differing px: 24 / 262144
+sleep_wake_up            PASS  frames checked: 20   worst frame 18   differing px: 40 / 262144
+move_walk                PASS  frames checked: 10   worst frame 7    differing px: 25 / 262144
+move_hop                 PASS  frames checked: 15   worst frame 36   differing px: 50 / 262144
+move_pounce              PASS  frames checked: 17   worst frame 124  differing px: 61 / 262144
+move_fall_land           PASS  frames checked: 16   worst frame 100  differing px: 105 / 262144
+int_dragged              PASS  frames checked: 10   worst frame 59   differing px: 4 / 262144
+int_petted               PASS  frames checked: 14   worst frame 88   differing px: 42 / 262144
+int_poked                PASS  frames checked: 14   worst frame 8    differing px: 37 / 262144
+int_tickled              PASS  frames checked: 17   worst frame 112  differing px: 72 / 262144
+int_look_up              PASS  frames checked: 10   worst frame 39   differing px: 51 / 262144
+int_look_up_right        PASS  frames checked: 10   worst frame 33   differing px: 60 / 262144
+int_look_right           PASS  frames checked: 10   worst frame 33   differing px: 45 / 262144
+int_look_down_right      PASS  frames checked: 10   worst frame 20   differing px: 40 / 262144
+int_look_down            PASS  frames checked: 10   worst frame 13   differing px: 76 / 262144
+int_look_down_left       PASS  frames checked: 10   worst frame 20   differing px: 51 / 262144
+int_look_left            PASS  frames checked: 10   worst frame 26   differing px: 32 / 262144
+int_look_up_left         PASS  frames checked: 10   worst frame 33   differing px: 53 / 262144
+mood_happy               PASS  frames checked: 13   worst frame 32   differing px: 24 / 262144
+mood_sad                 PASS  frames checked: 14   worst frame 119  differing px: 14 / 262144
+mood_surprised           PASS  frames checked: 15   worst frame 58   differing px: 52 / 262144
+mood_hungry              PASS  frames checked: 16   worst frame 84   differing px: 46 / 262144
+mood_love                PASS  frames checked: 16   worst frame 90   differing px: 78 / 262144
+mood_mischief            PASS  frames checked: 13   worst frame 8    differing px: 40 / 262144
+mood_smile_wink          PASS  frames checked: 14   worst frame 6    differing px: 35 / 262144
+fun_spin                 PASS  frames checked: 16   worst frame 93   differing px: 38 / 262144
+fun_peek                 PASS  frames checked: 13   worst frame 64   differing px: 17 / 262144
+fun_notify               PASS  frames checked: 15   worst frame 11   differing px: 66 / 262144
+fun_leaf_catch           PASS  frames checked: 18   worst frame 88   differing px: 54 / 262144

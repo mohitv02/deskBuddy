@@ -67,7 +67,13 @@
       "../assets/mochi_pet/mascot.json": "pets/mochi_pet/mascot.json",
       "../assets/mochi_pet/svg/": "pets/mochi_pet/svg/",
       "../assets/penguin-pet/mascot.json": "pets/penguin-pet/mascot.json",
-      "../assets/penguin-pet/svg/": "pets/penguin-pet/svg/"
+      "../assets/penguin-pet/svg/": "pets/penguin-pet/svg/",
+      "../assets/fox-desktop-pet/mascot.json": "pets/fox-desktop-pet/mascot.json",
+      "../assets/fox-desktop-pet/svg/": "pets/fox-desktop-pet/svg/",
+      "../assets/otter-pet/mascot.json": "pets/otter-pet/mascot.json",
+      "../assets/otter-pet/svg/": "pets/otter-pet/svg/",
+      "../assets/red_panda_pet/mascot.json": "pets/red_panda_pet/mascot.json",
+      "../assets/red_panda_pet/svg/": "pets/red_panda_pet/svg/"
     }
   }
 }

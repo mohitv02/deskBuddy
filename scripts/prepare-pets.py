@@ -29,7 +29,7 @@ from PIL import Image
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 
-SVG_PACKS = ["axolotl_pet", "chibi_cat_reactions", "chibi_ninja_pet", "dragon_pet_sprites", "ghost-pet", "monkey-pet", "penguin-pet"]
+SVG_PACKS = ["axolotl_pet", "chibi_cat_reactions", "chibi_ninja_pet", "dragon_pet_sprites", "ghost-pet", "monkey-pet", "penguin-pet", "fox-desktop-pet", "otter-pet", "red_panda_pet"]
 
 
 def tag_svg_pack(pack: str) -> int:

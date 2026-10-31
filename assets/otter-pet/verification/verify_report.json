@@ -1,0 +1,576 @@
+[
+  {
+    "clip": "float_idle",
+    "frames_checked": [
+      0,
+      24,
+      48,
+      71,
+      95,
+      119
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "float_crack_shell",
+    "frames_checked": [
+      0,
+      30,
+      60,
+      89,
+      119,
+      149
+    ],
+    "worst_frame": 60,
+    "worst_diff_pixels": 226,
+    "worst_pct_of_painted": 0.206
+  },
+  {
+    "clip": "float_roll",
+    "frames_checked": [
+      0,
+      20,
+      40,
+      59,
+      79,
+      99
+    ],
+    "worst_frame": 20,
+    "worst_diff_pixels": 3,
+    "worst_pct_of_painted": 0.004
+  },
+  {
+    "clip": "float_wave",
+    "frames_checked": [
+      0,
+      18,
+      36,
+      53,
+      71,
+      89
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "sit_to_float",
+    "frames_checked": [
+      0,
+      16,
+      32,
+      47,
+      63,
+      79
+    ],
+    "worst_frame": 32,
+    "worst_diff_pixels": 4,
+    "worst_pct_of_painted": 0.008
+  },
+  {
+    "clip": "float_to_sit",
+    "frames_checked": [
+      0,
+      16,
+      32,
+      47,
+      63,
+      79
+    ],
+    "worst_frame": 32,
+    "worst_diff_pixels": 66,
+    "worst_pct_of_painted": 0.103
+  },
+  {
+    "clip": "idle_breathe",
+    "frames_checked": [
+      0,
+      24,
+      48,
+      71,
+      95,
+      119
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "idle_look_left_right",
+    "frames_checked": [
+      0,
+      24,
+      48,
+      71,
+      95,
+      119
+    ],
+    "worst_frame": 95,
+    "worst_diff_pixels": 7,
+    "worst_pct_of_painted": 0.011
+  },
+  {
+    "clip": "idle_yawn",
+    "frames_checked": [
+      0,
+      18,
+      36,
+      53,
+      71,
+      89
+    ],
+    "worst_frame": 53,
+    "worst_diff_pixels": 1,
+    "worst_pct_of_painted": 0.002
+  },
+  {
+    "clip": "idle_stretch",
+    "frames_checked": [
+      0,
+      19,
+      38,
+      57,
+      76,
+      95
+    ],
+    "worst_frame": 76,
+    "worst_diff_pixels": 1,
+    "worst_pct_of_painted": 0.002
+  },
+  {
+    "clip": "idle_groom",
+    "frames_checked": [
+      0,
+      19,
+      38,
+      57,
+      76,
+      95
+    ],
+    "worst_frame": 38,
+    "worst_diff_pixels": 3,
+    "worst_pct_of_painted": 0.005
+  },
+  {
+    "clip": "idle_juggle_pebble",
+    "frames_checked": [
+      0,
+      30,
+      60,
+      89,
+      119,
+      149
+    ],
+    "worst_frame": 30,
+    "worst_diff_pixels": 3,
+    "worst_pct_of_painted": 0.005
+  },
+  {
+    "clip": "sleep_fall_asleep",
+    "frames_checked": [
+      0,
+      20,
+      40,
+      59,
+      79,
+      99
+    ],
+    "worst_frame": 59,
+    "worst_diff_pixels": 1,
+    "worst_pct_of_painted": 0.001
+  },
+  {
+    "clip": "sleep_loop",
+    "frames_checked": [
+      0,
+      24,
+      48,
+      71,
+      95,
+      119
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "sleep_wake_up",
+    "frames_checked": [
+      0,
+      22,
+      44,
+      65,
+      87,
+      109
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "move_walk",
+    "frames_checked": [
+      0,
+      6,
+      12,
+      17,
+      23,
+      29
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "move_hop",
+    "frames_checked": [
+      0,
+      9,
+      19,
+      28,
+      38,
+      47
+    ],
+    "worst_frame": 9,
+    "worst_diff_pixels": 22,
+    "worst_pct_of_painted": 0.035
+  },
+  {
+    "clip": "move_swim",
+    "frames_checked": [
+      0,
+      8,
+      16,
+      23,
+      31,
+      39
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "move_fall_land",
+    "frames_checked": [
+      0,
+      19,
+      38,
+      57,
+      76,
+      95
+    ],
+    "worst_frame": 19,
+    "worst_diff_pixels": 359,
+    "worst_pct_of_painted": 0.397
+  },
+  {
+    "clip": "int_dragged",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_petted",
+    "frames_checked": [
+      0,
+      20,
+      40,
+      59,
+      79,
+      99
+    ],
+    "worst_frame": 59,
+    "worst_diff_pixels": 1,
+    "worst_pct_of_painted": 0.001
+  },
+  {
+    "clip": "int_poked",
+    "frames_checked": [
+      0,
+      17,
+      33,
+      50,
+      66,
+      83
+    ],
+    "worst_frame": 66,
+    "worst_diff_pixels": 1,
+    "worst_pct_of_painted": 0.002
+  },
+  {
+    "clip": "int_tickled",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 47,
+    "worst_diff_pixels": 6,
+    "worst_pct_of_painted": 0.009
+  },
+  {
+    "clip": "int_look_up",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_look_up_right",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_look_right",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_look_down_right",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_look_down",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_look_down_left",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_look_left",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "int_look_up_left",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "mood_happy",
+    "frames_checked": [
+      0,
+      13,
+      25,
+      38,
+      50,
+      63
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "mood_sad",
+    "frames_checked": [
+      0,
+      19,
+      38,
+      57,
+      76,
+      95
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "mood_surprised",
+    "frames_checked": [
+      0,
+      13,
+      25,
+      38,
+      50,
+      63
+    ],
+    "worst_frame": 25,
+    "worst_diff_pixels": 7,
+    "worst_pct_of_painted": 0.011
+  },
+  {
+    "clip": "mood_hungry",
+    "frames_checked": [
+      0,
+      20,
+      40,
+      59,
+      79,
+      99
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "mood_love",
+    "frames_checked": [
+      0,
+      20,
+      40,
+      59,
+      79,
+      99
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  },
+  {
+    "clip": "mood_smile_wink",
+    "frames_checked": [
+      0,
+      13,
+      25,
+      38,
+      50,
+      63
+    ],
+    "worst_frame": 38,
+    "worst_diff_pixels": 1,
+    "worst_pct_of_painted": 0.002
+  },
+  {
+    "clip": "fun_spin",
+    "frames_checked": [
+      0,
+      13,
+      25,
+      38,
+      50,
+      63
+    ],
+    "worst_frame": 25,
+    "worst_diff_pixels": 495,
+    "worst_pct_of_painted": 0.757
+  },
+  {
+    "clip": "fun_peek",
+    "frames_checked": [
+      0,
+      19,
+      38,
+      57,
+      76,
+      95
+    ],
+    "worst_frame": 19,
+    "worst_diff_pixels": 11,
+    "worst_pct_of_painted": 0.014
+  },
+  {
+    "clip": "fun_notify",
+    "frames_checked": [
+      0,
+      12,
+      24,
+      35,
+      47,
+      59
+    ],
+    "worst_frame": 24,
+    "worst_diff_pixels": 1,
+    "worst_pct_of_painted": 0.001
+  },
+  {
+    "clip": "fun_pebble_gift",
+    "frames_checked": [
+      0,
+      24,
+      48,
+      71,
+      95,
+      119
+    ],
+    "worst_frame": 0,
+    "worst_diff_pixels": 0,
+    "worst_pct_of_painted": 0
+  }
+]
