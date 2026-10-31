@@ -170,6 +170,10 @@ Part('MouthYawn', 'Head', [
     G(P(242, 266).L(247, 277).L(252, 266).done(True), P(260, 266).L(265, 277).L(270, 266).done(True), F(C_['HL'])),
     G(E(256, 304, 28, 14), F(C_['TONGUE'])),
     OL(E(256, 290, 50, 56), C_['MOUTH'], 4.5)], anchor=(256, 262), op=0)
+Part('MouthHiss', 'Head', [
+    G(P(241, 264).L(246, 277).L(251, 264).done(True), P(261, 264).L(266, 277).L(271, 264).done(True), F(C_['HL'])),
+    G(P(232, 262).L(280, 262).Q(272, 292, 256, 292).Q(240, 292, 232, 262).done(True), S(OUT, 4.5), F(C_['MOUTH']))],
+     anchor=(256, 264), op=0)
 Part('MouthFrown', 'Head', [G(P(242, 276).Q(256, 262, 270, 276).done(), S(OUT, 4))], anchor=(256, 270), op=0)
 Part('Tongue', 'Head', [OL(E(266, 280, 16, 20), C_['TONGUE'], 3.5)], anchor=(266, 270), op=0)
 Part('Bubble', 'Head', [G(E(274, 249, 6, 6), F(C_['HL'])), G(E(279, 256, 26, 26), S(OUT, 2.5), F(C_['BUBBLE'], 75))],
@@ -208,7 +212,7 @@ CHILDREN['Root'] = ['Spin', 'Z1', 'Z2', 'Z3', 'Heart1', 'Heart2', 'Heart3', 'Spa
 CHILDREN['Spin'] = ['Tail', 'Body', 'FootL', 'FootR', 'Head', 'PawL', 'PawR', 'ArmR']
 CHILDREN['Head'] = ['EarL', 'EarR', 'PuffL', 'PuffR', 'SELF', 'Cheeks', 'EyeL', 'EyeR', 'LidsSleep', 'LidsHappy',
                     'LidsSquint', 'WinkR', 'HeartEyeL', 'HeartEyeR', 'BrowsSad', 'BrowsAngry', 'MouthCat',
-                    'MouthOpen', 'MouthO', 'MouthYawn', 'MouthFrown', 'Tongue', 'Bubble', 'Tear', 'WinkSpark']
+                    'MouthOpen', 'MouthO', 'MouthYawn', 'MouthHiss', 'MouthFrown', 'Tongue', 'Bubble', 'Tear', 'WinkSpark']
 CHILDREN['Speech'] = ['SELF', 'Fish']
 
 

@@ -410,6 +410,8 @@ mod linux {
     /// The page hears about streaks up to this long (1 = single click, which
     /// wakes a sleeping mascot; 2 = double click; 3 = "clicks").
     const CLICK_STREAK_MAX: u32 = 3;
+    /// How often the page hears where the pointer is on the mascot.
+    const POINTER_EVERY: Duration = Duration::from_millis(60);
 
     use super::DRAG_THRESHOLD_PX;
 
@@ -459,7 +461,14 @@ mod linux {
         });
 
         let (p, g, a) = (press.clone(), gw.clone(), app.clone());
+        let last_pointer: Cell<Option<Instant>> = Cell::new(None);
         target.connect_motion_notify_event(move |_, ev| {
+            // Where on the pet the pointer rests (window px), for body-part
+            // reactions; a few times a second is plenty.
+            if p.get().is_none() && last_pointer.get().is_none_or(|t| t.elapsed() >= POINTER_EVERY) {
+                last_pointer.set(Some(Instant::now()));
+                let _ = a.emit_to(super::MASCOT, "mascot-pointer", ev.position());
+            }
             if let Some((x0, y0)) = p.get() {
                 let (x, y) = ev.root();
                 if (x - x0).hypot(y - y0) > DRAG_THRESHOLD_PX {

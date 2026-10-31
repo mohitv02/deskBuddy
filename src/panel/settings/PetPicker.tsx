@@ -11,6 +11,10 @@ export const GROUPS: [title: string, rows: Row[]][] = [
       ["intro", "Appears", "when DeskBuddy starts or the pet changes"],
       ["idle", "Idle", "most of the time"],
       ["hover", "Mouse over", "while the pointer rests on it"],
+      ["hoverHead", "Mouse on its head", "pets that mark out body parts; otherwise as Mouse over"],
+      ["hoverBelly", "Mouse on its belly", ""],
+      ["hoverTail", "Mouse on its tail", ""],
+      ["hoverFeet", "Mouse on its feet", ""],
       ["doubleClick", "Double-click", ""],
       ["clicks", "Click spree", "three or more quick clicks"],
     ],
@@ -82,8 +86,12 @@ const FALLBACK: Record<string, string[]> = {
   thrown: ["falling", "dragged"],
   thrownUp: ["falling", "dragged"],
   thrownDown: ["falling", "dragged"],
+  hoverHead: ["hover"],
+  hoverBelly: ["hover"],
+  hoverTail: ["hover"],
+  hoverFeet: ["hover"],
 };
-const BASIC = ["idle", "hover", "alarm", "alarmClosed", "clicks", "done", "snooze", "sleep", "allDone", "falling"];
+const BASIC = ["idle", "hover", "hoverHead", "hoverBelly", "hoverTail", "hoverFeet", "alarm", "alarmClosed", "clicks", "done", "snooze", "sleep", "allDone", "falling"];
 
 const CLIP_NAMES: Record<string, string> = {
   idle_breathe: "Breathing",
@@ -121,6 +129,7 @@ const CLIP_NAMES: Record<string, string> = {
   fire: "Breathes fire (side view)",
   dragged: "Dangles, held by the scruff",
   int_dragged: "Dangles, surprised",
+  mood_angry: "Angry: hisses, tail lashing",
   thrown_tumble: "Rolls head over heels, dizzy",
   thrown_flail: "Flies along, flailing",
   thrown_up_whee: "Arms up: \"whee!\"",

@@ -120,6 +120,14 @@
   "loop": true
  },
  {
+  "name": "mood_angry",
+  "category": "Moods",
+  "description": "Angry: hisses with ears pinned back, fur and tail puffed up, tail lashing, anger mark",
+  "frames": 60,
+  "seconds": 2.0,
+  "loop": true
+ },
+ {
   "name": "int_look_up",
   "category": "Interaction",
   "description": "Follow cursor: eyes look up",

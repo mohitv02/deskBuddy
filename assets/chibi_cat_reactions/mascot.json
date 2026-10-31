@@ -10,6 +10,18 @@
       "int_petted.svg",
       "mood_love.svg"
     ],
+    "hoverHead": [
+      "int_petted.svg",
+      "mood_smile_wink.svg",
+      "mood_happy.svg"
+    ],
+    "hoverBelly": [
+      "mood_surprised.svg",
+      "int_poked.svg"
+    ],
+    "hoverTail": [
+      "mood_angry.svg"
+    ],
     "doubleClick": [
       "mood_smile_wink.svg",
       "fun_spin.svg"
@@ -83,5 +95,34 @@
     256,
     150
   ],
-  "throwEffect": false
+  "throwEffect": false,
+  "zones": [
+    {
+      "name": "tail",
+      "box": [
+        340,
+        350,
+        402,
+        478
+      ]
+    },
+    {
+      "name": "head",
+      "box": [
+        128,
+        168,
+        384,
+        372
+      ]
+    },
+    {
+      "name": "belly",
+      "box": [
+        165,
+        372,
+        345,
+        478
+      ]
+    }
+  ]
 }

@@ -72,10 +72,24 @@ pub struct SpriteManifest {
 
 pub const EFFECTS: [&str; 5] = ["sparks", "flames", "webs", "shuriken", "none"];
 
+/// Body parts a pack can mark out for hover reactions (`hover` + the name).
+pub const ZONES: [&str; 4] = ["head", "belly", "tail", "feet"];
+
+/// A part of the pet, as a box in the idle SVG's viewBox coordinates.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Zone {
+    pub name: String,
+    /// x0, y0, x1, y1
+    #[serde(rename = "box")]
+    pub rect: [f32; 4],
+}
+
 /// States a state-set mascot can define. Only `idle` is required; missing
 /// ones fall back (see svgstates.ts).
-pub const STATES: [&str; 35] = [
-    "idle", "hover", "alarm", "alarmClosed", "clicks", "doubleClick", "done", "snooze", "intro", "fallAsleep", "sleep", "wakeUp",
+pub const STATES: [&str; 39] = [
+    "idle", "hover",
+    // the pointer resting on one part of the pet (see `zones`)
+    "hoverHead", "hoverBelly", "hoverTail", "hoverFeet", "alarm", "alarmClosed", "clicks", "doubleClick", "done", "snooze", "intro", "fallAsleep", "sleep", "wakeUp",
     // todo moods
     "allDone", "added", "started", "deleted", "overdue", "hungry",
     // being carried around: held, falling after a lift, landing
@@ -149,6 +163,10 @@ pub struct StatesManifest {
     /// landings are a random mix (dizzy, grumpy, ...).
     #[serde(default)]
     pub throw_effect: Option<bool>,
+    /// Body parts for hover reactions, first match wins (e.g. the tail
+    /// before the belly it overlaps).
+    #[serde(default)]
+    pub zones: Vec<Zone>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -165,6 +183,7 @@ pub enum CustomMascot {
         states: std::collections::BTreeMap<String, Vec<String>>,
         idle_variants: Vec<String>,
         sleep_after_seconds: Option<u32>,
+        zones: Vec<Zone>,
     },
 }
 
@@ -220,6 +239,15 @@ fn validate_states(m: &StatesManifest) -> Result<(), String> {
     for file in m.states.values().flat_map(Clips::files).chain(&m.idle_variants) {
         if !valid_entry(file) {
             return Err(format!("mascot.json: \"{file}\" must be an .svg file name inside the mascot folder (optionally @seconds)"));
+        }
+    }
+    for z in &m.zones {
+        if !ZONES.contains(&z.name.as_str()) {
+            return Err(format!("mascot.json: zone \"{}\" must be one of {}", z.name, ZONES.join(", ")));
+        }
+        let [x0, y0, x1, y1] = z.rect;
+        if !(x0 < x1 && y0 < y1) {
+            return Err(format!("mascot.json: zone \"{}\" box must be [x0, y0, x1, y1] with x0 < x1 and y0 < y1", z.name));
         }
     }
     if let Some(e) = &m.alarm_effect {
@@ -415,7 +443,8 @@ fn load_states(dir: &Path) -> Option<Result<CustomMascot, String>> {
     }
     let states = manifest.states.iter().map(|(k, v)| (k.clone(), v.files().to_vec())).collect();
     let idle_variants = manifest.idle_variants.clone();
-    Some(Ok(CustomMascot::SvgStates { clips, states, idle_variants, sleep_after_seconds: manifest.sleep_after_seconds }))
+    let zones = manifest.zones.clone();
+    Some(Ok(CustomMascot::SvgStates { clips, states, idle_variants, sleep_after_seconds: manifest.sleep_after_seconds, zones }))
 }
 
 fn load_custom() -> Option<CustomMascot> {
@@ -566,6 +595,10 @@ mod tests {
         assert!(states(&ok.replace("fly.svg", "fly.svg@0.45")).is_ok(), "start offset");
         assert!(states(&ok.replace("fly.svg", "fly.svg@soon")).is_err(), "bad offset");
         assert!(states(&ok.replace("\"fly.svg\"", "[\"../x.svg\"]")).is_err(), "lists: no traversal");
+        let zoned = ok.replacen('{', r#"{"zones":[{"name":"tail","box":[340,350,400,478]}],"#, 1);
+        assert!(states(&zoned).is_ok(), "zones");
+        assert!(states(&zoned.replace("tail", "wing")).is_err(), "unknown zone");
+        assert!(states(&zoned.replace("340,350,400", "400,350,340")).is_err(), "inverted box");
         assert!(states(&ok.replace("\"hover\"", "\"sleep\"").replacen('{', r#"{"sleepAfterSeconds":60,"#, 1)).is_ok());
         // The bundled packs must stay installable as-is.
         for (_, pack) in PACKS {

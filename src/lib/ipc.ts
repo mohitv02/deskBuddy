@@ -144,7 +144,15 @@ export type CustomMascot =
       states: Record<string, string[]>;
       idleVariants: string[];
       sleepAfterSeconds: number | null;
+      /** Body parts for hover reactions, first match wins. */
+      zones: MascotZone[];
     };
+
+/** A part of the pet ("head", "belly", "tail", "feet"): x0, y0, x1, y1 in the SVG's viewBox. */
+export interface MascotZone {
+  name: string;
+  box: [number, number, number, number];
+}
 
 export interface PetInfo {
   id: string;

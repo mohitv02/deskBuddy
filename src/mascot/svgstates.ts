@@ -15,11 +15,17 @@
 // nothing cuts mid-move. CSS clips carry <style> blocks that are
 // document-global once inlined, so those swap instantly with one mounted.
 
+import type { MascotZone } from "../lib/ipc";
+
 type Look = "lookUp" | "lookUpRight" | "lookRight" | "lookDownRight" | "lookDown" | "lookDownLeft" | "lookLeft" | "lookUpLeft";
 
 type State =
   | "idle"
   | "hover"
+  | "hoverHead"
+  | "hoverBelly"
+  | "hoverTail"
+  | "hoverFeet"
   | "alarm"
   | "alarmClosed"
   | "clicks"
@@ -58,6 +64,14 @@ const FLINGS: Record<Fling, [flying: State, landing: State]> = {
 /** Drawn facing right; mirrored when flying or landing the other way. */
 const DIRECTED: string[] = Object.values(FLINGS).flat();
 
+type Zone = "head" | "belly" | "tail" | "feet";
+
+/** The hover reaction for the pointer resting on each body part. */
+const ZONE_STATES: Record<Zone, State> = { head: "hoverHead", belly: "hoverBelly", tail: "hoverTail", feet: "hoverFeet" };
+/** The pointer has to stay on another part this long before the reaction
+ * changes, so brushing along an edge doesn't flicker between two. */
+const ZONE_SETTLE_MS = 150;
+
 const LOOKS: Look[] = ["lookUp", "lookUpRight", "lookRight", "lookDownRight", "lookDown", "lookDownLeft", "lookLeft", "lookUpLeft"];
 
 /** Where a missing state falls back to before idle. */
@@ -70,6 +84,10 @@ const FALLBACK: Partial<Record<State, State[]>> = {
   thrown: ["falling", "dragged"],
   thrownUp: ["falling", "dragged"],
   thrownDown: ["falling", "dragged"],
+  hoverHead: ["hover"],
+  hoverBelly: ["hover"],
+  hoverTail: ["hover"],
+  hoverFeet: ["hover"],
 };
 
 /** States replaced by idle when missing; every other missing state is skipped. */
@@ -82,7 +100,7 @@ export const MOODS = ["allDone", "added", "started", "deleted"];
 const MESSAGE_DEFAULT: State[] = ["doubleClick", "added", "done"];
 
 /** Held as long as their condition lasts; a one-shot clip here loops. */
-const HELD: string[] = ["idle", "hover", "alarm", "sleep", "dragged", "falling", "thrown", "thrownUp", "thrownDown"];
+const HELD: string[] = ["idle", "hover", ...Object.values(ZONE_STATES), "alarm", "sleep", "dragged", "falling", "thrown", "thrownUp", "thrownDown"];
 
 const TEMP_MS: Partial<Record<State, number>> = {
   alarmClosed: 3000,
@@ -185,6 +203,12 @@ export class SvgStateAnimator {
   private wakeHoverTimer: number | undefined;
   private leaveTimer: number | undefined;
   private hovering = false;
+  /** The body part under the pointer while hovering, and one it's moving onto. */
+  private zone: Zone | null = null;
+  private pendingZone: Zone | null | undefined;
+  /** The first position after the pointer comes in has been seen. */
+  private zoneKnown = false;
+  private zoneTimer: number | undefined;
   private dragging = false;
   /** Let go up high: the window is dropping back down. */
   private dropping = false;
@@ -210,6 +234,8 @@ export class SvgStateAnimator {
     sleepAfterSeconds: number | null = null,
     /** Mood that fits the moment (e.g. "overdue"), asked before each idle variant. */
     private contextMood: () => string | null = () => null,
+    /** Body parts for hover reactions (boxes in the idle SVG's viewBox), first match wins. */
+    private zones: MascotZone[] = [],
   ) {
     for (const [file, text] of Object.entries(clips)) {
       const clip = sanitize(text);
@@ -251,7 +277,13 @@ export class SvgStateAnimator {
   private applyHover(on: boolean) {
     if (on === this.hovering) return;
     this.hovering = on;
-    if (on) this.choose("hover");
+    if (!on) {
+      clearTimeout(this.zoneTimer);
+      this.zoneKnown = false;
+      this.zone = null;
+      this.pendingZone = undefined;
+    }
+    if (on) this.choose(this.hoverState());
     clearTimeout(this.wakeHoverTimer);
     // A sleeping mascot only wakes if the pointer stays a moment.
     if (on && this.asleep) this.wakeHoverTimer = window.setTimeout(() => this.wake(), WAKE_HOVER_MS);
@@ -365,6 +397,48 @@ export class SvgStateAnimator {
     this.fling = null;
     this.throwDir = 0;
     this.render();
+  }
+
+  /** Pointer position on the mascot window (px): react to the body part under it. */
+  pointer(x: number, y: number) {
+    if (!this.hovering || this.zones.length === 0) return;
+    const zone = this.zoneAt(x, y);
+    // Just came in: react to that part straight away.
+    if (!this.zoneKnown) {
+      this.zoneKnown = true;
+      if (zone === this.zone) return;
+      this.zone = zone;
+      this.choose(this.hoverState());
+      this.render();
+      return;
+    }
+    if (zone === this.zone) {
+      clearTimeout(this.zoneTimer);
+      this.pendingZone = undefined;
+      return;
+    }
+    if (zone === this.pendingZone) return;
+    this.pendingZone = zone;
+    clearTimeout(this.zoneTimer);
+    this.zoneTimer = window.setTimeout(() => {
+      this.zone = zone;
+      this.pendingZone = undefined;
+      if (!this.hovering) return;
+      this.choose(this.hoverState());
+      this.render();
+    }, ZONE_SETTLE_MS);
+  }
+
+  private zoneAt(x: number, y: number): Zone | null {
+    const ctm = this.svg?.getScreenCTM();
+    if (!ctm) return null;
+    const p = new DOMPoint(x, y).matrixTransform(ctm.inverse());
+    const hit = this.zones.find(({ box: [x0, y0, x1, y1] }) => p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1);
+    return hit && hit.name in ZONE_STATES ? (hit.name as Zone) : null;
+  }
+
+  private hoverState(): State {
+    return this.zone ? ZONE_STATES[this.zone] : "hover";
   }
 
   /** Which way the pointer is ("" = not near): eyes follow it, if the pet can. */
@@ -502,7 +576,7 @@ export class SvgStateAnimator {
     }
     if (this.temp && now < this.temp.until) return state(this.temp.state);
     if (this.asleep) return state("sleep");
-    if (this.hovering) return state("hover");
+    if (this.hovering) return state(this.hoverState());
     if (this.variant && now < this.variant.until) return ["variant", this.variants[this.variant.index]];
     if (this.looking && this.states.has(this.looking)) return state(this.looking);
     return state("idle");

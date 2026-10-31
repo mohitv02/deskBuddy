@@ -17,6 +17,7 @@ landing (used for `dropped`, since the window itself does the falling). Run
 | `intro` | the pet appears (app start, pet switch) | skipped |
 | `idle` | the rest of the time | required |
 | `hover` | while the pointer rests on the pet | idle |
+| `hoverHead`, `hoverBelly`, `hoverTail`, `hoverFeet` | while the pointer rests on that part: the pack's `zones` list boxes (`{"name": "tail", "box": [x0, y0, x1, y1]}` in the idle SVG's viewBox), first match wins; moving onto another part switches after 150 ms | hover |
 | `doubleClick` / `clicks` | double-click / three or more quick clicks | skipped / alarm |
 | `added`, `started`, `deleted` | a todo is added, set to in progress, deleted | skipped |
 | `done` / `allDone` | a todo is completed / the last open one is | hover / done |
@@ -98,13 +99,16 @@ Sits and breathes with rippling gills; swims in place, wiggles like a lizard, be
 | Idle moments | `idle_gill_wiggle`, `idle_look_left_right`, `idle_stretch`, `idle_blow_bubbles`, `idle_yawn`, `fun_peek`, `swim_idle` |
 
 ### Chibi Cat (`chibi_cat_reactions`)
-Squash-and-stretch breathing, waddle, hop, spin, peeks from the edge, curls into a loaf to sleep. **Emotions:** happy jump, sad, surprised, hungry (fish), love, smile-wink; annoyed when poked. Only the `full_loop` demo is unused.
+Squash-and-stretch breathing, waddle, hop, spin, peeks from the edge, curls into a loaf to sleep. **Emotions:** happy jump, sad, surprised, hungry (fish), love, smile-wink, angry (hisses with fangs, ears pinned, tail puffed and lashing); annoyed when poked. Knows where you touch it: head, belly or tail. Only the `full_loop` demo is unused.
 
 | Event | Clips |
 |---|---|
 | Appears | `move_fall_land` |
 | Idle | `idle_breathe` |
 | Mouse over | `int_petted`, `mood_love` |
+| Mouse on its head | `int_petted`, `mood_smile_wink`, `mood_happy` |
+| Mouse on its belly | `mood_surprised`, `int_poked` |
+| Mouse on its tail | `mood_angry` |
 | Double-click | `mood_smile_wink`, `fun_spin` |
 | Click spree | `int_poked` |
 | Todo added | `idle_ear_twitch` |

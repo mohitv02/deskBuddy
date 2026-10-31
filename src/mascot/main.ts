@@ -35,6 +35,8 @@ interface Renderer {
   setSleepAfter?(seconds: number): void;
   /** Direction of the pointer near the mascot ("" = not near). */
   look?(dir: string): void;
+  /** Pointer position on the mascot window (px), while it's over it. */
+  pointer?(x: number, y: number): void;
 }
 
 /** Meal times (local hours) when a pet with a "hungry" clip gets peckish. */
@@ -79,6 +81,7 @@ async function createRenderer(settings: Settings): Promise<Renderer> {
         custom.idleVariants,
         settings.sleepAfterSeconds,
         contextMood,
+        custom.zones,
       );
       hideBuiltIn();
       return r;
@@ -150,6 +153,7 @@ async function init() {
   await listen("mascot-landed", () => renderer.landed?.());
   await listen<number>("mascot-sleep-after", (e) => renderer.setSleepAfter?.(e.payload));
   await listen<string>("mascot-look", (e) => renderer.look?.(e.payload));
+  await listen<[number, number]>("mascot-pointer", (e) => renderer.pointer?.(e.payload[0], e.payload[1]));
   // Another pet was picked: let this one shrink away, then load the new one,
   // which pops in (mascot.css). A reload drops every timer of the old renderer.
   await listen("mascot-pet-changed", () => {

@@ -1,6 +1,6 @@
 # Chibi Cat Reactions
 
-33 reactions for a desktop-pet cat. Every clip ships twice, with identical motion:
+34 reactions for a desktop-pet cat. Every clip ships twice, with identical motion:
 
 - `lottie/<name>.json`: Lottie (bodymovin 5.7), 512×512, 30 fps, transparent, flat fills and strokes only (no gradients, masks or images).
 - `svg/<name>.svg`: standalone animated SVG (SMIL), 512×512, transparent. Works in `<img>`, CSS backgrounds and inline.
@@ -19,7 +19,7 @@
 | Movement | move_fall_land | once |
 | Interaction | int_dragged, int_petted, int_poked | loop |
 | Interaction | int_look_up, _up_right, _right, _down_right, _down, _down_left, _left, _up_left | loop |
-| Moods | mood_happy, mood_sad, mood_surprised, mood_hungry, mood_love, mood_smile_wink | loop |
+| Moods | mood_happy, mood_sad, mood_surprised, mood_hungry, mood_love, mood_smile_wink, mood_angry (hisses: fangs, ears pinned, tail puffed and lashing) | loop |
 | Fun | fun_spin, fun_peek, fun_notify | loop |
 | Sequence | full_loop (idle → fall asleep → sleep → wake → smile), with Lottie markers | loop |
 
@@ -36,4 +36,4 @@ Every clip starts and ends in the same sitting pose, except the sleep clips, so 
 
 ## Rebuilding
 
-The `source/` folder holds the rig (`rig.py`), the animation keyframes (`clips.py`) and the exporter (`build.py`). Change a colour or timing there, then run `python3 build.py` to regenerate every JSON and SVG. Python 3 is the only requirement.
+The `source/` folder holds the rig (`rig.py`), the animation keyframes (`clips.py`) and the exporter (`build.py`). Change a colour or timing there, then run `python3 build.py` to regenerate every JSON and SVG. Python 3 is the only requirement. Afterwards run `python3 scripts/prepare-pets.py` from the repo root: it copies each clip's timing onto its SVG for the desktop app (and adds the generated `throw_*` / `land_*` clips).
