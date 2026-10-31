@@ -26,6 +26,7 @@ type State =
   | "hoverBelly"
   | "hoverTail"
   | "hoverFeet"
+  | "poke"
   | "alarm"
   | "alarmClosed"
   | "clicks"
@@ -88,6 +89,8 @@ const FALLBACK: Partial<Record<State, State[]>> = {
   hoverBelly: ["hover"],
   hoverTail: ["hover"],
   hoverFeet: ["hover"],
+  // A friend poked you from chat: the pet's own click reaction will do.
+  poke: ["clicks", "doubleClick"],
 };
 
 /** States replaced by idle when missing; every other missing state is skipped. */
@@ -118,6 +121,7 @@ const TEMP_MS: Partial<Record<State, number>> = {
   thrownLanded: 3000,
   thrownUpLanded: 3000,
   thrownDownLanded: 3000,
+  poke: 3000,
 };
 const IDLE_FPS = 6;
 const ACTIVE_FPS = 24;
@@ -209,6 +213,8 @@ export class SvgStateAnimator {
   /** The first position after the pointer comes in has been seen. */
   private zoneKnown = false;
   private zoneTimer: number | undefined;
+  /** Where the pointer last was on the window (px), to re-check the part when the pet turns. */
+  private lastPointer: [number, number] | null = null;
   private dragging = false;
   /** Let go up high: the window is dropping back down. */
   private dropping = false;
@@ -280,6 +286,7 @@ export class SvgStateAnimator {
     if (!on) {
       clearTimeout(this.zoneTimer);
       this.zoneKnown = false;
+      this.lastPointer = null;
       this.zone = null;
       this.pendingZone = undefined;
     }
@@ -319,7 +326,9 @@ export class SvgStateAnimator {
   /** A chat message arrived: play `state` ("" = the default reaction, "none" = nothing). */
   react(state: string) {
     if (state === "none") return;
-    const pick = state && this.states.has(state as State) ? (state as State) : (MESSAGE_DEFAULT.find((s) => this.states.has(s)) ?? "done");
+    const pick = state && this.playable(state as State) ? (state as State) : (MESSAGE_DEFAULT.find((s) => this.states.has(s)) ?? "done");
+    // Not after a throw: a landing played as a reaction faces forward.
+    this.facing = 1;
     this.asleep = false;
     this.scheduleSleep();
     this.flash(pick);
@@ -402,6 +411,7 @@ export class SvgStateAnimator {
   /** Pointer position on the mascot window (px): react to the body part under it. */
   pointer(x: number, y: number) {
     if (!this.hovering || this.zones.length === 0) return;
+    this.lastPointer = [x, y];
     const zone = this.zoneAt(x, y);
     // Just came in: react to that part straight away.
     if (!this.zoneKnown) {
@@ -452,6 +462,7 @@ export class SvgStateAnimator {
     this.asleep = false;
     this.scheduleSleep();
     if (key.startsWith("message:")) return this.react(key.slice(8));
+    this.facing = 1;
     if (key.startsWith("variant:")) {
       const index = Number(key.slice(8));
       if (!this.variants[index]) return;
@@ -503,8 +514,13 @@ export class SvgStateAnimator {
     return this.chosen.get(s) ?? this.states.get(s)![0];
   }
 
+  /** The pet has clips for this state, or for one it falls back to. */
+  private playable(state: State): boolean {
+    return this.states.has(state) || (FALLBACK[state] ?? []).some((s) => this.states.has(s));
+  }
+
   private flash(state: State, file?: string) {
-    if (!BASIC.includes(state) && !this.states.has(state)) return;
+    if (!BASIC.includes(state) && !this.playable(state)) return;
     this.choose(state, file);
     const ms = this.holdMs(this.fileFor(state), TEMP_MS[state] ?? 3000);
     this.temp = { state, until: performance.now() + ms };
@@ -582,13 +598,23 @@ export class SvgStateAnimator {
     return state("idle");
   }
 
-  private render() {
+  private render(): void {
     const [state, file] = this.wanted();
     // Anything else interrupts an idle variant for good.
     if (state !== "variant") this.variant = null;
     this.shownState = state;
-    const directed = DIRECTED.includes(state);
-    this.el.classList.toggle("flipped", directed && this.facing < 0);
+    const flipped = DIRECTED.includes(state) && this.facing < 0;
+    const turned = flipped !== this.el.classList.contains("flipped");
+    this.el.classList.toggle("flipped", flipped);
+    // The pet turned under a resting pointer: its parts moved, check which one it's on now.
+    if (turned && this.hovering && this.zoneKnown && this.lastPointer) {
+      const zone = this.zoneAt(...this.lastPointer);
+      if (zone !== this.zone) {
+        this.zone = zone;
+        this.choose(this.hoverState());
+        return this.render();
+      }
+    }
     if (file === this.shown) return;
     const prev = this.layer;
     const prevClip = this.shown === null ? null : this.clipOf(this.shown);

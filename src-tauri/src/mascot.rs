@@ -86,8 +86,10 @@ pub struct Zone {
 
 /// States a state-set mascot can define. Only `idle` is required; missing
 /// ones fall back (see svgstates.ts).
-pub const STATES: [&str; 39] = [
+pub const STATES: [&str; 40] = [
     "idle", "hover",
+    // a friend poked you from chat
+    "poke",
     // the pointer resting on one part of the pet (see `zones`)
     "hoverHead", "hoverBelly", "hoverTail", "hoverFeet", "alarm", "alarmClosed", "clicks", "doubleClick", "done", "snooze", "intro", "fallAsleep", "sleep", "wakeUp",
     // todo moods

@@ -128,6 +128,14 @@
   "loop": true
  },
  {
+  "name": "int_poke_friend",
+  "category": "Interaction",
+  "description": "Poked by a friend from chat: startled jump with a \"!\", then looks left and right for who did it",
+  "frames": 90,
+  "seconds": 3.0,
+  "loop": true
+ },
+ {
   "name": "int_look_up",
   "category": "Interaction",
   "description": "Follow cursor: eyes look up",

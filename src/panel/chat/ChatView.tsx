@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { listen } from "@tauri-apps/api/event";
-import { ipc, type ChatMessage, type ChatStatus, type ChatUser, type Conversation, type TodoInput } from "../../lib/ipc";
+import { ipc, POKE, type ChatMessage, type ChatStatus, type ChatUser, type Conversation, type TodoInput } from "../../lib/ipc";
 import { addDays, isoDate } from "../../lib/dates";
 import { parseQuickAdd } from "../../lib/quickAdd";
 import { ReactionPicker, reactionLabel } from "./ReactionPicker";
@@ -25,6 +25,9 @@ function dayLabel(ms: number, now = new Date()): string {
   const sameYear = d.getFullYear() === now.getFullYear();
   return d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short", year: sameYear ? undefined : "numeric" });
 }
+
+/** Between two pokes from here, so a stuck finger doesn't flood a friend's desktop. */
+const POKE_COOLDOWN_MS = 5000;
 
 const timeOf = (ms: number) => new Date(ms).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
 
@@ -274,6 +277,7 @@ function Thread({
   const [editing, setEditing] = useState<{ id: number; body: string } | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
   const [pickingReaction, setPickingReaction] = useState(false);
+  const [pokeWait, setPokeWait] = useState(false);
   const scroller = useRef<HTMLDivElement>(null);
   // After a render: stick to the bottom, or keep the view still while older
   // messages are prepended above it.
@@ -359,18 +363,29 @@ function Thread({
 
   const replace = (m: ChatMessage) => setMessages((all) => all.map((x) => (x.id === m.id ? m : x)));
 
+  const post = async (body: string) => {
+    const m = await ipc.chatSend(conv, body);
+    if (mode.kind === "all") {
+      pendingScroll.current = { kind: "bottom" };
+      setMessages((all) => merge(all, [m]));
+    } else {
+      setSearchOpen(false);
+      setMode({ kind: "all" });
+    }
+  };
+
+  const poke = () => {
+    if (pokeWait) return;
+    setPokeWait(true);
+    window.setTimeout(() => setPokeWait(false), POKE_COOLDOWN_MS);
+    void run(() => post(POKE));
+  };
+
   const send = () => {
     if (!draft.trim()) return;
     void run(async () => {
-      const m = await ipc.chatSend(conv, draft);
+      await post(draft);
       setDraft("");
-      if (mode.kind === "all") {
-        pendingScroll.current = { kind: "bottom" };
-        setMessages((all) => merge(all, [m]));
-      } else {
-        setSearchOpen(false);
-        setMode({ kind: "all" });
-      }
     });
   };
 
@@ -432,6 +447,11 @@ function Thread({
   };
 
   const name = peerLabel(conversation);
+  const canPoke = remote && conversation.room !== "ip";
+  const pokeLine = (m: ChatMessage, theirs: boolean) =>
+    theirs
+      ? `${m.senderName || m.senderIp?.slice(0, 8) || "Someone"} poked ${group ? "everyone" : "you"}`
+      : `You poked ${group ? "everyone" : name}`;
   const empty =
     mode.kind === "pinned"
       ? "No pinned messages"
@@ -540,6 +560,8 @@ function Thread({
                       </button>
                     </div>
                   </div>
+                ) : remote && m.body === POKE ? (
+                  <div className="chat-body chat-poke">👉 {pokeLine(m, theirs)}</div>
                 ) : (
                   <>
                     {theirs && group && <div className="chat-sender">{m.senderName || m.senderIp?.slice(0, 8)}</div>}
@@ -615,6 +637,18 @@ function Thread({
             }
             aria-label="Message"
           />
+          {canPoke && (
+            <button
+              type="button"
+              className="add-btn chat-poke-btn"
+              title={pokeWait ? "Poked! Wait a moment" : group ? "Poke everyone here: their pets react" : `Poke ${name}: their pet reacts`}
+              aria-label={group ? "Poke everyone" : `Poke ${name}`}
+              disabled={pokeWait}
+              onClick={poke}
+            >
+              👉
+            </button>
+          )}
           <button type="submit" className="add-btn" title="Send (Enter)" aria-label="Send" disabled={!draft.trim()}>
             ➤
           </button>

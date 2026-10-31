@@ -86,6 +86,18 @@ when the link was made. Deliveries go through the `outbox` collection, so
 they survive restarts and are retried with backoff (up to a week) while the
 other home is offline. Each home keeps its own copy of the link's messages.
 
+## Tests
+
+`cargo test` runs the unit tests. `tests/integration.py` starts a throwaway
+MongoDB plus three servers (two sharing a database, one on its own) and
+checks logins, permissions, teams, every link type, archives, federation
+forgeries, outages and restarts:
+
+```bash
+pip install websockets pynacl      # mongod and mongosh must be installed
+cargo build && python3 -u tests/integration.py
+```
+
 ## Protocol
 
 JSON text frames on `ws://host:8787/ws`, tagged by `type`.

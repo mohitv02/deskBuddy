@@ -15,10 +15,10 @@
 use std::time::Duration;
 
 use futures_util::TryStreamExt;
-use mongodb::bson::{doc, oid::ObjectId, DateTime, Document};
+use mongodb::bson::{doc, oid::ObjectId, Bson, DateTime, Document};
 use mongodb::error::{ErrorKind, WriteFailure};
 use mongodb::options::{IndexOptions, ReturnDocument};
-use mongodb::{Client, Collection, IndexModel};
+use mongodb::{Client, Collection, Database, IndexModel};
 use serde::{Deserialize, Serialize};
 
 use crate::protocol::{ChatMessage, ConversationInfo, LinkInfo, LinkKind, LinkState, Member, Share, TeamInfo, TeamRef, UserInfo};
@@ -128,14 +128,6 @@ impl LinkDoc {
         if side == 'a' { &self.a } else { &self.b }
     }
 
-    pub fn team_mut(&mut self, side: char) -> &mut TeamRef {
-        if side == 'a' { &mut self.a } else { &mut self.b }
-    }
-
-    pub fn share_mut(&mut self, side: char) -> &mut Share {
-        if side == 'a' { &mut self.share_a } else { &mut self.share_b }
-    }
-
     /// Both halves of the archive key are on offer.
     pub fn archive_open(&self) -> bool {
         self.share_a.to_peer.is_some() && self.share_b.to_peer.is_some()
@@ -224,6 +216,7 @@ impl From<mongodb::error::Error> for JoinError {
 
 pub struct Store {
     pub home: String,
+    db: Database,
     meta: Collection<Document>,
     users: Collection<UserDoc>,
     teams: Collection<TeamDoc>,
@@ -240,6 +233,11 @@ fn is_duplicate_key(e: &mongodb::error::Error) -> bool {
     matches!(&*e.kind, ErrorKind::Write(WriteFailure::WriteError(w)) if w.code == 11000)
 }
 
+/// A value as BSON, for targeted `$set` updates.
+pub fn bson<T: Serialize>(v: &T) -> Bson {
+    mongodb::bson::to_bson(v).expect("serializes")
+}
+
 fn after(d: Duration) -> DateTime {
     DateTime::from_millis(DateTime::now().timestamp_millis() + d.as_millis() as i64)
 }
@@ -253,6 +251,7 @@ impl Store {
         db.run_command(doc! { "ping": 1 }).await?;
         let mut store = Store {
             home: String::new(),
+            db: db.clone(),
             meta: db.collection("meta"),
             users: db.collection("users"),
             teams: db.collection("teams"),
@@ -267,6 +266,17 @@ impl Store {
         store.ensure_indexes().await?;
         store.home = store.home_id().await?;
         Ok(store)
+    }
+
+    pub async fn ping(&self) -> Result<()> {
+        self.db.run_command(doc! { "ping": 1 }).await?;
+        Ok(())
+    }
+
+    /// The database server's clock (cluster events are stamped with it).
+    pub async fn server_now(&self) -> Result<DateTime> {
+        let hello = self.db.run_command(doc! { "hello": 1 }).await?;
+        Ok(hello.get_datetime("localTime").copied().unwrap_or_else(|_| DateTime::now()))
     }
 
     async fn ensure_indexes(&self) -> Result<()> {
@@ -455,10 +465,14 @@ impl Store {
         }
     }
 
-    pub async fn save_link(&self, link: &mut LinkDoc) -> Result<()> {
-        link.updated_at = DateTime::now();
-        self.links.replace_one(doc! { "_id": &link.id }, &*link).await?;
-        Ok(())
+    /// Set fields of a link if it still matches `when`; returns the result,
+    /// or None if it no longer matches. Only the named fields change, so two
+    /// updates at once (both teams releasing an archive) can't undo each other.
+    pub async fn update_link(&self, id: &str, when: Document, mut set: Document) -> Result<Option<LinkDoc>> {
+        let mut filter = doc! { "_id": id };
+        filter.extend(when);
+        set.insert("updatedAt", DateTime::now());
+        self.links.find_one_and_update(filter, doc! { "$set": set }).return_document(ReturnDocument::After).await
     }
 
     /// Active temporary groups whose time is up.
@@ -614,9 +628,16 @@ impl Store {
         Ok(docs.iter().filter_map(|d| d.get_str("device").ok().map(str::to_string)).collect())
     }
 
+    /// Stamped with the database's clock ($$NOW), so servers whose clocks
+    /// disagree still see each other's events.
     pub async fn publish(&self, origin: &str, to: &[String], frame: &str) -> Result<()> {
-        let e = EventDoc { id: ObjectId::new(), origin: origin.to_string(), to: to.to_vec(), frame: frame.to_string(), at: DateTime::now() };
-        self.events.insert_one(&e).await?;
+        let set = doc! {
+            "origin": { "$literal": origin },
+            "to": { "$literal": to.to_vec() },
+            "frame": { "$literal": frame },
+            "at": "$$NOW",
+        };
+        self.events.update_one(doc! { "_id": ObjectId::new() }, vec![doc! { "$set": set }]).upsert(true).await?;
         Ok(())
     }
 

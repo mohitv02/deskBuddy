@@ -5,7 +5,7 @@ import { effects, type Effect } from "./effects";
 
 declare global {
   interface Window {
-    __FX__?: { effect: string; x: number; y: number; dir: 1 | -1 };
+    __FX__?: { effect: string; x: number; y: number; dir: 1 | -1; text?: string | null; size?: number };
   }
 }
 
@@ -18,7 +18,7 @@ canvas.height = innerHeight * dpr;
 ctx.scale(dpr, dpr);
 
 const make = effects[cfg.effect] ?? effects.sparks;
-const effect: Effect = make({ x: cfg.x, y: cfg.y, dir: cfg.dir });
+const effect: Effect = make({ x: cfg.x, y: cfg.y, dir: cfg.dir, text: cfg.text ?? undefined, size: cfg.size });
 
 let last = performance.now();
 function frame(now: number) {

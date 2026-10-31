@@ -27,6 +27,11 @@
       "fun_spin.svg"
     ],
     "clicks": "int_poked.svg",
+    "poke": [
+      "int_poke_friend.svg",
+      "mood_surprised.svg",
+      "int_poked.svg"
+    ],
     "done": [
       "mood_happy.svg",
       "move_hop.svg",

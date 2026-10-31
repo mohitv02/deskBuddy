@@ -6,6 +6,10 @@ export interface Origin {
   x: number;
   y: number;
   dir: 1 | -1;
+  /** What a speech bubble says. */
+  text?: string;
+  /** The pet's size (px), to keep a bubble clear of it. */
+  size?: number;
 }
 
 export interface Effect {
@@ -242,4 +246,74 @@ function sparks(o: Origin): Effect {
   };
 }
 
-export const effects: Record<string, (o: Origin) => Effect> = { flames, webs, shuriken, sparks };
+/** A speech bubble over the pet's head ("👉 Mohit poked you!"): pops in with a
+ * little overshoot, bobs, and fades out just before Rust closes the window
+ * (window.rs BUBBLE_FOR, 4 s). With no room above (the pet at the top of the
+ * screen) it sits beside the pet instead, on the open side (`dir`). */
+function bubble(o: Origin): Effect {
+  const text = (o.text ?? "").slice(0, 80);
+  const pet = o.size ?? 96;
+  let t = 0;
+  return {
+    step(dt) {
+      t += dt;
+    },
+    draw(ctx) {
+      ctx.font = "600 15px system-ui, sans-serif";
+      const width = ctx.canvas.clientWidth;
+      const padX = 14;
+      const w = Math.min(width - 8, ctx.measureText(text).width + padX * 2);
+      const h = 34;
+      const gap = 18; // room for the tail
+      const above = o.y - gap - h >= 4;
+      const cx = above
+        ? Math.max(w / 2 + 4, Math.min(width - w / 2 - 4, o.x))
+        : Math.max(w / 2 + 4, Math.min(width - w / 2 - 4, o.x + o.dir * (pet * 0.45 + gap + w / 2)));
+      const top = above ? o.y - gap - h : Math.max(4, o.y - h / 2);
+      // Where the tail points: the top of the head, or its side.
+      const [px, py] = above ? [o.x, o.y - 4] : [o.x + o.dir * pet * 0.32, o.y];
+      // Pop in (overshoot), a gentle bob, fade out over the last half second.
+      const pop = t < 0.18 ? 0.6 + (t / 0.18) * 0.5 : t < 0.3 ? 1.1 - ((t - 0.18) / 0.12) * 0.1 : 1;
+      const bob = Math.sin(t * 4) * 2;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, (3.9 - t) / 0.5));
+      ctx.translate(px, py + bob);
+      ctx.scale(pop, pop);
+      ctx.translate(-px, -py);
+      // Rounded box by hand: roundRect is newer than the WebKit we target.
+      const [l, r, b, rad] = [cx - w / 2, cx + w / 2, top + h, 14];
+      ctx.beginPath();
+      ctx.moveTo(l + rad, top);
+      ctx.arcTo(r, top, r, b, rad);
+      ctx.arcTo(r, b, l, b, rad);
+      ctx.arcTo(l, b, l, top, rad);
+      ctx.arcTo(l, top, r, top, rad);
+      ctx.closePath();
+      if (above) {
+        const tx = Math.max(l + 16, Math.min(r - 16, px));
+        ctx.moveTo(tx - 8, b - 1);
+        ctx.lineTo(px, py);
+        ctx.lineTo(tx + 8, b - 1);
+      } else {
+        const edge = o.dir > 0 ? l + 1 : r - 1;
+        const ty = Math.max(top + 10, Math.min(b - 10, py));
+        ctx.moveTo(edge, ty - 7);
+        ctx.lineTo(px, py);
+        ctx.lineTo(edge, ty + 7);
+      }
+      ctx.fillStyle = "#ffffff";
+      ctx.strokeStyle = "#2b2533";
+      ctx.lineWidth = 3;
+      ctx.lineJoin = "round";
+      ctx.stroke();
+      ctx.fill();
+      ctx.fillStyle = "#2b2533";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, cx, top + h / 2 + 1, w - padX * 2);
+      ctx.restore();
+    },
+  };
+}
+
+export const effects: Record<string, (o: Origin) => Effect> = { flames, webs, shuriken, sparks, bubble };

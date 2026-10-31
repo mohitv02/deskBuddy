@@ -17,6 +17,7 @@ export const GROUPS: [title: string, rows: Row[]][] = [
       ["hoverFeet", "Mouse on its feet", ""],
       ["doubleClick", "Double-click", ""],
       ["clicks", "Click spree", "three or more quick clicks"],
+      ["poke", "Poked by a friend", "someone pokes you from chat (👉); a bubble says who"],
     ],
   ],
   [
@@ -90,8 +91,9 @@ const FALLBACK: Record<string, string[]> = {
   hoverBelly: ["hover"],
   hoverTail: ["hover"],
   hoverFeet: ["hover"],
+  poke: ["clicks", "doubleClick"],
 };
-const BASIC = ["idle", "hover", "hoverHead", "hoverBelly", "hoverTail", "hoverFeet", "alarm", "alarmClosed", "clicks", "done", "snooze", "sleep", "allDone", "falling"];
+const BASIC = ["poke", "idle", "hover", "hoverHead", "hoverBelly", "hoverTail", "hoverFeet", "alarm", "alarmClosed", "clicks", "done", "snooze", "sleep", "allDone", "falling"];
 
 const CLIP_NAMES: Record<string, string> = {
   idle_breathe: "Breathing",
@@ -130,6 +132,7 @@ const CLIP_NAMES: Record<string, string> = {
   dragged: "Dangles, held by the scruff",
   int_dragged: "Dangles, surprised",
   mood_angry: "Angry: hisses, tail lashing",
+  int_poke_friend: "Jumps, looks around for who poked it",
   thrown_tumble: "Rolls head over heels, dizzy",
   thrown_flail: "Flies along, flailing",
   thrown_up_whee: "Arms up: \"whee!\"",

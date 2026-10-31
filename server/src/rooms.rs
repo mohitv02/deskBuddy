@@ -144,8 +144,10 @@ pub async fn open(store: &Store, conversation: &str, me: &str, access: Access) -
 }
 
 /// A message another home forwarded for `link`, sent by `from` (one of that
-/// home's members). Returns the room on this side, or None if not allowed.
-pub async fn incoming(store: &Store, conversation: &str, from: &str, link: &LinkDoc) -> Option<Room> {
+/// home's members) at `created_at`. Returns the room on this side, or None if
+/// not allowed. A temporary group's message written before it closed is
+/// still kept (it was queued while this home was offline), but not pushed.
+pub async fn incoming(store: &Store, conversation: &str, from: &str, created_at: DateTime, link: &LinkDoc) -> Option<Room> {
     let foreign = ['a', 'b'].into_iter().find(|s| !is_local(store, link, *s))?;
     if !link.team(foreign).members.iter().any(|m| m.device == from) {
         return None;
@@ -154,6 +156,14 @@ pub async fn incoming(store: &Store, conversation: &str, from: &str, link: &Link
     match parse_conversation(conversation)? {
         ConvRef::Link(l) if l == link.id && link.kind != LinkKind::Personal && link.state == LinkState::Active => {
             Some(Room { id: conversation.into(), dm_members: vec![], local: link_local_devices(store, link).await, forward: vec![] })
+        }
+        ConvRef::Link(l)
+            if l == link.id
+                && link.kind == LinkKind::Temp
+                && link.state == LinkState::Archived
+                && link.expires_at.is_some_and(|t| created_at <= t) =>
+        {
+            Some(Room { id: conversation.into(), dm_members: vec![], local: vec![], forward: vec![] })
         }
         ConvRef::Dm(a, b) if link.kind == LinkKind::Personal && link.state == LinkState::Active => {
             let other = if a == from { &b } else if b == from { &a } else { return None };

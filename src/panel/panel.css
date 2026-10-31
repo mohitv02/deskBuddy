@@ -1265,6 +1265,10 @@ input.switch:checked::after {
   opacity: 0.5;
   cursor: default;
 }
+.chat-body.chat-poke {
+  font-style: italic;
+  color: var(--muted);
+}
 
 /* ---------- chat with others ---------- */
 .chat-picker {

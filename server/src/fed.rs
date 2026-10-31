@@ -12,17 +12,20 @@ use std::time::Duration;
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::Json;
-use mongodb::bson::DateTime;
+use mongodb::bson::{doc, Bson, DateTime};
 use serde::{Deserialize, Serialize};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 use crate::protocol::{self as p, LinkInfo, LinkKind, LinkState, ServerMsg, Share, TeamRef};
 use crate::rooms;
-use crate::store::{LinkDoc, Store};
+use crate::store::{bson, LinkDoc, Store};
 use crate::App;
 
 const HTTP_TIMEOUT: Duration = Duration::from_secs(8);
 const JANITOR_EVERY: Duration = Duration::from_secs(30);
+/// "Unknown link" is retried this many times: the request that creates it
+/// may still be on its way (deliveries can overtake each other).
+const NOT_YET_ATTEMPTS: i32 = 8;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -121,7 +124,7 @@ async fn handle(app: &App, store: &Store, env: Envelope) -> Result<(), StatusCod
             return if crate::ct_eq(existing.fed_token.as_bytes(), env.token.as_bytes()) { Ok(()) } else { Err(StatusCode::FORBIDDEN) };
         }
         let ours = store.team(&link.b.id).await.map_err(db)?.ok_or(StatusCode::NOT_FOUND)?;
-        let servers = store.live_servers().await.unwrap_or_else(|_| app.public_urls.clone());
+        let servers = store.live_servers().await.ok().filter(|s| !s.is_empty()).unwrap_or_else(|| app.urls());
         let b = TeamRef {
             id: ours.id.clone(),
             name: ours.name.clone(),
@@ -158,7 +161,7 @@ async fn handle(app: &App, store: &Store, env: Envelope) -> Result<(), StatusCod
         return Ok(());
     }
 
-    let mut link = store.link(&env.link_id).await.map_err(db)?.ok_or(StatusCode::NOT_FOUND)?;
+    let link = store.link(&env.link_id).await.map_err(db)?.ok_or(StatusCode::NOT_FOUND)?;
     if !crate::ct_eq(link.fed_token.as_bytes(), env.token.as_bytes()) {
         return Err(StatusCode::FORBIDDEN);
     }
@@ -174,16 +177,15 @@ async fn handle(app: &App, store: &Store, env: Envelope) -> Result<(), StatusCod
             if share.as_ref().is_some_and(|s| !p::check_share(s)) {
                 return Err(StatusCode::BAD_REQUEST);
             }
-            link.b = TeamRef { home: link.b.home.clone(), ..team };
-            link.state = if accept { LinkState::Active } else { LinkState::Declined };
+            let b = TeamRef { home: link.b.home.clone(), ..team };
+            let state = if accept { LinkState::Active } else { LinkState::Declined };
+            let mut set = doc! { "b": bson(&b), "state": bson(&state), "shareB": bson(&share.unwrap_or_default()) };
             if accept && link.kind == LinkKind::Temp {
                 let hours = link.hours.unwrap_or(1) as i64;
                 let latest = DateTime::now().timestamp_millis() + hours * 3_600_000;
-                link.expires_at = Some(DateTime::from_millis(expires_at.unwrap_or(latest).min(latest)));
+                set.insert("expiresAt", DateTime::from_millis(expires_at.unwrap_or(latest).min(latest)));
             }
-            link.share_b = share.unwrap_or_default();
-            store.save_link(&mut link).await.map_err(db)?;
-            let b = link.b.clone();
+            let link = store.update_link(&link.id, doc! { "state": "pending" }, set).await.map_err(db)?.ok_or(StatusCode::CONFLICT)?;
             remember_members(app, store, &link, &b).await;
             push_link(app, store, &link).await;
         }
@@ -191,9 +193,9 @@ async fn handle(app: &App, store: &Store, env: Envelope) -> Result<(), StatusCod
             if team.id != link.team(foreign).id || !check_team(&team) {
                 return Err(StatusCode::BAD_REQUEST);
             }
-            let home = link.team(foreign).home.clone();
-            *link.team_mut(foreign) = TeamRef { home, ..team.clone() };
-            store.save_link(&mut link).await.map_err(db)?;
+            let updated = TeamRef { home: link.team(foreign).home.clone(), ..team.clone() };
+            let key = if foreign == 'a' { "a" } else { "b" };
+            let link = store.update_link(&link.id, doc! {}, doc! { key: bson(&updated) }).await.map_err(db)?.ok_or(StatusCode::NOT_FOUND)?;
             remember_members(app, store, &link, &team).await;
             push_link(app, store, &link).await;
         }
@@ -201,8 +203,8 @@ async fn handle(app: &App, store: &Store, env: Envelope) -> Result<(), StatusCod
             if !p::check_client_msg_id(&m.client_msg_id) || p::check_body(&m.body).is_err() || !p::is_key(&m.from) {
                 return Err(StatusCode::BAD_REQUEST);
             }
-            let room = rooms::incoming(store, &m.conversation_id, &m.from, &link).await.ok_or(StatusCode::FORBIDDEN)?;
             let at = DateTime::from_millis(m.created_at.clamp(0, DateTime::now().timestamp_millis() + 60_000));
+            let room = rooms::incoming(store, &m.conversation_id, &m.from, at, &link).await.ok_or(StatusCode::FORBIDDEN)?;
             let (doc, is_new) =
                 store.append(&room.id, &room.dm_members, &m.from, &m.client_msg_id, &m.body, Some(at)).await.map_err(db)?;
             if is_new {
@@ -214,14 +216,13 @@ async fn handle(app: &App, store: &Store, env: Envelope) -> Result<(), StatusCod
             if link.state != LinkState::Archived || !p::check_blob(&to_peer) {
                 return Err(StatusCode::CONFLICT);
             }
-            link.share_mut(foreign).to_peer = Some(to_peer);
-            store.save_link(&mut link).await.map_err(db)?;
+            let field = if foreign == 'a' { "shareA.toPeer" } else { "shareB.toPeer" };
+            let link = store.update_link(&link.id, doc! { "state": "archived" }, doc! { field: to_peer }).await.map_err(db)?.ok_or(StatusCode::CONFLICT)?;
             push_link(app, store, &link).await;
         }
         Event::Lock => {
-            link.share_a.to_peer = None;
-            link.share_b.to_peer = None;
-            store.save_link(&mut link).await.map_err(db)?;
+            let set = doc! { "shareA.toPeer": Bson::Null, "shareB.toPeer": Bson::Null };
+            let link = store.update_link(&link.id, doc! {}, set).await.map_err(db)?.ok_or(StatusCode::NOT_FOUND)?;
             push_link(app, store, &link).await;
         }
     }
@@ -230,6 +231,8 @@ async fn handle(app: &App, store: &Store, env: Envelope) -> Result<(), StatusCod
 
 enum Outcome {
     Delivered,
+    /// The other home doesn't know the link yet.
+    NotYet,
     /// The other home refused it for good (unknown link, bad token…).
     Rejected(u16),
     Retry(String),
@@ -251,7 +254,8 @@ async fn post(url: &str, body: &str) -> Outcome {
     };
     match tokio::time::timeout(HTTP_TIMEOUT, attempt).await {
         Ok(Ok(code)) if (200..300).contains(&code) => Outcome::Delivered,
-        Ok(Ok(code)) if matches!(code, 400 | 403 | 404 | 409) => Outcome::Rejected(code),
+        Ok(Ok(404)) => Outcome::NotYet,
+        Ok(Ok(code)) if matches!(code, 400 | 403 | 409) => Outcome::Rejected(code),
         Ok(Ok(code)) => Outcome::Retry(format!("HTTP {code}")),
         Ok(Err(e)) => Outcome::Retry(e),
         Err(_) => Outcome::Retry("timed out".into()),
@@ -290,6 +294,12 @@ pub async fn worker(app: Arc<App>) {
                     done = true;
                     break;
                 }
+                Outcome::NotYet if job.attempts + 1 >= NOT_YET_ATTEMPTS => {
+                    eprintln!("chat: {url} still doesn't know this link; dropping the delivery");
+                    done = true;
+                    break;
+                }
+                Outcome::NotYet => last = format!("{url}: link not known there yet"),
                 Outcome::Retry(e) => last = format!("{url}: {e}"),
             }
         }
@@ -310,20 +320,24 @@ pub async fn janitor(app: Arc<App>) {
     loop {
         tick.tick().await;
         let Some(store) = app.store() else { continue };
-        for mut link in store.expired_temp_links().await.unwrap_or_default() {
-            link.state = LinkState::Archived;
-            link.purge_at = link.retention_days.map(|d| DateTime::from_millis(DateTime::now().timestamp_millis() + d as i64 * 86_400_000));
-            link.share_a.to_peer = None;
-            link.share_b.to_peer = None;
-            if store.save_link(&mut link).await.is_ok() {
+        for link in store.expired_temp_links().await.unwrap_or_default() {
+            let purge_at = link.retention_days.map(|d| DateTime::from_millis(DateTime::now().timestamp_millis() + d as i64 * 86_400_000));
+            let set = doc! {
+                "state": bson(&LinkState::Archived),
+                "purgeAt": bson(&purge_at),
+                "shareA.toPeer": Bson::Null,
+                "shareB.toPeer": Bson::Null,
+            };
+            // Only if still active: another server may have closed it already.
+            if let Ok(Some(link)) = store.update_link(&link.id, doc! { "state": "active" }, set).await {
                 eprintln!("chat: temporary group {} closed", link.id);
                 push_link(&app, &store, &link).await;
             }
         }
-        for mut link in store.purgeable_links().await.unwrap_or_default() {
+        for link in store.purgeable_links().await.unwrap_or_default() {
             if store.delete_conversation(&format!("link:{}", link.id)).await.is_ok() {
-                link.state = LinkState::Closed;
-                if store.save_link(&mut link).await.is_ok() {
+                let set = doc! { "state": bson(&LinkState::Closed) };
+                if let Ok(Some(link)) = store.update_link(&link.id, doc! { "state": "archived" }, set).await {
                     push_link(&app, &store, &link).await;
                 }
             }

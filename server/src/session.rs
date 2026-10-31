@@ -6,14 +6,14 @@ use std::time::{Duration, Instant};
 
 use axum::extract::ws::{Message, WebSocket};
 use futures_util::{SinkExt, StreamExt};
-use mongodb::bson::DateTime;
+use mongodb::bson::{doc, Bson, DateTime};
 use tokio::sync::mpsc;
 
 use crate::fed::{self, Event, FedMessage};
 use crate::hub::{Outbox, OUTBOX_CAPACITY};
 use crate::protocol::{self as p, ChatMessage, ClientMsg, LinkKind, LinkState, ServerMsg, Share, TeamRef};
 use crate::rooms::{self, Access};
-use crate::store::{JoinError, LinkDoc, Store};
+use crate::store::{bson, JoinError, LinkDoc, Store};
 use crate::App;
 
 const HELLO_TIMEOUT: Duration = Duration::from_secs(10);
@@ -64,7 +64,7 @@ pub async fn run(socket: WebSocket, peer: IpAddr, app: Arc<App>) {
     if !p::is_key(&device) || !p::is_key(&dh_pub) || !verify(&device, &dh_pub, &nonce, &sig) {
         return reject(&mut sink, "bad_identity", "the device signature does not check out").await;
     }
-    let Some(store) = app.store() else {
+    let Some(store) = app.store().filter(|_| app.db_ok()) else {
         return reject(&mut sink, "unavailable", "the chat server's database is not connected").await;
     };
     let name = p::clean_name(name.as_deref(), &device[..8]);
@@ -76,7 +76,11 @@ pub async fn run(socket: WebSocket, peer: IpAddr, app: Arc<App>) {
         }
     };
 
+    // The welcome must be the first frame: queue it before this connection
+    // can receive any push. Anything sent in between is caught up by the
+    // app's `conversations` + `sync` right after the welcome.
     let (out, mut outbox) = mpsc::channel::<String>(OUTBOX_CAPACITY);
+    let _ = out.send(welcome(&app, &store, &device, me.info(true)).await.to_json()).await;
     let (conn_id, came_online) = app.hub.register(&device, out.clone());
     eprintln!("chat: {name} ({}…, {peer}) connected", &device[..12]);
     let _ = store.set_presence(&app.instance, std::slice::from_ref(&device)).await;
@@ -94,7 +98,6 @@ pub async fn run(socket: WebSocket, peer: IpAddr, app: Arc<App>) {
     });
 
     let mut s = Session { app: app.clone(), device: device.clone(), conn_id, out, recent_sends: Vec::new() };
-    s.welcome(&store, me.info(true)).await;
 
     while let Some(msg) = next_client_msg(&mut stream).await {
         match msg {
@@ -136,6 +139,37 @@ async fn reject(sink: &mut futures_util::stream::SplitSink<WebSocket, Message>, 
     let _ = sink.close().await;
 }
 
+/// Who and what this device sees on login.
+async fn welcome(app: &App, store: &Store, device: &str, you: p::UserInfo) -> ServerMsg {
+    let teams = store.teams_of(device).await.unwrap_or_default();
+    let team_ids: Vec<String> = teams.iter().map(|t| t.id.clone()).collect();
+    let mut links = Vec::new();
+    for l in store.links_of(&team_ids).await.unwrap_or_default() {
+        if rooms::my_side(store, &l, device).await.is_some() {
+            links.push(l);
+        }
+    }
+    let link_ids: Vec<String> = links.iter().map(|l| l.id.clone()).collect();
+    let mut online = store.online_devices().await.unwrap_or_default();
+    online.extend(app.hub.devices());
+    let users = store
+        .users_visible(&link_ids, USER_LIST_LIMIT)
+        .await
+        .unwrap_or_default()
+        .iter()
+        .map(|u| u.info(online.contains(&u.device) || u.device == device))
+        .collect();
+    let servers = store.live_servers().await.ok().filter(|s| !s.is_empty()).unwrap_or_else(|| app.urls());
+    ServerMsg::Welcome {
+        you,
+        home: store.home.clone(),
+        servers,
+        users,
+        teams: teams.iter().map(|t| t.info()).collect(),
+        links: links.iter().map(|l| l.info()).collect(),
+    }
+}
+
 fn store_error(e: mongodb::error::Error) -> ServerMsg {
     eprintln!("chat: store error: {e}");
     ServerMsg::error("unavailable", "storage error; try again")
@@ -152,6 +186,11 @@ impl Session {
         self.app.store().ok_or_else(|| ServerMsg::error("unavailable", "the chat server's database is not connected"))
     }
 
+    /// This home's live servers (falling back to our own address).
+    async fn servers(&self, store: &Store) -> Vec<String> {
+        store.live_servers().await.ok().filter(|s| !s.is_empty()).unwrap_or_else(|| self.app.urls())
+    }
+
     async fn my_links(&self, store: &Store) -> Result<Vec<LinkDoc>, ServerMsg> {
         let teams: Vec<String> = store.teams_of(&self.device).await.map_err(store_error)?.into_iter().map(|t| t.id).collect();
         let mut links = store.links_of(&teams).await.map_err(store_error)?;
@@ -163,31 +202,6 @@ impl Session {
             }
         }
         Ok(mine)
-    }
-
-    async fn welcome(&self, store: &Store, you: p::UserInfo) {
-        let teams = store.teams_of(&self.device).await.unwrap_or_default();
-        let links = self.my_links(store).await.unwrap_or_default();
-        let link_ids: Vec<String> = links.iter().map(|l| l.id.clone()).collect();
-        let mut online = store.online_devices().await.unwrap_or_default();
-        online.extend(self.app.hub.devices());
-        let users = store
-            .users_visible(&link_ids, USER_LIST_LIMIT)
-            .await
-            .unwrap_or_default()
-            .iter()
-            .map(|u| u.info(online.contains(&u.device)))
-            .collect();
-        let servers = store.live_servers().await.ok().filter(|s| !s.is_empty()).unwrap_or_else(|| self.app.public_urls.clone());
-        self.reply(ServerMsg::Welcome {
-            you,
-            home: store.home.clone(),
-            servers,
-            users,
-            teams: teams.iter().map(|t| t.info()).collect(),
-            links: links.iter().map(|l| l.info()).collect(),
-        })
-        .await;
     }
 
     async fn handle(&mut self, msg: ClientMsg) {
@@ -279,13 +293,12 @@ impl Session {
         let links = store.links_of(&[team.to_string()]).await.unwrap_or_default();
         for link in links.iter().filter(|l| l.state == LinkState::Active || l.state == LinkState::Pending) {
             let Some(side) = link.side_of(team) else { continue };
-            let mut t = link.team(side).clone();
-            t.members = rooms::member_list(store, team).await;
-            t.servers = store.live_servers().await.ok().filter(|s| !s.is_empty()).unwrap_or_else(|| self.app.public_urls.clone());
-            let mut updated = link.clone();
-            *updated.team_mut(side) = t.clone();
-            let _ = store.save_link(&mut updated).await;
-            fed::send(store, &updated, Event::Members { team: t }).await;
+            let members = rooms::member_list(store, team).await;
+            let servers = self.servers(store).await;
+            let key = if side == 'a' { "a" } else { "b" };
+            let set = doc! { format!("{key}.members"): bson(&members), format!("{key}.servers"): bson(&servers) };
+            let Ok(Some(updated)) = store.update_link(&link.id, doc! {}, set).await else { continue };
+            fed::send(store, &updated, Event::Members { team: updated.team(side).clone() }).await;
             fed::push_link(&self.app, store, &updated).await;
         }
     }
@@ -366,7 +379,7 @@ impl Session {
         let store = self.store()?;
         let mine = store.team(from_team).await.map_err(store_error)?.filter(|t| t.members.contains(&self.device));
         let mine = mine.ok_or_else(|| ServerMsg::error("not_found", "you are not in that team"))?;
-        let servers = store.live_servers().await.ok().filter(|s| !s.is_empty()).unwrap_or_else(|| self.app.public_urls.clone());
+        let servers = self.servers(&store).await;
         let a = TeamRef {
             id: mine.id.clone(),
             name: mine.name.clone(),
@@ -410,7 +423,7 @@ impl Session {
 
     async fn link_respond(&self, link_id: &str, accept: bool, share: Option<Share>) -> Reply {
         let store = self.store()?;
-        let mut link = store.link(link_id).await.map_err(store_error)?.ok_or_else(|| ServerMsg::error("not_found", "no such request"))?;
+        let link = store.link(link_id).await.map_err(store_error)?.ok_or_else(|| ServerMsg::error("not_found", "no such request"))?;
         let side = rooms::my_side(&store, &link, &self.device).await;
         if side != Some('b') || link.state != LinkState::Pending {
             return Err(ServerMsg::error("not_found", "no pending request for your team"));
@@ -419,15 +432,23 @@ impl Session {
         if !p::check_share(&share) || (accept && link.kind == LinkKind::Temp && (share.own.is_none() || share.to_peer.is_none())) {
             return Err(ServerMsg::error("bad_request", "accepting a temporary group needs your half of the archive key"));
         }
-        link.state = if accept { LinkState::Active } else { LinkState::Declined };
+        let state = if accept { LinkState::Active } else { LinkState::Declined };
+        let mut set = doc! {
+            "state": bson(&state),
+            "shareB": bson(&share),
+            "b.members": bson(&rooms::member_list(&store, &link.b.id).await),
+            "b.servers": bson(&self.servers(&store).await),
+        };
         if accept && link.kind == LinkKind::Temp {
             let hours = link.hours.unwrap_or(1) as i64;
-            link.expires_at = Some(DateTime::from_millis(DateTime::now().timestamp_millis() + hours * 3_600_000));
+            set.insert("expiresAt", DateTime::from_millis(DateTime::now().timestamp_millis() + hours * 3_600_000));
         }
-        link.share_b = share.clone();
-        link.b.members = rooms::member_list(&store, &link.b.id).await;
-        link.b.servers = store.live_servers().await.ok().filter(|s| !s.is_empty()).unwrap_or_else(|| self.app.public_urls.clone());
-        store.save_link(&mut link).await.map_err(store_error)?;
+        // Only if still pending: two members accepting at once answer once.
+        let link = store
+            .update_link(link_id, doc! { "state": "pending" }, set)
+            .await
+            .map_err(store_error)?
+            .ok_or_else(|| ServerMsg::error("not_found", "no pending request for your team"))?;
         let expires_at = link.expires_at.map(|d| d.timestamp_millis());
         fed::send(&store, &link, Event::Respond { accept, team: link.b.clone(), share: Some(share), expires_at }).await;
         fed::push_link(&self.app, &store, &link).await;
@@ -439,13 +460,14 @@ impl Session {
             return Err(ServerMsg::error("bad_request", "bad key share"));
         }
         let store = self.store()?;
-        let mut link = store.link(link_id).await.map_err(store_error)?.ok_or_else(|| ServerMsg::error("not_found", "no such group"))?;
+        let link = store.link(link_id).await.map_err(store_error)?.ok_or_else(|| ServerMsg::error("not_found", "no such group"))?;
         let side = rooms::my_side(&store, &link, &self.device).await.ok_or_else(|| ServerMsg::error("not_found", "no such group"))?;
-        if link.state != LinkState::Archived {
-            return Err(ServerMsg::error("bad_request", "only a closed temporary group has an archive"));
-        }
-        link.share_mut(side).to_peer = Some(to_peer.clone());
-        store.save_link(&mut link).await.map_err(store_error)?;
+        let field = if side == 'a' { "shareA.toPeer" } else { "shareB.toPeer" };
+        let link = store
+            .update_link(link_id, doc! { "state": "archived" }, doc! { field: &to_peer })
+            .await
+            .map_err(store_error)?
+            .ok_or_else(|| ServerMsg::error("bad_request", "only a closed temporary group has an archive"))?;
         fed::send(&store, &link, Event::Release { to_peer }).await;
         fed::push_link(&self.app, &store, &link).await;
         Ok(())
@@ -453,14 +475,14 @@ impl Session {
 
     async fn archive_lock(&self, link_id: &str) -> Reply {
         let store = self.store()?;
-        let mut link = store.link(link_id).await.map_err(store_error)?.ok_or_else(|| ServerMsg::error("not_found", "no such group"))?;
+        let link = store.link(link_id).await.map_err(store_error)?.ok_or_else(|| ServerMsg::error("not_found", "no such group"))?;
         rooms::my_side(&store, &link, &self.device).await.ok_or_else(|| ServerMsg::error("not_found", "no such group"))?;
-        if link.state != LinkState::Archived {
-            return Err(ServerMsg::error("bad_request", "only a closed temporary group has an archive"));
-        }
-        link.share_a.to_peer = None;
-        link.share_b.to_peer = None;
-        store.save_link(&mut link).await.map_err(store_error)?;
+        let set = doc! { "shareA.toPeer": Bson::Null, "shareB.toPeer": Bson::Null };
+        let link = store
+            .update_link(link_id, doc! { "state": "archived" }, set)
+            .await
+            .map_err(store_error)?
+            .ok_or_else(|| ServerMsg::error("bad_request", "only a closed temporary group has an archive"))?;
         fed::send(&store, &link, Event::Lock).await;
         fed::push_link(&self.app, &store, &link).await;
         Ok(())

@@ -94,7 +94,8 @@ class Clip:
         return f'<g transform="translate({num(x)} {num(y)})">{self.g(kind, keys, back)}</g>'
 
     def show(self, f0: float, f1: float, inner: str) -> str:
-        """Visible from frame f0 to f1 only."""
+        """Visible from frame f0 to f1 only (within the clip)."""
+        f1 = min(f1, self.n - 0.02)
         keys = [(0, 0, "lin"), (max(f0 - 0.01, 0), 0, "lin"), (f0, 1, "lin"), (f1, 1, "lin"), (min(f1 + 0.01, self.n), 0, "lin")]
         return f'<g opacity="0">{self.a("opacity", keys)}{inner}</g>'
 
@@ -207,7 +208,7 @@ def build(pack: str, cfg: dict) -> int:
     body = c.about("scale", wiggle(0, 30, (-0.03, 0.05), 15, (1.0, 1.0)), cx, ground, lift(src["happy"][1]))
     body = c.about("rotate", [(0, 0, "sine"), (7.5, 6, "sine"), (22.5, -6, "sine"), (30, 0, "lin")], cx, ground, body)
     air = lines(x0 - 6 * u, y0 + 0.35 * h, u * 0.8, 90) + lines(x1 + 6 * u, y0 + 0.35 * h, u * 0.8, 90)
-    sparks = "".join(c.show(f, f + 12, sparkle(x, y, 11 * u)) for f, x, y in ((2, x0 + 0.05 * w, y0 + 0.15 * h), (12, x1 - 0.02 * w, y0 + 0.05 * h), (20, x1, y0 + 0.5 * h)))
+    sparks = "".join(c.show(f, f + 12, sparkle(x, y, 11 * u)) for f, x, y in ((2, x0 + 0.05 * w, y0 + 0.15 * h), (12, x1 - 0.02 * w, y0 + 0.05 * h), (17, x1, y0 + 0.5 * h)))
     out.append(("throw_whee", c, f"{air}{body}{sparks}"))
 
     # Up or down: shakes in panic, sweat drop bobbing by its head.

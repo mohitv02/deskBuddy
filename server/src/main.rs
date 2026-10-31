@@ -53,13 +53,29 @@ pub struct App {
     pub hub: hub::Hub,
     /// This server process, among the servers sharing the database.
     pub instance: String,
-    pub public_urls: Vec<String>,
+    /// The port we listen on, for working out our public address.
+    pub port: u16,
+    /// How others reach us; refreshed in case the machine's address changes.
+    public_urls: RwLock<Vec<String>>,
 }
 
 impl App {
     /// The database, if connected.
     pub fn store(&self) -> Option<Arc<store::Store>> {
         self.store.read().unwrap_or_else(|p| p.into_inner()).clone()
+    }
+
+    pub fn urls(&self) -> Vec<String> {
+        self.public_urls.read().unwrap_or_else(|p| p.into_inner()).clone()
+    }
+
+    pub fn set_urls(&self, urls: Vec<String>) {
+        *self.public_urls.write().unwrap_or_else(|p| p.into_inner()) = urls;
+    }
+
+    /// The database answered its last check.
+    pub fn db_ok(&self) -> bool {
+        self.db.lock().unwrap_or_else(|p| p.into_inner()).state == "connected"
     }
 
     fn set_db(&self, status: DbStatus, store: Option<Option<Arc<store::Store>>>) {
@@ -165,7 +181,22 @@ async fn supervise_db(app: Arc<App>) {
                     },
                 }
             }
-            Some(_) => {}
+            Some((_, db)) => {
+                // Connected: make sure it still answers, so /health tells the truth.
+                if let Some(s) = app.store() {
+                    let alive = matches!(tokio::time::timeout(Duration::from_secs(5), s.ping()).await, Ok(Ok(())));
+                    if alive != app.db_ok() {
+                        let status = if alive {
+                            eprintln!("chat: MongoDB answers again");
+                            DbStatus { state: "connected", error: None, database: db }
+                        } else {
+                            eprintln!("chat: MongoDB stopped answering");
+                            DbStatus { state: "error", error: Some("MongoDB stopped answering".into()), database: db }
+                        };
+                        app.set_db(status, None);
+                    }
+                }
+            }
         }
         tokio::time::sleep(DB_CHECK_EVERY).await;
     }
@@ -199,7 +230,8 @@ async fn main() {
         db: Mutex::new(DbStatus { state: "connecting", error: None, database: cfg.mongodb_db.clone() }),
         hub: hub::Hub::default(),
         instance: random_hex::<8>(),
-        public_urls: public_urls.clone(),
+        port,
+        public_urls: RwLock::new(public_urls.clone()),
     });
 
     tokio::spawn(supervise_db(app.clone()));

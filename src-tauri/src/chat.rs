@@ -33,6 +33,14 @@ const BACKOFF_MIN: Duration = Duration::from_secs(1);
 const BACKOFF_MAX: Duration = Duration::from_secs(30);
 const SYNC_PAGE: u32 = 200;
 pub const MAX_NAME_CHARS: usize = 40;
+/// A poke is an ordinary (end-to-end encrypted) message with this body, so
+/// the server can't tell it apart and older apps just show the text.
+pub const POKE: &str = "/poke";
+/// Only pokes this recent play on the desktop: catching up after being away
+/// doesn't replay them.
+const POKE_FRESH_MS: i64 = 2 * 60 * 1000;
+/// One poke reaction per person this often, however fast they poke.
+const POKE_GAP_MS: i64 = 8_000;
 const UNREADABLE: &str = "🔒 This message can't be decrypted (its key isn't on this device).";
 
 const INVITE_PREFIX: &str = "DBT1-";
@@ -1221,11 +1229,47 @@ fn receive(app: &AppHandle, client: &ChatClient, db: &Db, m: &Wire, live: bool) 
                     request_sync(client, &m.conversation_id, have);
                 }
             }
-            Ok((conv.id, (added && sender.is_some()).then_some(conv.reaction.clone())))
+            Ok((conv.id, added))
         })
         .map_err(|e| e.to_string())?;
-    changed(app, local.0);
-    Ok(Some(local))
+    let (local, added) = local;
+    let from_them = sender.filter(|_| added);
+    let poke = from_them.is_some() && body == POKE;
+    if let (true, Some(device)) = (poke, from_them) {
+        let name = if sender_name.is_empty() { short_id(device) } else { sender_name.clone() };
+        poked(app, &conv, device, &name, m.created_at, crate::db::now_ms());
+    }
+    changed(app, local);
+    // A poke has its own reaction instead of the chat's usual one.
+    Ok(Some((local, (from_them.is_some() && !poke).then(|| conv.reaction.clone()))))
+}
+
+/// Someone poked us: the pet reacts and a bubble says who. Pokes that are
+/// stale (sent `POKE_FRESH_MS` ago), from someone who just poked, or in a
+/// chat whose pet reaction is off only show up in the chat.
+fn poked(app: &AppHandle, conv: &conversations::Conversation, device: &str, name: &str, sent_at: i64, now: i64) {
+    static LAST: Mutex<BTreeMap<String, i64>> = Mutex::new(BTreeMap::new());
+    if !should_react_to_poke(&mut LAST.lock().unwrap(), &conv.reaction, device, sent_at, now) {
+        return;
+    }
+    let _ = app.emit_to(window::MASCOT, "mascot-react", "poke");
+    window::show_bubble(app, &poke_text(name, &conv.room, &conv.title));
+}
+
+/// Whether a poke plays, remembering when each person last got a reaction.
+fn should_react_to_poke(last: &mut BTreeMap<String, i64>, reaction: &str, device: &str, sent_at: i64, now: i64) -> bool {
+    if reaction == "none" || now - sent_at > POKE_FRESH_MS || last.get(device).is_some_and(|t| now - t < POKE_GAP_MS) {
+        return false;
+    }
+    last.insert(device.to_string(), now);
+    true
+}
+
+fn poke_text(name: &str, room: &str, title: &str) -> String {
+    match room {
+        "team" | "link" if !title.is_empty() => format!("👉 {name} poked {title}!"),
+        _ => format!("👉 {name} poked you!"),
+    }
 }
 
 /// Find chat servers announced on the LAN (`_deskbuddy._tcp`), for up to `wait`.
@@ -1256,6 +1300,28 @@ pub fn discover(wait: Duration) -> Vec<(String, String)> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn pokes_react_once_per_person_and_only_when_fresh() {
+        let mut last = BTreeMap::new();
+        let now = 10_000_000;
+        assert!(should_react_to_poke(&mut last, "", "a", now - 500, now), "a fresh poke plays");
+        assert!(!should_react_to_poke(&mut last, "", "a", now + 3_000, now + 3_000), "the same friend again right away: quiet");
+        assert!(should_react_to_poke(&mut last, "", "b", now + 3_000, now + 3_000), "someone else may poke meanwhile");
+        assert!(should_react_to_poke(&mut last, "", "a", now + POKE_GAP_MS, now + POKE_GAP_MS), "after the gap it plays again");
+        assert!(!should_react_to_poke(&mut last, "", "c", now - POKE_FRESH_MS - 1, now), "caught up later: too old to play");
+        assert!(!should_react_to_poke(&mut last, "none", "d", now, now), "pet reaction off for that chat");
+        assert!(!last.contains_key("c") && !last.contains_key("d"), "skipped pokes don't start the gap");
+        assert!(should_react_to_poke(&mut last, "mood_happy", "d", now, now), "a custom reaction still plays the poke");
+    }
+
+    #[test]
+    fn poke_bubble_says_who() {
+        assert_eq!(poke_text("Mohit", "dm", ""), "👉 Mohit poked you!");
+        assert_eq!(poke_text("Mohit", "team", "Design"), "👉 Mohit poked Design!");
+        assert_eq!(poke_text("Mohit", "link", "Design + Ops"), "👉 Mohit poked Design + Ops!");
+        assert_eq!(poke_text("Mohit", "team", ""), "👉 Mohit poked you!", "no room name: still says who");
+    }
 
     #[test]
     fn server_addresses() {

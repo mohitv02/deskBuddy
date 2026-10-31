@@ -183,6 +183,10 @@ export interface BackupSummary {
   vaultEntries: number;
 }
 
+/** A poke is a chat message with exactly this body (chat.rs POKE): the
+ * friend's pet reacts and a bubble says who poked. Typing it works too. */
+export const POKE = "/poke";
+
 export interface ChatMessage {
   id: number;
   conversationId: number;

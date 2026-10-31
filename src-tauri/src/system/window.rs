@@ -4,7 +4,7 @@ use tauri::{
     WebviewWindow, WebviewWindowBuilder, WindowEvent,
 };
 
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::time::Duration;
 
 use crate::settings::{Settings, SettingsStore};
@@ -150,7 +150,7 @@ pub fn open_fx(app: &AppHandle) -> tauri::Result<()> {
     } else {
         custom_effect.unwrap_or_else(|| "sparks".into())
     };
-    open_effect(app, &effect, custom_origin.unwrap_or((size * 0.5, size * 0.2)), None)
+    open_effect(app, &effect, custom_origin.unwrap_or((size * 0.5, size * 0.2)), None, None)
 }
 
 /// The pet's own effect, aimed one way (1 = right, -1 = left), for a reaction
@@ -165,14 +165,47 @@ pub fn open_reaction_fx(app: &AppHandle, facing: i32) -> tauri::Result<()> {
     }
     close_fx(app);
     let ox = if facing < 0 { size - ox } else { ox };
-    open_effect(app, &effect, (ox, oy), Some(facing))
+    open_effect(app, &effect, (ox, oy), Some(facing), None)
 }
 
-/// `origin` is inside the mascot window; `dir` None aims toward open screen.
-fn open_effect(app: &AppHandle, effect: &str, (ox, oy): (f64, f64), dir: Option<i32>) -> tauri::Result<()> {
+/// How long a speech bubble stays over the pet.
+const BUBBLE_FOR: Duration = Duration::from_millis(4000);
+/// The bubble on screen (a counter value), 0 when the overlay shows anything else.
+static BUBBLE: AtomicU64 = AtomicU64::new(0);
+
+/// A speech bubble over the pet's head for a few seconds, such as
+/// "👉 Mohit poked you!". It shares the effect overlay, so it's skipped while
+/// an alarm rings, and its timer never closes an effect that came after it.
+pub fn show_bubble(app: &AppHandle, text: &str) {
+    if app.state::<crate::system::alarm::AlarmState>().current().is_some() {
+        return;
+    }
+    static SEQ: AtomicU64 = AtomicU64::new(0);
+    let seq = SEQ.fetch_add(1, Ordering::SeqCst) + 1;
+    let size = app.state::<SettingsStore>().get().icon_size as f64;
+    close_fx(app);
+    // About where the head is in most pets' art (their canvases leave room above).
+    if let Err(e) = open_effect(app, "bubble", (size * 0.5, size * 0.3), None, Some(text)) {
+        return eprintln!("deskbuddy: speech bubble: {e}");
+    }
+    BUBBLE.store(seq, Ordering::SeqCst);
+    let app = app.clone();
+    let _ = std::thread::Builder::new().name("speech-bubble".into()).spawn(move || {
+        std::thread::sleep(BUBBLE_FOR);
+        if BUBBLE.compare_exchange(seq, 0, Ordering::SeqCst, Ordering::SeqCst).is_ok() {
+            close_fx(&app);
+        }
+    });
+}
+
+/// `origin` is inside the mascot window; `dir` None aims toward open screen;
+/// `text` is what a speech bubble says.
+fn open_effect(app: &AppHandle, effect: &str, (ox, oy): (f64, f64), dir: Option<i32>, text: Option<&str>) -> tauri::Result<()> {
     if effect == "none" {
         return Ok(());
     }
+    // Anything else replaces a bubble: its timer must leave this one alone.
+    BUBBLE.store(0, Ordering::SeqCst);
     let Some(mascot) = app.get_webview_window(MASCOT) else { return Ok(()) };
     let scale = mascot.scale_factor()?;
     let pos: LogicalPosition<f64> = mascot.outer_position()?.to_logical(scale);
@@ -189,7 +222,8 @@ fn open_effect(app: &AppHandle, effect: &str, (ox, oy): (f64, f64), dir: Option<
         }
         None => (gx - FX_ORIGIN.0, gy - FX_ORIGIN.1, dir.unwrap_or(-1)),
     };
-    let config = serde_json::json!({ "effect": effect, "x": gx - fx_x, "y": gy - fx_y, "dir": dir });
+    let size = app.state::<SettingsStore>().get().icon_size;
+    let config = serde_json::json!({ "effect": effect, "x": gx - fx_x, "y": gy - fx_y, "dir": dir, "text": text, "size": size });
     let fx = WebviewWindowBuilder::new(app, FX, WebviewUrl::App("fx.html".into()))
         .title("DeskBuddy effect")
         .initialization_script(&format!("window.__FX__ = {config};"))
@@ -410,8 +444,10 @@ mod linux {
     /// The page hears about streaks up to this long (1 = single click, which
     /// wakes a sleeping mascot; 2 = double click; 3 = "clicks").
     const CLICK_STREAK_MAX: u32 = 3;
-    /// How often the page hears where the pointer is on the mascot.
-    const POINTER_EVERY: Duration = Duration::from_millis(60);
+    /// The page hears where the pointer is on the mascot whenever it has
+    /// moved this far (logical px) since the last report. Not a time limit:
+    /// that could drop the spot where the pointer comes to rest.
+    const POINTER_STEP_PX: f64 = 3.0;
 
     use super::DRAG_THRESHOLD_PX;
 
@@ -432,10 +468,14 @@ mod linux {
         let press: Rc<Cell<Option<(f64, f64)>>> = Rc::new(Cell::new(None));
         // (clicks in the current streak, time of the last one)
         let streak: Rc<Cell<(u32, Option<Instant>)>> = Rc::new(Cell::new((0, None)));
+        // Where the page last heard the pointer was (window px).
+        let reported: Rc<Cell<Option<(f64, f64)>>> = Rc::new(Cell::new(None));
 
-        let a = app.clone();
-        target.connect_enter_notify_event(move |_, _| {
+        let (a, r) = (app.clone(), reported.clone());
+        target.connect_enter_notify_event(move |_, ev| {
             let _ = a.emit_to(super::MASCOT, "mascot-hover", true);
+            r.set(Some(ev.position()));
+            let _ = a.emit_to(super::MASCOT, "mascot-pointer", ev.position());
             Propagation::Proceed
         });
         let a = app.clone();
@@ -461,13 +501,12 @@ mod linux {
         });
 
         let (p, g, a) = (press.clone(), gw.clone(), app.clone());
-        let last_pointer: Cell<Option<Instant>> = Cell::new(None);
         target.connect_motion_notify_event(move |_, ev| {
-            // Where on the pet the pointer rests (window px), for body-part
-            // reactions; a few times a second is plenty.
-            if p.get().is_none() && last_pointer.get().is_none_or(|t| t.elapsed() >= POINTER_EVERY) {
-                last_pointer.set(Some(Instant::now()));
-                let _ = a.emit_to(super::MASCOT, "mascot-pointer", ev.position());
+            // Where on the pet the pointer rests, for body-part reactions.
+            let (x, y) = ev.position();
+            if p.get().is_none() && reported.get().is_none_or(|(rx, ry)| (x - rx).hypot(y - ry) >= POINTER_STEP_PX) {
+                reported.set(Some((x, y)));
+                let _ = a.emit_to(super::MASCOT, "mascot-pointer", (x, y));
             }
             if let Some((x0, y0)) = p.get() {
                 let (x, y) = ev.root();

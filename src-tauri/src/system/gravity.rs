@@ -178,6 +178,13 @@ fn slam_depth(speed: f64) -> f64 {
     (speed.min(MAX_THROW_SPEED) * SLAM_REACH).min(MAX_SLAM)
 }
 
+/// An upward throw that rises `rise` then falls `rise + fall`: launch speed
+/// and total flight time (0 when there's nowhere to go).
+fn toss_flight(rise: f64, fall: f64, g: f64) -> (f64, f64) {
+    let v0 = (2.0 * g * rise).sqrt();
+    (v0, v0 / g + (2.0 * (rise + fall) / g).sqrt())
+}
+
 /// Time to cover `d` falling from speed `v0` under gravity `g`.
 fn fall_time(v0: f64, d: f64, g: f64) -> f64 {
     ((v0 * v0 + 2.0 * g * d).sqrt() - v0) / g
@@ -248,8 +255,11 @@ fn toss(win: &WebviewWindow, start: PhysicalPosition<i32>, end: PhysicalPosition
     let g = GRAVITY * scale;
     let rise = (rise_height(vy / scale) * scale).min(room.above).max(0.0);
     let fall = fall_distance(start.y, end.y, MAX_FALL * scale, room.below);
-    let v0 = (2.0 * g * rise).sqrt();
-    let flight = v0 / g + (2.0 * (rise + fall) / g).sqrt();
+    let (v0, flight) = toss_flight(rise, fall, g);
+    // Against the top of the screen and already on the ground: no flight.
+    if flight <= 0.0 {
+        return Ok(());
+    }
     let t0 = Instant::now();
     loop {
         std::thread::sleep(FRAME);
@@ -402,7 +412,10 @@ mod x11 {
 
 #[cfg(test)]
 mod tests {
-    use super::{classify, fall_distance, fall_time, release_velocity, rise_height, slam_depth, slide_distance, Fling, MAX_RISE, MAX_SLAM, MAX_SLIDE};
+    use super::{
+        classify, fall_distance, fall_time, release_velocity, rise_height, slam_depth, slide_distance, toss_flight, Fling, Room, GRAVITY, MAX_RISE, MAX_SLAM,
+        MAX_SLIDE, THROW_SPEED,
+    };
 
     #[test]
     fn release_velocity_uses_first_and_last_sample() {
@@ -423,6 +436,37 @@ mod tests {
         assert_eq!(classify(100.0, 1500.0), Some((Fling::Down, 0)));
         assert_eq!(classify(1100.0, 1100.0), Some((Fling::Down, 1)));
         assert_eq!(classify(-1100.0, 1100.0), Some((Fling::Down, -1)));
+    }
+
+    #[test]
+    fn throw_speed_and_direction_boundaries() {
+        assert_eq!(classify(THROW_SPEED - 0.1, 0.0), None, "just too slow");
+        assert_eq!(classify(THROW_SPEED, 0.0), Some((Fling::Side, 1)), "exactly fast enough");
+        assert_eq!(classify(0.0, 0.0), None, "a still release is a drop");
+        // 22.5° off level is where sideways turns diagonal.
+        let (c, s) = (22.4_f64.to_radians().cos(), 22.4_f64.to_radians().sin());
+        assert_eq!(classify(1500.0 * c, -1500.0 * s), Some((Fling::Side, 1)));
+        let (c, s) = (22.6_f64.to_radians().cos(), 22.6_f64.to_radians().sin());
+        assert_eq!(classify(1500.0 * c, -1500.0 * s), Some((Fling::Up, 1)));
+        assert_eq!(classify(-1500.0 * c, 1500.0 * s), Some((Fling::Down, -1)));
+    }
+
+    #[test]
+    fn toss_flight_time() {
+        assert_eq!(toss_flight(0.0, 0.0, GRAVITY), (0.0, 0.0), "no room above, already down: nowhere to go");
+        let (v0, t) = toss_flight(300.0, 0.0, GRAVITY);
+        assert!((v0 * v0 / (2.0 * GRAVITY) - 300.0).abs() < 1e-6, "launch speed reaches the height");
+        assert!((t - 2.0 * (600.0 / GRAVITY).sqrt()).abs() < 1e-9, "up and back down take the same time");
+        assert!(toss_flight(300.0, 150.0, GRAVITY).1 > t, "falling further below takes longer");
+    }
+
+    #[test]
+    fn sideways_room() {
+        let room = Room { left: 30.0, right: 500.0, above: 0.0, below: 0.0 };
+        assert_eq!(room.side(1), 500.0);
+        assert_eq!(room.side(-1), 30.0);
+        assert_eq!(room.side(0), 0.0, "straight up or down: no drift");
+        assert_eq!(Room { left: -5.0, ..room }.side(-1), 0.0, "already past the edge");
     }
 
     #[test]

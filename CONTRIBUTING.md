@@ -14,7 +14,8 @@ You need Rust 1.85+ from [rustup](https://rustup.rs) (Ubuntu's packaged cargo is
 ## Before opening a pull request
 
 ```bash
-(cd src-tauri && cargo test)   # Rust unit tests (crypto, vault, backups, todos, alarms…)
+(cd src-tauri && cargo test)   # Rust unit tests (crypto, vault, backups, todos, alarms, throw physics…)
+npm test                       # pet state machine (hover, body parts, throws, sleep) + every pet pack's data
 npm run build                  # type-check + frontend build
 ```
 
