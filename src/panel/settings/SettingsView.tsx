@@ -172,6 +172,13 @@ export function SettingsView() {
         </div>
         <label className="setting">
           <span>
+            Hide pet
+            <small>Also in its right-click menu. It comes back where it was.</small>
+          </span>
+          <input type="checkbox" className="switch" checked={s.mascotHidden} onChange={(e) => void save({ mascotHidden: e.target.checked })} />
+        </label>
+        <label className="setting">
+          <span>
             Size <small>{s.iconSize} px</small>
           </span>
           <input

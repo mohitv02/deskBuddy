@@ -103,7 +103,9 @@ pub fn create_mascot(app: &AppHandle, s: &Settings) -> tauri::Result<WebviewWind
         linux::apply_mascot_hints(&win, s.icon_size as i32);
         linux::install_input(&win, app.clone());
     }
-    win.show()?;
+    if !s.mascot_hidden {
+        win.show()?;
+    }
 
     let handle = app.clone();
     win.on_window_event(move |event| match event {
@@ -131,12 +133,32 @@ fn restore_mascot_size(app: &AppHandle, size: tauri::PhysicalSize<u32>) {
 
 fn remember_position(app: &AppHandle, pos: PhysicalPosition<i32>) {
     let Some(win) = app.get_webview_window(MASCOT) else { return };
+    // Unmapping can report a bogus position; keep the spot it was hidden at.
+    if !win.is_visible().unwrap_or(true) {
+        return;
+    }
     let scale = win.scale_factor().unwrap_or(1.0);
     let logical: LogicalPosition<f64> = pos.to_logical(scale);
     app.state::<SettingsStore>().update(|s| {
         s.mascot_x = Some(logical.x);
         s.mascot_y = Some(logical.y);
     });
+}
+
+/// Hide the pet, or show it again at the position it was hidden at.
+pub fn set_mascot_hidden(app: &AppHandle, hidden: bool) -> tauri::Result<()> {
+    let Some(win) = app.get_webview_window(MASCOT) else { return Ok(()) };
+    let s = app.state::<SettingsStore>().update(|s| s.mascot_hidden = hidden);
+    if hidden {
+        close_fx(app);
+        return win.hide();
+    }
+    let (x, y) = initial_mascot_pos(app, &s, s.icon_size as f64);
+    // Set it before and after mapping: some window managers place a newly
+    // mapped window themselves.
+    win.set_position(LogicalPosition::new(x, y))?;
+    win.show()?;
+    win.set_position(LogicalPosition::new(x, y))
 }
 
 /// Open the alarm effect overlay around the mascot (no-op for effect "none").
@@ -207,6 +229,9 @@ fn open_effect(app: &AppHandle, effect: &str, (ox, oy): (f64, f64), dir: Option<
     // Anything else replaces a bubble: its timer must leave this one alone.
     BUBBLE.store(0, Ordering::SeqCst);
     let Some(mascot) = app.get_webview_window(MASCOT) else { return Ok(()) };
+    if !mascot.is_visible()? {
+        return Ok(());
+    }
     let scale = mascot.scale_factor()?;
     let pos: LogicalPosition<f64> = mascot.outer_position()?.to_logical(scale);
     let (gx, gy) = (pos.x + ox, pos.y + oy);
@@ -259,6 +284,7 @@ fn show_mascot_menu(app: &AppHandle, win: &WebviewWindow) {
                 &MenuItem::with_id(app, "open", "Open", true, None::<&str>)?,
                 &CheckMenuItem::with_id(app, "pause", "Pause animation", true, paused, None::<&str>)?,
                 &MenuItem::with_id(app, "settings", "Settings", true, None::<&str>)?,
+                &MenuItem::with_id(app, "hide", "Hide pet", true, None::<&str>)?,
                 &PredefinedMenuItem::separator(app)?,
                 &MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?,
             ],
@@ -278,6 +304,9 @@ pub fn on_menu_event(app: &AppHandle, event: MenuEvent) {
         }
         "settings" => {
             let _ = show_panel(app, Some("settings"));
+        }
+        "hide" => {
+            let _ = set_mascot_hidden(app, true);
         }
         "pause" => {
             let s = app.state::<SettingsStore>().update(|s| s.animation_enabled = !s.animation_enabled);
@@ -403,12 +432,25 @@ pub fn hide_panel(app: &AppHandle) -> tauri::Result<()> {
 /// with it, and clamped to the mascot's monitor.
 fn anchor_near_mascot(app: &AppHandle) -> Option<(f64, f64)> {
     let mascot = app.get_webview_window(MASCOT)?;
-    let scale = mascot.scale_factor().ok()?;
-    let pos: LogicalPosition<f64> = mascot.outer_position().ok()?.to_logical(scale);
-    let size = mascot.outer_size().ok()?.to_logical::<f64>(scale);
-    let mon = logical_bounds(&mascot.current_monitor().ok()??);
+    let m = if mascot.is_visible().ok()? {
+        let scale = mascot.scale_factor().ok()?;
+        let pos: LogicalPosition<f64> = mascot.outer_position().ok()?.to_logical(scale);
+        let size = mascot.outer_size().ok()?.to_logical::<f64>(scale);
+        Rect { x: pos.x, y: pos.y, w: size.width, h: size.height }
+    } else {
+        // Hidden: where it will come back.
+        let s = app.state::<SettingsStore>().get();
+        let size = s.icon_size as f64;
+        let (x, y) = initial_mascot_pos(app, &s, size);
+        Rect { x, y, w: size, h: size }
+    };
+    let monitors = app.available_monitors().ok()?;
+    let mon = monitors
+        .iter()
+        .map(logical_bounds)
+        .find(|b| b.contains(m.x + m.w / 2.0, m.y + m.h / 2.0))
+        .or_else(|| mascot.current_monitor().ok().flatten().map(|m| logical_bounds(&m)))?;
 
-    let m = Rect { x: pos.x, y: pos.y, w: size.width, h: size.height };
     let fits_above = m.y - PANEL_H - PANEL_GAP >= mon.y;
     let fits_below = m.y + m.h + PANEL_GAP + PANEL_H <= mon.y + mon.h;
 

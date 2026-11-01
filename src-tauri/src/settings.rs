@@ -18,6 +18,8 @@ const SAVE_DEBOUNCE: Duration = Duration::from_millis(500);
 pub struct Settings {
     pub mascot_x: Option<f64>,
     pub mascot_y: Option<f64>,
+    /// Hidden from Settings or the right-click menu; it comes back where it was.
+    pub mascot_hidden: bool,
     pub icon_size: u32,
     pub animation_enabled: bool,
     pub autostart: bool,
@@ -57,6 +59,7 @@ impl Default for Settings {
         Self {
             mascot_x: None,
             mascot_y: None,
+            mascot_hidden: false,
             icon_size: 96,
             animation_enabled: true,
             autostart: false,

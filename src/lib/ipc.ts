@@ -3,6 +3,8 @@ import { invoke } from "@tauri-apps/api/core";
 
 export interface Settings {
   iconSize: number;
+  /** Pet hidden; shown again at the same spot. */
+  mascotHidden: boolean;
   animationEnabled: boolean;
   autostart: boolean;
   hotkey: string;

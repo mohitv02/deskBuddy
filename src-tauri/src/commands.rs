@@ -28,6 +28,7 @@ pub struct SettingsPatch {
     autostart: Option<bool>,
     hotkey: Option<String>,
     icon_size: Option<u32>,
+    mascot_hidden: Option<bool>,
     animation_enabled: Option<bool>,
     auto_lock_minutes: Option<u32>,
     alarm_effect: Option<String>,
@@ -78,6 +79,9 @@ pub fn update_settings(app: AppHandle, store: State<'_, SettingsStore>, patch: S
         }
         store.update(|s| s.icon_size = size);
         window::set_mascot_size(&app, size).map_err(err)?;
+    }
+    if let Some(hidden) = patch.mascot_hidden {
+        window::set_mascot_hidden(&app, hidden).map_err(err)?;
     }
     if let Some(on) = patch.animation_enabled {
         store.update(|s| s.animation_enabled = on);
